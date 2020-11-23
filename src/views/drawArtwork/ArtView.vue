@@ -6,6 +6,7 @@
 let img1 = require("../../assets/image/img1.png");
 let img2 = require("../../assets/image/img2.png");
 import zrender from "zrender";
+import { calcArrowCenter } from "./flowClient/helpers";
 export default {
   name: "ArtView",
   data() {
@@ -15,110 +16,18 @@ export default {
   },
   mounted() {
     this.zr = zrender.init(document.getElementById("canvas"));
-    this.getData();
+    this.getRectData();
+    this.getLineData();
   },
   methods: {
-    getData() {
-      let data = JSON.parse(localStorage.getItem("artData"));
-      let arr = [];
+    getRectData() {
+      let data = JSON.parse(localStorage.getItem("rectData"));
       for (let i in data) {
-        if (data[i].type === "polyline") {
-          // 线段
-          // let x2 = 0;
-          // let y2 = 0;
-          // if (data[i].width === 1) {
-          //   x2 = data[i].left;
-          //   y2 = data[i].top + data[i].height;
-          // } else {
-          //   x2 = data[i].left + data[i].width;
-          //   y2 = data[i].top;
-          // }
-          // let line = new zrender.Line({
-          //   shape: {
-          //     x1: data[i].left,
-          //     y1: data[i].top,
-          //     x2: x2,
-          //     y2: y2
-          //   },
-          //   style: {
-          //     stroke: data[i].color
-          //   }
-          // });
-          // this.zr.add(line);
-          // 连续线段
-          let polyline = new zrender.Polyline({
-            shape: {
-              points: data[i].lines,
-              smooth: 0
-            },
-            style: {
-              stroke: data[i].color,
-              zlevel: 1
-            }
-          });
-          this.zr.add(polyline);
-          arr.push(data[i].lines);
-          if (data[i].animate) {
-            this.circleAnimate(data[i].lines, data[i].color);
-          }
-        } else if (data[i].type === "triangle") {
-          // 三角形
-          let rotate = 0;
-          let x = data[i].left;
-          let y = data[i].top;
-          switch (data[i].direct) {
-            case "t":
-              x = x + 7;
-              y = y + 7;
-              break;
-            case "b":
-              rotate = 1;
-              x = x + 1;
-              y = y + 9;
-              break;
-            case "l":
-              rotate = 1.5;
-              x = x - 6;
-              y = y + 12;
-              break;
-            case "r":
-              rotate = 0.5;
-              x = x + 2;
-              y = y + 10;
-              break;
-          }
-          let triangle = new zrender.Isogon({
-            rotation: rotate,
-            origin: [data[i].left, data[i].top],
-            shape: {
-              x: x,
-              y: y,
-              r: 10,
-              n: 3
-            },
-            style: {
-              fill: data[i].color
-            }
-          });
-          this.zr.add(triangle);
-        } else if (data[i].type === "device") {
+        if (data[i].type === "rect") {
           // 矩形
           let rect = new zrender.Rect({
-            shape: {
-              x: data[i].left,
-              y: data[i].top,
-              width: data[i].width,
-              height: data[i].height,
-              r: 5
-            },
-            style: {
-              stroke: data[i].color,
-              fill: "#fff",
-              text: data[i].text,
-              fontSize: 16,
-              textFill: data[i].color,
-              zlevel: 2
-            }
+            shape: data[i].shape,
+            style: data[i].style
           });
           this.zr.add(rect);
         } else if (/image/.test(data[i].type)) {
@@ -155,6 +64,53 @@ export default {
             }
           });
           this.zr.add(text);
+        }
+      }
+    },
+    // 绘制线段
+    getLineData() {
+      let lineData = JSON.parse(localStorage.getItem("lineData"));
+      for (let i in lineData) {
+        let points = lineData[i].shape.points;
+        const polyline = new zrender.Polyline({
+          shape: lineData[i].shape,
+          style: lineData[i].style
+        });
+        this.zr.add(polyline);
+        let rotation = "";
+        let j = points.length - 1;
+        let direction = lineData[i].direction;
+        let [x, y] = calcArrowCenter(points[j], direction);
+        switch (direction) {
+          case "T":
+            break;
+          case "R":
+            rotation = -0.5;
+            break;
+          case "B":
+            rotation = 1;
+            break;
+          case "L":
+            rotation = 0.5;
+            break;
+        }
+        const triangle = new zrender.Isogon({
+          shape: {
+            x: x,
+            y: y,
+            r: 6,
+            n: 3
+          },
+          style: {
+            fill: lineData[i].style.stroke,
+            stroke: 1
+          },
+          rotation: Math.PI * rotation,
+          origin: [x, y]
+        });
+        this.zr.add(triangle);
+        if (lineData[i].animate) {
+          this.circleAnimate(points, lineData[i].style.stroke);
         }
       }
     },
@@ -195,7 +151,7 @@ export default {
 <style lang="scss" scoped>
 #canvas {
   width: 100%;
-  height: 852px;
+  height: 100vh;
   background: #fff;
 }
 </style>

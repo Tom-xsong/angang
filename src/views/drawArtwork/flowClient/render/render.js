@@ -50,14 +50,7 @@ export function clearAll() {
 function renderRect(data) {
   const rect = new Rect({
     shape: data.shape,
-    style: {
-      fill: "#fff",
-      stroke: data.color,
-      lineWidth: 1,
-      text: "",
-      fontSize: 16,
-      textFill: data.color
-    },
+    style: data.style,
     data
   });
   zr.add(rect);
@@ -69,13 +62,7 @@ function renderRect(data) {
 export function renderLine(data, silent) {
   const polyline = new Polyline({
     shape: data.shape,
-    style: {
-      stroke: data.color,
-      lineWidth: 1,
-      text: "",
-      fontSize: 16,
-      textFill: data.color
-    },
+    style: data.style,
     data,
     silent
   });

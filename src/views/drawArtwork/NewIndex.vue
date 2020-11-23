@@ -56,6 +56,57 @@
     <div id="artBody">
       <div class="wrap" ref="configWrap" @dragstart.prevent></div>
     </div>
+    <!-- 修改矩形样式 -->
+    <el-dialog
+      title="修改样式"
+      :visible.sync="colorDialog"
+      close-on-click-modal
+      width="400px"
+    >
+      <el-form size="small" :model="form" label-width="100px">
+        <el-form-item label="边框宽度：">
+          <el-input-number
+            v-model="form.lineWidth"
+            :min="0"
+            :max="10"
+            :step-strictly="true"
+            class="inpW"
+          ></el-input-number>
+        </el-form-item>
+        <el-form-item label="边框颜色：">
+          <el-color-picker v-model="form.stroke"></el-color-picker>
+        </el-form-item>
+        <el-form-item label="背景颜色：" v-if="curType === 'rect'">
+          <el-color-picker v-model="form.fill"></el-color-picker>
+        </el-form-item>
+        <el-form-item label="添加文字：">
+          <el-input
+            v-model="form.text"
+            :maxlength="100"
+            class="inpW"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="文字大小：">
+          <el-input-number
+            v-model="form.fontSize"
+            :min="12"
+            :step="2"
+            :step-strictly="true"
+            class="inpW"
+            clearable
+          ></el-input-number>
+        </el-form-item>
+        <el-form-item label="文字颜色：">
+          <el-color-picker v-model="form.textFill"></el-color-picker>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button size="small" @click="colorDialog = false">取消</el-button>
+        <el-button type="primary" size="small" @click="handleModifyStyle()"
+          >确定</el-button
+        >
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -69,13 +120,16 @@ import {
   startRectMove,
   endRectMove,
   startEdit,
-  endEdit
+  endEdit,
+  submitStyle
 } from "./flowClient/index";
 import {
   getRectModelList,
   getLineModelList,
   clearAll
 } from "./flowClient/render/render";
+import { on, off } from "./flowClient/event/index";
+import { mapValue } from "@/utils/validate";
 
 export default {
   name: "Test",
@@ -83,7 +137,17 @@ export default {
     return {
       configData: [{ type: "rect", label: "设备" }],
       currentItem: {},
-      handleStatus: -1
+      handleStatus: -1,
+      colorDialog: false,
+      form: {
+        lineWidth: 1,
+        stroke: "#999",
+        fill: "#fff",
+        text: "",
+        fontSize: 14,
+        textFill: "#999"
+      },
+      curType: ""
     };
   },
   mounted() {
@@ -93,6 +157,10 @@ export default {
         return this.currentItem.type;
       }
     });
+    on("handleOpen", this.handleOpenStyle);
+  },
+  beforeDestroy() {
+    off("handleOpen");
   },
   methods: {
     handleDragstart(item) {
@@ -108,12 +176,25 @@ export default {
         this.handleStatus = -1;
       }
     },
+    handleOpenStyle(param) {
+      this.curType = param.type;
+      mapValue(this.form, param.style);
+      this.colorDialog = true;
+    },
+    handleModifyStyle() {
+      submitStyle(this.form, () => {
+        this.$message.success("编辑成功");
+        this.colorDialog = false;
+      });
+    },
     handleClear() {
       clearAll();
     },
     handleSave() {
       let rectArr = getRectModelList();
       let lineArr = getLineModelList();
+      localStorage.setItem("rectData", JSON.stringify(rectArr));
+      localStorage.setItem("lineData", JSON.stringify(lineArr));
       console.log(rectArr);
       console.log(lineArr);
     }
@@ -175,5 +256,8 @@ export default {
       height: 100%;
     }
   }
+}
+.inpW {
+  width: 260px;
 }
 </style>

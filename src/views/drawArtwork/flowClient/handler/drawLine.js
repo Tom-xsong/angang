@@ -155,6 +155,7 @@ function clickToEnd(rect) {
     isBottom: isBottom,
     isRight: isRight
   });
+  curDrawLine.data.direction = arrowDirection;
   curDrawLine.isStartVertical = points[0][1] !== points[1][1];
   curDrawLine.isEndVertical = isVertical;
 

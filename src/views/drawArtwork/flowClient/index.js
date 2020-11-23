@@ -27,4 +27,4 @@ export function init(el, { addModel }) {
 export { startDrawLine, endDrawLine } from "./handler/drawLine";
 export { startResize, endResize } from "./handler/resizeRect";
 export { startRectMove, endRectMove } from "./handler/rectMove";
-export { startEdit, endEdit } from "./handler/editAttr";
+export { startEdit, endEdit, submitStyle } from "./handler/editAttr";

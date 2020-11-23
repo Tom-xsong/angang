@@ -10,7 +10,14 @@ export function makeRectModel(x, y) {
       width: 200,
       height: 100
     },
-    color: "#999",
+    style: {
+      lineWidth: 1,
+      stroke: "#999",
+      fill: "#fff",
+      text: "",
+      fontSize: 16,
+      textFill: "#999"
+    },
     lineRelations: []
   };
 }
@@ -22,8 +29,14 @@ export function makeLineModel(point) {
     shape: {
       points: point ? [point] : []
     },
-    color: "#999",
-    trigId: "",
-    lineRelations: []
+    style: {
+      lineWidth: 1,
+      stroke: "#999",
+      text: "",
+      fontSize: 16,
+      textFill: "#999"
+    },
+    lineRelations: [],
+    animate: false
   };
 }

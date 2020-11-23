@@ -1,3 +1,4 @@
+import { Circle } from "zrender";
 import {
   getId2element,
   getLineModelList,
@@ -5,10 +6,12 @@ import {
   getZR
 } from "../render/render";
 import { clearHandler } from "./controller";
+import { emit } from "../event/index";
 
 let isEdit = false;
 let curRect;
 let curLine;
+let curType;
 
 export function startEdit() {
   clearHandler();
@@ -58,8 +61,8 @@ function rectEdit(rect) {
 }
 
 function lineEdit(line) {
+  line.silent = false;
   line.on("contextmenu", e => {
-    if (curLine === line) return;
     curLine = line;
     let node = makeLineMenu();
     node.style.left = e.offsetX + "px";
@@ -81,11 +84,11 @@ function lineEdit(line) {
 function makeRectMenu() {
   var node = document.createElement("ol");
   node.classList.add("self-menu");
-  let arr = ["删除", "修改颜色", "添加文字"];
+  let arr = ["修改样式", "删除"];
   for (let i in arr) {
     let oLi = document.createElement("li");
     oLi.classList.add("menu-item");
-    oLi.onclick = [rectDel, modifyColor, addText][i];
+    oLi.onclick = [openModifyStyle, rectDel][i];
     oLi.innerHTML = arr[i];
     node.appendChild(oLi);
   }
@@ -96,15 +99,60 @@ function makeRectMenu() {
 function makeLineMenu() {
   var node = document.createElement("ol");
   node.classList.add("self-menu");
-  let arr = ["修改颜色", "调整宽度", "添加文字", "添加动画", "删除"];
+  let arr = ["修改样式", "添加动画", "删除"];
   for (let i in arr) {
     let oLi = document.createElement("li");
     oLi.classList.add("menu-item");
-    // oLi.onclick = [rectDel][i]();
+    oLi.onclick = [openLineStyle, addAnimate, lineDel][i];
     oLi.innerHTML = arr[i];
     node.appendChild(oLi);
   }
   return node;
+}
+
+// 修改矩形样式
+function openModifyStyle() {
+  curType = "rect";
+  let param = {
+    type: "rect",
+    style: curRect.style
+  };
+  emit("handleOpen", param);
+  removeMenu();
+}
+
+// 修改矩形样式
+function openLineStyle() {
+  curType = "line";
+  let param = {
+    type: "line",
+    style: curLine.style
+  };
+  emit("handleOpen", param);
+  removeMenu();
+}
+
+// 修改样式确定
+export function submitStyle(param, func) {
+  let style = JSON.parse(JSON.stringify(param));
+  if (curType === "rect") {
+    curRect.attr({
+      style: style
+    });
+    curRect.data.style = style;
+  } else {
+    curLine.attr({
+      style: style
+    });
+    curLine.data.style = style;
+    let trig = curLine.arrow;
+    trig.attr({
+      style: {
+        fill: param.stroke
+      }
+    });
+  }
+  func();
 }
 
 // 删除矩形
@@ -113,8 +161,8 @@ function rectDel(e) {
   // 删除矩形
   zr.remove(curRect);
   const rectModelList = getRectModelList();
-  for (let i = rectModelList; i >= 0; i--) {
-    if (rectModelList[i].id === curRect.id) {
+  for (let i = rectModelList.length - 1; i >= 0; i--) {
+    if (rectModelList[i].id === curRect.data.id) {
       rectModelList.splice(i, 1);
       break;
     }
@@ -128,30 +176,76 @@ function rectDel(e) {
     zr.remove(lines);
     zr.remove(trig);
     const lineModeList = getLineModelList();
-    for (let j = lineModeList.length; j >= 0; j--) {
-      if (lineModeList[i].id === relations[i].id) {
+    for (let j = lineModeList.length - 1; j >= 0; j--) {
+      if (lineModeList[j].id === relations[i].id) {
         lineModeList.splice(j, 1);
         break;
       }
     }
   }
-  let body = document.getElementById("artBody");
-  let node = document.getElementsByClassName("self-menu")[0];
-  body.removeChild(node);
+  removeMenu();
   e.stopPropagation();
 }
 
-// 修改颜色
-function modifyColor() {
-  //
+// 移除菜单
+function removeMenu() {
+  let body = document.getElementById("artBody");
+  let node = document.getElementsByClassName("self-menu")[0];
+  body.removeChild(node);
 }
 
 // 添加动画
-// function addAnimate() {
-//   //
-// }
+function addAnimate() {
+  let shape = curLine.shape;
+  curLine.data.animate = true;
+  circleAnimate(shape.points, curLine.style.stroke);
+  removeMenu();
+}
 
-// 添加文字
-function addText() {
-  //
+// 动画
+function circleAnimate(polyline, color) {
+  // 实心圆
+  let cir = new Circle({
+    shape: {
+      cx: polyline[0][0],
+      cy: polyline[0][1],
+      r: 5
+    },
+    style: {
+      fill: color
+    }
+  });
+  const zr = getZR();
+  zr.add(cir);
+  const animation = cir.animate("shape", true);
+  let delay = 0;
+  for (let i = 1; i < polyline.length; i++) {
+    const prev = polyline[i - 1];
+    const cur = polyline[i];
+    const distance = Math.sqrt(
+      (prev[0] - cur[0]) ** 2 + (prev[1] - cur[1]) ** 2
+    );
+    delay += distance * 5;
+    animation.when(delay, {
+      cx: cur[0],
+      cy: cur[1]
+    });
+  }
+  animation.start();
+}
+
+// 删除线段
+function lineDel() {
+  const zr = getZR();
+  let trig = curLine.arrow;
+  zr.remove(curLine);
+  zr.remove(trig);
+  const lineModeList = getLineModelList();
+  for (let j = lineModeList.length - 1; j >= 0; j--) {
+    if (lineModeList[j].id === curLine.data.id) {
+      lineModeList.splice(j, 1);
+      break;
+    }
+  }
+  removeMenu();
 }
