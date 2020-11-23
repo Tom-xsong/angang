@@ -84,6 +84,7 @@
             v-model="form.text"
             :maxlength="100"
             class="inpW"
+            clearable
           ></el-input>
         </el-form-item>
         <el-form-item label="文字大小：">
@@ -93,7 +94,6 @@
             :step="2"
             :step-strictly="true"
             class="inpW"
-            clearable
           ></el-input-number>
         </el-form-item>
         <el-form-item label="文字颜色：">
@@ -124,6 +124,7 @@ import {
   submitStyle
 } from "./flowClient/index";
 import {
+  add,
   getRectModelList,
   getLineModelList,
   clearAll
@@ -151,13 +152,28 @@ export default {
     };
   },
   mounted() {
+    // 初始化
     init(this.$refs.configWrap, {
       addModel: () => {
         this.handleStatus = -1;
         return this.currentItem.type;
       }
     });
+    // 定义事件
     on("handleOpen", this.handleOpenStyle);
+    // 绘制之前画好的流程图
+    let rectData = JSON.parse(localStorage.getItem("rectData"));
+    if (rectData) {
+      for (let i in rectData) {
+        add(rectData[i]);
+      }
+    }
+    let lineData = JSON.parse(localStorage.getItem("lineData"));
+    if (lineData) {
+      for (let i in lineData) {
+        add(lineData[i]);
+      }
+    }
   },
   beforeDestroy() {
     off("handleOpen");
@@ -176,20 +192,25 @@ export default {
         this.handleStatus = -1;
       }
     },
+    // 打开修改样式弹窗
     handleOpenStyle(param) {
       this.curType = param.type;
       mapValue(this.form, param.style);
       this.colorDialog = true;
     },
+    // 修改样式确定
     handleModifyStyle() {
       submitStyle(this.form, () => {
         this.$message.success("编辑成功");
         this.colorDialog = false;
       });
     },
+    // 清除画布
     handleClear() {
       clearAll();
+      localStorage.clear();
     },
+    // 保存数据
     handleSave() {
       let rectArr = getRectModelList();
       let lineArr = getLineModelList();

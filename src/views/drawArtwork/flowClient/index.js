@@ -24,6 +24,7 @@ export function init(el, { addModel }) {
   }
 }
 
+// 各个状态的开启和结束
 export { startDrawLine, endDrawLine } from "./handler/drawLine";
 export { startResize, endResize } from "./handler/resizeRect";
 export { startRectMove, endRectMove } from "./handler/rectMove";

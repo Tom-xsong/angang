@@ -2,6 +2,7 @@ import { init as initZR, Rect, Polyline, Circle, Isogon } from "zrender";
 import { calcArrowCenter, makeRectVertexes } from "../helpers";
 import { resizeRect } from "../handler/resizeRect";
 import { setCurVertexes } from "../handler/resizeRect";
+import { circleAnimate } from "../handler/editAttr";
 
 let zr = null;
 let rectModelList = [];
@@ -28,6 +29,7 @@ export function initRender(el) {
   id2element = {};
 }
 
+// 添加图形
 export function add(data) {
   switch (data.type) {
     case "rect":
@@ -39,6 +41,7 @@ export function add(data) {
   }
 }
 
+// 清除所有数据
 export function clearAll() {
   zr.clear();
   rectModelList = [];
@@ -69,6 +72,17 @@ export function renderLine(data, silent) {
   zr.add(polyline);
   lineModelList.push(data);
   id2element[data.id] = polyline;
+  if (data.direction) {
+    let length = data.shape.points.length;
+    polyline.arrow = renderArrow(
+      data.shape.points[length - 1],
+      data.style.stroke,
+      data.direction
+    );
+  }
+  if (data.animate) {
+    circleAnimate(data.shape.points, data.style.stroke);
+  }
   return polyline;
 }
 
@@ -97,7 +111,7 @@ export function renderRectVertexes(rect) {
 }
 
 // 绘制三角形
-export function renderArrow(point, direction) {
+export function renderArrow(point, color, direction) {
   let rotation = 0;
   let [x, y] = calcArrowCenter(point, direction);
   switch (direction) {
@@ -121,7 +135,7 @@ export function renderArrow(point, direction) {
       n: 3
     },
     style: {
-      fill: "#999",
+      fill: color,
       stroke: 1
     },
     rotation: Math.PI * rotation,

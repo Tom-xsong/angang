@@ -5,6 +5,7 @@ import { clearHandler } from "./controller";
 
 let isRunning = false;
 
+// 开启移动状态
 export function startRectMove() {
   clearHandler();
   isRunning = true;
@@ -15,6 +16,7 @@ export function startRectMove() {
   });
 }
 
+// 结束移动状态
 export function endRectMove() {
   if (!isRunning) return;
   isRunning = false;
@@ -128,6 +130,7 @@ function lineVertexNextFollow(line, lineRelation) {
   }
 }
 
+// 线自动转折
 function lineAutoBreak(line) {
   const points = line.shape.points;
 
@@ -158,7 +161,6 @@ function lineAutoBreak(line) {
 function arrowFollowLine(line) {
   const arrow = line.arrow;
   const shape = arrow.shape;
-
   const [x, y] = calcArrowCenter(lastItem(line.shape.points), arrow.direction);
   shape.x = x;
   shape.y = y;

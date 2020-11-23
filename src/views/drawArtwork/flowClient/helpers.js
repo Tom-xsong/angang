@@ -21,6 +21,7 @@ export function resetTransform(element, offset = 0) {
   element.decomposeTransform();
 }
 
+// 计算三角形的中点
 export function calcArrowCenter([x, y], direction) {
   switch (direction) {
     case "T":

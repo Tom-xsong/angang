@@ -12,7 +12,10 @@ let isEdit = false;
 let curRect;
 let curLine;
 let curType;
+let animation;
+let circle;
 
+// 开启编辑状态
 export function startEdit() {
   clearHandler();
   isEdit = true;
@@ -25,8 +28,10 @@ export function startEdit() {
   lineModeList.forEach(lineModel => {
     lineEdit(id2element[lineModel.id]);
   });
+  getZR().on("click", clickRoot);
 }
 
+// 结束编辑状态
 export function endEdit() {
   if (!isEdit) return;
   isEdit = false;
@@ -39,6 +44,15 @@ export function endEdit() {
   lineModeList.forEach(rectModel => {
     id2element[rectModel.id].offEdit();
   });
+  getZR().off("click", clickRoot);
+}
+
+function clickRoot() {
+  let node = document.getElementsByClassName("self-menu")[0];
+  if (node) {
+    let body = document.getElementById("artBody");
+    body.removeChild(node);
+  }
 }
 
 function rectEdit(rect) {
@@ -99,11 +113,11 @@ function makeRectMenu() {
 function makeLineMenu() {
   var node = document.createElement("ol");
   node.classList.add("self-menu");
-  let arr = ["修改样式", "添加动画", "删除"];
+  let arr = ["修改样式", "添加动画", "停止动画", "删除"];
   for (let i in arr) {
     let oLi = document.createElement("li");
     oLi.classList.add("menu-item");
-    oLi.onclick = [openLineStyle, addAnimate, lineDel][i];
+    oLi.onclick = [openLineStyle, addAnimate, stopAnimate, lineDel][i];
     oLi.innerHTML = arr[i];
     node.appendChild(oLi);
   }
@@ -203,9 +217,9 @@ function addAnimate() {
 }
 
 // 动画
-function circleAnimate(polyline, color) {
+export function circleAnimate(polyline, color) {
   // 实心圆
-  let cir = new Circle({
+  circle = new Circle({
     shape: {
       cx: polyline[0][0],
       cy: polyline[0][1],
@@ -216,8 +230,8 @@ function circleAnimate(polyline, color) {
     }
   });
   const zr = getZR();
-  zr.add(cir);
-  const animation = cir.animate("shape", true);
+  zr.add(circle);
+  animation = circle.animate("shape", true);
   let delay = 0;
   for (let i = 1; i < polyline.length; i++) {
     const prev = polyline[i - 1];
@@ -232,6 +246,18 @@ function circleAnimate(polyline, color) {
     });
   }
   animation.start();
+}
+
+// 停止动画
+function stopAnimate() {
+  if (animation) {
+    const zr = getZR();
+    zr.remove(circle);
+    animation.stop();
+    circle = null;
+    animation = null;
+  }
+  removeMenu();
 }
 
 // 删除线段

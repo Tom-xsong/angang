@@ -14,6 +14,7 @@ let isNewPoint = true;
 let isClickRoot = false;
 
 let isRunning = false;
+// 开启画线状态
 export function startDrawLine() {
   clearHandler();
   isRunning = true;
@@ -27,6 +28,7 @@ export function startDrawLine() {
   getZR().on("click", clickRoot);
 }
 
+// 结束画线状态
 export function endDrawLine() {
   if (!isRunning) return;
   isRunning = false;
@@ -39,6 +41,7 @@ export function endDrawLine() {
   getZR().off("click", clickRoot);
 }
 
+// 鼠标移动绘制线段
 function mousemove(e) {
   if (!curDrawLine) return;
   const points = curDrawLine.shape.points;
@@ -81,6 +84,7 @@ function addDrawLine(rect) {
   };
 }
 
+// 开始画线
 function clickToStart(e, rect) {
   const x = ~~e.offsetX + 0.5;
   const y = ~~e.offsetY + 0.5;
@@ -121,6 +125,7 @@ function clickToStart(e, rect) {
   isNewPoint = true;
 }
 
+// 结束画线
 function clickToEnd(rect) {
   const points = curDrawLine.shape.points;
   const last = points[points.length - 2];
@@ -159,6 +164,10 @@ function clickToEnd(rect) {
   curDrawLine.isStartVertical = points[0][1] !== points[1][1];
   curDrawLine.isEndVertical = isVertical;
 
-  curDrawLine.arrow = renderArrow(point, arrowDirection);
+  curDrawLine.arrow = renderArrow(
+    point,
+    curDrawLine.style.stroke,
+    arrowDirection
+  );
   curDrawLine = null;
 }

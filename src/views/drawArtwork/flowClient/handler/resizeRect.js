@@ -22,6 +22,7 @@ export function getCurVertexes() {
 
 let isRunning = false;
 
+// 开启缩放状态
 export function startResize() {
   clearHandler();
   isRunning = true;
@@ -35,6 +36,7 @@ export function startResize() {
   zr.on("mousedown", mousedown);
 }
 
+// 结束缩放状态
 export function endResize() {
   if (!isRunning) return;
   isRunning = false;
