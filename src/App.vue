@@ -3,59 +3,6 @@
 </template>
 
 <style lang="scss">
-article,
-aside,
-blockquote,
-body,
-button,
-code,
-dd,
-details,
-div,
-dl,
-dt,
-fieldset,
-figcaption,
-figure,
-footer,
-form,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-header,
-hgroup,
-hr,
-input,
-legend,
-li,
-menu,
-nav,
-ol,
-p,
-pre,
-section,
-td,
-textarea,
-th,
-ul {
-  margin: 0;
-  padding: 0;
-}
-ol,
-ul,
-li {
-  list-style: none;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-
 body {
   width: 100%;
   background: #eeeff2;
@@ -83,9 +30,6 @@ body {
       background: #ecf5ff;
       border-color: #b3d8ff;
     }
-    // .demonstration {
-    //   padding-right: 6px;
-    // }
   }
 }
 </style>

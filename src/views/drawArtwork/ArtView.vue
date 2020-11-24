@@ -27,9 +27,18 @@ export default {
           // 矩形
           let rect = new zrender.Rect({
             shape: data[i].shape,
-            style: data[i].style
+            style: data[i].style,
+            zlevel: 2
           });
           this.zr.add(rect);
+        } else if (data[i].type === "circle") {
+          // 圆形
+          let circle = new zrender.Circle({
+            shape: data[i].shape,
+            style: data[i].style,
+            zlevel: 2
+          });
+          this.zr.add(circle);
         } else if (/image/.test(data[i].type)) {
           // 图片
           let img = new zrender.Image({
@@ -74,7 +83,8 @@ export default {
         let points = lineData[i].shape.points;
         const polyline = new zrender.Polyline({
           shape: lineData[i].shape,
-          style: lineData[i].style
+          style: lineData[i].style,
+          zlevel: 1
         });
         this.zr.add(polyline);
         let rotation = "";
@@ -105,6 +115,7 @@ export default {
             fill: lineData[i].style.stroke,
             stroke: 1
           },
+          zIndex: 1,
           rotation: Math.PI * rotation,
           origin: [x, y]
         });

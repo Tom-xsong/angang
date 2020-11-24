@@ -128,8 +128,9 @@ export function renderRectVertexes(rect) {
       },
       style: {
         fill: "#fff",
-        stroke: 1
+        stroke: "#999"
       },
+      zlevel: 3,
       draggable: true
     });
     zr.add(circle);
@@ -165,8 +166,10 @@ export function renderArrow(point, color, direction) {
     },
     style: {
       fill: color,
-      stroke: 1
+      stroke: color,
+      lineWidth: 1
     },
+    zlevel: 2,
     rotation: Math.PI * rotation,
     origin: [x, y],
     direction
