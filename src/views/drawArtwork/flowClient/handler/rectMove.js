@@ -1,6 +1,6 @@
 import { calcArrowCenter, lastItem, resetTransform } from "../helpers";
 import { getId2element, getRectModelList } from "../render/render";
-import { getCurVertexes } from "./resizeRect";
+// import { getCurVertexes } from "./resizeRect";
 import { clearHandler } from "./controller";
 
 let isRunning = false;
@@ -43,15 +43,20 @@ function rectMove(rect) {
     rect.data.lineRelations.forEach(lineRelation => {
       lineFollowRect(lineRelation, offset);
     });
-    getCurVertexes().forEach(vertex => {
-      vertexFollowRect(vertex, offset);
-    });
+    // getCurVertexes().forEach(vertex => {
+    //   vertexFollowRect(vertex, offset);
+    // });
   }
 
   function dragend() {
     const shape = rect.shape;
-    shape.x += rect.position[0];
-    shape.y += rect.position[1];
+    if (rect.data.type === "rect") {
+      shape.x += rect.position[0];
+      shape.y += rect.position[1];
+    } else {
+      shape.cx += rect.position[0];
+      shape.cy += rect.position[1];
+    }
     rect.setShape(shape);
     resetTransform(rect);
   }
@@ -88,12 +93,12 @@ export function lineFollowRect(lineRelation, offset) {
 }
 
 // 顶点跟随拖动
-function vertexFollowRect(circle, offset) {
-  const shape = circle.shape;
-  shape.cx += offset.x;
-  shape.cy += offset.y;
-  circle.setShape(shape);
-}
+// function vertexFollowRect(circle, offset) {
+//   const shape = circle.shape;
+//   shape.cx += offset.x;
+//   shape.cy += offset.y;
+//   circle.setShape(shape);
+// }
 
 // 线顶点跟随拖动
 function lineVertexFollowRect(line, offset, lineRelation) {

@@ -1,4 +1,8 @@
-import { makeRectVertexes, resetTransform } from "../helpers";
+import {
+  makeRectVertexes,
+  makeCircleVertexes,
+  resetTransform
+} from "../helpers";
 import { lineFollowRect } from "./rectMove";
 import {
   getId2element,
@@ -92,7 +96,7 @@ function addHighlight(rect) {
   rect.onHighlight();
 }
 
-export function resizeRect(circle, index) {
+export function resizeRect(type, circle, index) {
   let prevEvent;
 
   function dragstart(e) {
@@ -105,17 +109,21 @@ export function resizeRect(circle, index) {
       y: e.offsetY - prevEvent.offsetY
     };
     prevEvent = e;
-    [
-      resizeLT,
-      resizeT,
-      resizeRT,
-      resizeR,
-      resizeRB,
-      resizeB,
-      resizeLB,
-      resizeL
-    ][index](offset);
-    vertexFollowRectResize();
+    if (type === "rect") {
+      [
+        resizeLT,
+        resizeT,
+        resizeRT,
+        resizeR,
+        resizeRB,
+        resizeB,
+        resizeLB,
+        resizeL
+      ][index](offset);
+    } else {
+      [resizeCT, resizeCR, resizeCB, resizeCL][index](offset);
+    }
+    vertexFollowRectResize(type);
     resetTransform(circle);
   }
   circle.on("dragstart", dragstart);
@@ -127,8 +135,14 @@ export function resizeRect(circle, index) {
   };
 }
 
-function vertexFollowRectResize() {
-  makeRectVertexes(curRect).forEach((point, index) => {
+function vertexFollowRectResize(type) {
+  let circleArr = [];
+  if (type === "rect") {
+    circleArr = makeRectVertexes(curRect);
+  } else {
+    circleArr = makeCircleVertexes(curRect);
+  }
+  circleArr.forEach((point, index) => {
     curVertexes[index].setShape({
       cx: point[0],
       cy: point[1]
@@ -320,4 +334,33 @@ function resizeL(offset) {
       });
     }
   });
+}
+
+// 圆形整理
+// 上
+function resizeCT(offset) {
+  const shape = curRect.shape;
+  shape.r -= offset.y;
+  curRect.setShape(shape);
+}
+
+// 右
+function resizeCR(offset) {
+  const shape = curRect.shape;
+  shape.r += offset.x;
+  curRect.setShape(shape);
+}
+
+// 下
+function resizeCB(offset) {
+  const shape = curRect.shape;
+  shape.r += offset.y;
+  curRect.setShape(shape);
+}
+
+// 左
+function resizeCL(offset) {
+  const shape = curRect.shape;
+  shape.r -= offset.x;
+  curRect.setShape(shape);
 }

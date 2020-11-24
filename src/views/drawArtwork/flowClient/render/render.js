@@ -1,5 +1,9 @@
 import { init as initZR, Rect, Polyline, Circle, Isogon } from "zrender";
-import { calcArrowCenter, makeRectVertexes } from "../helpers";
+import {
+  calcArrowCenter,
+  makeRectVertexes,
+  makeCircleVertexes
+} from "../helpers";
 import { resizeRect } from "../handler/resizeRect";
 import { setCurVertexes } from "../handler/resizeRect";
 import { circleAnimate } from "../handler/editAttr";
@@ -35,6 +39,9 @@ export function add(data) {
     case "rect":
       renderRect(data);
       break;
+    case "circle":
+      renderCircle(data);
+      break;
     case "line":
       renderLine(data);
       break;
@@ -54,6 +61,7 @@ function renderRect(data) {
   const rect = new Rect({
     shape: data.shape,
     style: data.style,
+    zlevel: 2,
     data
   });
   zr.add(rect);
@@ -61,11 +69,25 @@ function renderRect(data) {
   id2element[data.id] = rect;
 }
 
+// 绘制圆形
+function renderCircle(data) {
+  const circle = new Circle({
+    shape: data.shape,
+    style: data.style,
+    zlevel: 2,
+    data
+  });
+  zr.add(circle);
+  rectModelList.push(data);
+  id2element[data.id] = circle;
+}
+
 // 绘制线
 export function renderLine(data, silent) {
   const polyline = new Polyline({
     shape: data.shape,
     style: data.style,
+    zlevel: 1,
     data,
     silent
   });
@@ -90,7 +112,14 @@ export function renderLine(data, silent) {
 export function renderRectVertexes(rect) {
   const zr = getZR();
   const curVertexes = [];
-  makeRectVertexes(rect).forEach((point, index) => {
+  let circleArr = [];
+  let type = rect.data.type;
+  if (type === "rect") {
+    circleArr = makeRectVertexes(rect);
+  } else {
+    circleArr = makeCircleVertexes(rect);
+  }
+  circleArr.forEach((point, index) => {
     const circle = new Circle({
       shape: {
         cx: point[0],
@@ -105,7 +134,7 @@ export function renderRectVertexes(rect) {
     });
     zr.add(circle);
     curVertexes.push(circle);
-    resizeRect(circle, index);
+    resizeRect(type, circle, index);
   });
   setCurVertexes(curVertexes);
 }

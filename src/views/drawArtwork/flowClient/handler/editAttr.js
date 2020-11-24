@@ -113,7 +113,7 @@ function makeRectMenu() {
 function makeLineMenu() {
   var node = document.createElement("ol");
   node.classList.add("self-menu");
-  let arr = ["修改样式", "添加动画", "停止动画", "删除"];
+  let arr = ["修改样式", "添加动画", "清除动画", "删除"];
   for (let i in arr) {
     let oLi = document.createElement("li");
     oLi.classList.add("menu-item");
@@ -251,6 +251,7 @@ export function circleAnimate(polyline, color) {
 // 停止动画
 function stopAnimate() {
   if (animation) {
+    curLine.data.animate = false;
     const zr = getZR();
     zr.remove(circle);
     animation.stop();
@@ -271,6 +272,18 @@ function lineDel() {
     if (lineModeList[j].id === curLine.data.id) {
       lineModeList.splice(j, 1);
       break;
+    }
+  }
+  // 删除关联关系里面的id
+  let lineId = curLine.data.id;
+  const rectModelList = getRectModelList();
+  for (let i in rectModelList) {
+    let lineArr = rectModelList[i].lineRelations;
+    for (let j = lineArr.length - 1; j >= 0; j--) {
+      if (lineArr[j].id === lineId) {
+        lineArr.splice(j, 1);
+        break;
+      }
     }
   }
   removeMenu();

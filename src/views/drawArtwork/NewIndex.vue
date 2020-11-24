@@ -76,7 +76,7 @@
         <el-form-item label="边框颜色：">
           <el-color-picker v-model="form.stroke"></el-color-picker>
         </el-form-item>
-        <el-form-item label="背景颜色：" v-if="curType === 'rect'">
+        <el-form-item label="背景颜色：" v-if="curType !== 'line'">
           <el-color-picker v-model="form.fill"></el-color-picker>
         </el-form-item>
         <el-form-item label="添加文字：">
@@ -136,7 +136,10 @@ export default {
   name: "Test",
   data() {
     return {
-      configData: [{ type: "rect", label: "设备" }],
+      configData: [
+        { type: "rect", label: "物料仓" },
+        { type: "circle", label: "皮带秤" }
+      ],
       currentItem: {},
       handleStatus: -1,
       colorDialog: false,

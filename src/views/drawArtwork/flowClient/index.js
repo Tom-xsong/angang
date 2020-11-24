@@ -1,4 +1,4 @@
-import { makeLineModel, makeRectModel } from "./models";
+import { makeLineModel, makeRectModel, makeCircleModel } from "./models";
 import { add, initRender } from "./render/render";
 import { clearHandler } from "./handler/controller";
 export function init(el, { addModel }) {
@@ -15,6 +15,9 @@ export function init(el, { addModel }) {
     switch (type) {
       case "rect":
         data = makeRectModel(e.offsetX, e.offsetY);
+        break;
+      case "circle":
+        data = makeCircleModel(e.offsetX, e.offsetY);
         break;
       case "line":
         data = makeLineModel(e.offsetX, e.offsetY);

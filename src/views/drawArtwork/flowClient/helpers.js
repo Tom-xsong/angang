@@ -14,6 +14,17 @@ export function makeRectVertexes(rect) {
   ];
 }
 
+export function makeCircleVertexes(rect) {
+  const shape = rect.shape;
+  const r = shape.r;
+  return [
+    [shape.cx, shape.cy - r],
+    [shape.cx + r, shape.cy],
+    [shape.cx, shape.cy + r],
+    [shape.cx - r, shape.cy]
+  ];
+}
+
 // 重置transform
 export function resetTransform(element, offset = 0) {
   element.transform = [1, 0, 0, 1, offset, 0];

@@ -1,5 +1,6 @@
 let uid = 1;
 
+// 画矩形
 export function makeRectModel(x, y) {
   return {
     id: uid++,
@@ -22,6 +23,29 @@ export function makeRectModel(x, y) {
   };
 }
 
+// 画圆形
+export function makeCircleModel(x, y) {
+  return {
+    id: uid++,
+    type: "circle",
+    shape: {
+      cx: x,
+      cy: y,
+      r: 25
+    },
+    style: {
+      lineWidth: 1,
+      stroke: "#999",
+      fill: "#fff",
+      text: "",
+      fontSize: 16,
+      textFill: "#999"
+    },
+    lineRelations: []
+  };
+}
+
+// 画线
 export function makeLineModel(point) {
   return {
     id: uid++,
