@@ -14,12 +14,31 @@ export default {
   },
   mounted() {
     this.zr = zrender.init(document.getElementById("canvas"));
-    this.getRectData();
-    this.getLineData();
+    this.getJSOnData();
   },
   methods: {
-    getRectData() {
-      let data = JSON.parse(localStorage.getItem("rectData"));
+    // 获取json数据
+    getJSOnData() {
+      const _this = this;
+      let url = "/static/json/data.json";
+      let request = new XMLHttpRequest();
+      request.open("get", url);
+      request.send(null);
+      request.onload = function() {
+        if (request.status === 200) {
+          let json = JSON.parse(request.responseText);
+          let rectData = json.rectData;
+          if (rectData) {
+            _this.drawRect(rectData);
+          }
+          let lineData = json.lineData;
+          if (lineData) {
+            _this.drawLine(lineData);
+          }
+        }
+      };
+    },
+    drawRect(data) {
       for (let i in data) {
         if (data[i].type === "rect") {
           // 矩形
@@ -63,8 +82,7 @@ export default {
       }
     },
     // 绘制线段
-    getLineData() {
-      let lineData = JSON.parse(localStorage.getItem("lineData"));
+    drawLine(lineData) {
       for (let i in lineData) {
         let points = lineData[i].shape.points;
         const polyline = new zrender.Polyline({

@@ -276,20 +276,7 @@ export default {
     // 定义事件
     on("handleOpen", this.handleOpenStyle);
     clearAll();
-    // this.getJSOnData();
-    // 绘制之前画好的流程图
-    let rectData = JSON.parse(localStorage.getItem("rectData"));
-    if (rectData) {
-      for (let i in rectData) {
-        add(rectData[i]);
-      }
-    }
-    let lineData = JSON.parse(localStorage.getItem("lineData"));
-    if (lineData) {
-      for (let i in lineData) {
-        add(lineData[i]);
-      }
-    }
+    this.getJSOnData();
   },
   beforeDestroy() {
     off("handleOpen");
@@ -312,7 +299,6 @@ export default {
     handleOpenStyle(param) {
       this.curType = param.type;
       mapValue(this.form, param.style);
-      console.log(this.form);
       this.colorDialog = true;
     },
     // 修改样式确定
@@ -335,13 +321,24 @@ export default {
       localStorage.setItem("lineData", JSON.stringify(lineArr));
       console.log(rectArr);
       console.log(lineArr);
-      // let obj = {
-      //   rectData: rectArr,
-      //   lineData: lineArr
-      // };
-      // var content = JSON.stringify(obj);
-      // var blob = new Blob([content], { type: "" });
-      // FileSaver.saveAs(blob, "/static/data.json");
+      let obj = {
+        rectData: rectArr,
+        lineData: lineArr
+      };
+      var content = JSON.stringify(obj);
+      var blob = new Blob([content], {
+        type: "application/octet-stream"
+      });
+      var aTag = document.createElement("a");
+      aTag.href = window.URL.createObjectURL(blob);
+      aTag.download = "data.json";
+      if (document.createEvent) {
+        var event = document.createEvent("MouseEvents");
+        event.initEvent("click", true, true);
+        aTag.dispatchEvent(event);
+      } else {
+        aTag.click();
+      }
     },
     // 获取json数据
     getJSOnData() {
