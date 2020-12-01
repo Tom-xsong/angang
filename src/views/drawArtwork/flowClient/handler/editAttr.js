@@ -7,6 +7,7 @@ import {
 } from "../render/render";
 import { clearHandler } from "./controller";
 import { emit } from "../event/index";
+import { mapKey } from "../../../../utils/validate";
 
 let isEdit = false;
 let curRect;
@@ -150,10 +151,8 @@ function openLineStyle() {
 export function submitStyle(param, func) {
   let style = JSON.parse(JSON.stringify(param));
   if (curType === "rect" || curType === "image") {
-    curRect.attr({
-      style: style
-    });
-    curRect.data.style = style;
+    curRect.setStyle(style);
+    mapKey(curRect.data.style, style);
   } else {
     curLine.attr({
       style: style

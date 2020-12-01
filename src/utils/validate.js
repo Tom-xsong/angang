@@ -6,3 +6,11 @@ export const mapValue = (obj, data) => {
     }
   }
 };
+
+export const mapKey = (obj, data) => {
+  for (let i in obj) {
+    if (i in data) {
+      obj[i] = data[i];
+    }
+  }
+};

@@ -99,7 +99,7 @@
         <el-form-item label="文字大小：">
           <el-input-number
             v-model="form.fontSize"
-            :min="12"
+            :min="10"
             :step="2"
             :step-strictly="true"
             class="inpW"
@@ -275,6 +275,8 @@ export default {
     });
     // 定义事件
     on("handleOpen", this.handleOpenStyle);
+    clearAll();
+    // this.getJSOnData();
     // 绘制之前画好的流程图
     let rectData = JSON.parse(localStorage.getItem("rectData"));
     if (rectData) {
@@ -333,35 +335,37 @@ export default {
       localStorage.setItem("lineData", JSON.stringify(lineArr));
       console.log(rectArr);
       console.log(lineArr);
-      this.saveJSON(rectArr, "rectData");
-      this.saveJSON(lineArr, "lineData");
+      // let obj = {
+      //   rectData: rectArr,
+      //   lineData: lineArr
+      // };
+      // var content = JSON.stringify(obj);
+      // var blob = new Blob([content], { type: "" });
+      // FileSaver.saveAs(blob, "/static/data.json");
     },
-    // 导出json数据
-    saveJSON(data, filename) {
-      var blob = new Blob([data], { type: "text/json" }),
-        e = document.createEvent("MouseEvents"),
-        a = document.createElement("a");
-      a.download = filename;
-      a.href = window.URL.createObjectURL(blob);
-      a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
-      e.initMouseEvent(
-        "click",
-        true,
-        false,
-        window,
-        0,
-        0,
-        0,
-        0,
-        0,
-        false,
-        false,
-        false,
-        false,
-        0,
-        null
-      );
-      a.dispatchEvent(e);
+    // 获取json数据
+    getJSOnData() {
+      let url = "/static/json/data.json";
+      let request = new XMLHttpRequest();
+      request.open("get", url);
+      request.send(null);
+      request.onload = function() {
+        if (request.status === 200) {
+          let json = JSON.parse(request.responseText);
+          let rectData = json.rectData;
+          if (rectData) {
+            for (let i in rectData) {
+              add(rectData[i]);
+            }
+          }
+          let lineData = json.lineData;
+          if (lineData) {
+            for (let i in lineData) {
+              add(lineData[i]);
+            }
+          }
+        }
+      };
     }
   }
 };
