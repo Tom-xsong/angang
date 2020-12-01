@@ -6,15 +6,6 @@
       <ol class="tools">
         <li
           class="item"
-          v-for="(li, index) in configData"
-          :key="index"
-          draggable
-          @dragstart="handleDragstart(li)"
-        >
-          {{ li.label }}
-        </li>
-        <li
-          class="item"
           :class="{ active: handleStatus === 0 }"
           @click="toggleHandle(0)"
         >
@@ -52,9 +43,27 @@
         >
       </div>
     </div>
-    <!-- 画布 -->
-    <div id="artBody">
-      <div class="wrap" ref="configWrap" @dragstart.prevent></div>
+    <div class="art-body">
+      <ol class="body-left">
+        <div class="header">图例：</div>
+        <li
+          v-for="li in configData"
+          :key="li.id"
+          draggable
+          class="li"
+          @dragstart="handleDragstart(li)"
+        >
+          <template v-if="li.type === 'image'">
+            <img :src="li.image" />
+            <div class="name">{{ li.label }}</div>
+          </template>
+          <div class="text" v-else>{{ li.label }}</div>
+        </li>
+      </ol>
+      <!-- 画布 -->
+      <div id="artBody">
+        <div class="wrap" ref="configWrap" @dragstart.prevent></div>
+      </div>
     </div>
     <!-- 修改矩形样式 -->
     <el-dialog
@@ -99,6 +108,13 @@
         <el-form-item label="文字颜色：">
           <el-color-picker v-model="form.textFill"></el-color-picker>
         </el-form-item>
+        <el-form-item label="文字位置：">
+          <el-radio-group v-model="form.textPosition">
+            <el-radio-button v-for="li in posArr" :label="li.id" :key="li.id">{{
+              li.text
+            }}</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
       </el-form>
       <div slot="footer">
         <el-button size="small" @click="colorDialog = false">取消</el-button>
@@ -132,24 +148,119 @@ import {
 import { on, off } from "./flowClient/event/index";
 import { mapValue } from "@/utils/validate";
 
+let image1 = require("../../assets/image/store1-success.png");
+let image2 = require("../../assets/image/store2-success.png");
+let image3 = require("../../assets/image/store3-success.png");
+let image4 = require("../../assets/image/store4-success.png");
+let image5 = require("../../assets/image/store5-success.png");
+let belt = require("../../assets/image/belt-success.png");
+let scale = require("../../assets/image/scale-success.png");
+let test = require("../../assets/image/test-success.png");
+let tip = require("../../assets/image/tip-success.png");
+
 export default {
   name: "Test",
   data() {
     return {
       configData: [
-        { type: "rect", label: "物料仓" },
-        { type: "circle", label: "皮带秤" }
+        {
+          id: 1,
+          type: "image",
+          label: "配料仓",
+          image: image1,
+          width: 120,
+          height: 120
+        },
+        {
+          id: 2,
+          type: "image",
+          label: "成品仓",
+          image: image2,
+          width: 212,
+          height: 83
+        },
+        {
+          id: 3,
+          type: "image",
+          label: "露天堆场",
+          image: image3,
+          width: 176,
+          height: 144
+        },
+        {
+          id: 4,
+          type: "image",
+          label: "大仓",
+          image: image4,
+          width: 60,
+          height: 42
+        },
+        {
+          id: 5,
+          type: "image",
+          label: "小仓",
+          image: image5,
+          width: 34,
+          height: 42
+        },
+        {
+          id: 6,
+          type: "image",
+          label: "皮带",
+          image: belt,
+          width: 240,
+          height: 50
+        },
+        {
+          id: 7,
+          type: "image",
+          label: "计量秤",
+          image: scale,
+          width: 36,
+          height: 36
+        },
+        {
+          id: 8,
+          type: "image",
+          label: "检化验",
+          image: test,
+          width: 36,
+          height: 36
+        },
+        {
+          id: 9,
+          type: "image",
+          label: "提示",
+          image: tip,
+          width: 44,
+          height: 20
+        },
+        {
+          id: 10,
+          type: "rect",
+          label: "矩形",
+          width: 220,
+          height: 100
+        }
+      ],
+      posArr: [
+        { id: "inside", text: "居中" },
+        { id: "top", text: "上" },
+        { id: "bottom", text: "下" },
+        { id: "left", text: "左" },
+        { id: "right", text: "右" }
       ],
       currentItem: {},
       handleStatus: -1,
       colorDialog: false,
       form: {
         lineWidth: 1,
-        stroke: "#999",
-        fill: "#fff",
+        stroke: "#00FF84",
+        fill: "#002815",
         text: "",
         fontSize: 14,
-        textFill: "#999"
+        textFill: "#fff",
+        textPosition: "inside"
       },
       curType: ""
     };
@@ -159,7 +270,7 @@ export default {
     init(this.$refs.configWrap, {
       addModel: () => {
         this.handleStatus = -1;
-        return this.currentItem.type;
+        return this.currentItem;
       }
     });
     // 定义事件
@@ -199,6 +310,7 @@ export default {
     handleOpenStyle(param) {
       this.curType = param.type;
       mapValue(this.form, param.style);
+      console.log(this.form);
       this.colorDialog = true;
     },
     // 修改样式确定
@@ -221,6 +333,35 @@ export default {
       localStorage.setItem("lineData", JSON.stringify(lineArr));
       console.log(rectArr);
       console.log(lineArr);
+      this.saveJSON(rectArr, "rectData");
+      this.saveJSON(lineArr, "lineData");
+    },
+    // 导出json数据
+    saveJSON(data, filename) {
+      var blob = new Blob([data], { type: "text/json" }),
+        e = document.createEvent("MouseEvents"),
+        a = document.createElement("a");
+      a.download = filename;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
+      e.initMouseEvent(
+        "click",
+        true,
+        false,
+        window,
+        0,
+        0,
+        0,
+        0,
+        0,
+        false,
+        false,
+        false,
+        false,
+        0,
+        null
+      );
+      a.dispatchEvent(e);
     }
   }
 };
@@ -234,7 +375,7 @@ export default {
     align-items: center;
     width: 100%;
     height: 50px;
-    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
     background: #fff;
     .title {
       flex: none;
@@ -270,14 +411,59 @@ export default {
       margin-right: 14px;
     }
   }
-  #artBody {
-    position: relative;
+  .art-body {
+    display: flex;
     width: 100%;
-    height: calc(100vh - 70px);
-    background: #fff;
+    background: #000f26;
+    .header {
+      padding: 20px 0 20px 10px;
+      font-size: 18px;
+      color: #fff;
+    }
+    .body-left {
+      flex: none;
+      display: flex;
+      flex-direction: column;
+      width: 160px;
+      height: calc(100vh - 50px);
+      border-right: 1px solid #eee;
+      overflow: auto;
+      .li {
+        margin-bottom: 20px;
+        img {
+          display: block;
+          max-width: 100px;
+          margin: 0 auto;
+        }
+        .name {
+          padding-top: 5px;
+          font-size: 16px;
+          color: #fff;
+          text-align: center;
+        }
+        .text {
+          width: 80px;
+          height: 30px;
+          line-height: 26px;
+          margin: 0 auto;
+          background: #002815;
+          border: 2px solid #00ff84;
+          font-size: 16px;
+          color: #00ff84;
+          text-align: center;
+        }
+      }
+    }
+  }
+  #artBody {
+    flex: auto;
+    position: relative;
+    height: calc(100vh - 50px);
+    background: #000f26;
+    overflow: auto;
     .wrap {
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
     }
   }
 }

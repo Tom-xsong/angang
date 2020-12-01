@@ -1,4 +1,4 @@
-import { init as initZR, Rect, Polyline, Circle, Isogon } from "zrender";
+import { init as initZR, Rect, Image, Polyline, Circle, Isogon } from "zrender";
 import {
   calcArrowCenter,
   makeRectVertexes,
@@ -39,6 +39,9 @@ export function add(data) {
     case "rect":
       renderRect(data);
       break;
+    case "image":
+      renderImage(data);
+      break;
     case "circle":
       renderCircle(data);
       break;
@@ -67,6 +70,18 @@ function renderRect(data) {
   zr.add(rect);
   rectModelList.push(data);
   id2element[data.id] = rect;
+}
+
+// 绘制图片
+function renderImage(data) {
+  const image = new Image({
+    style: data.style,
+    zlevel: 2,
+    data
+  });
+  zr.add(image);
+  rectModelList.push(data);
+  id2element[data.id] = image;
 }
 
 // 绘制圆形
@@ -114,7 +129,7 @@ export function renderRectVertexes(rect) {
   const curVertexes = [];
   let circleArr = [];
   let type = rect.data.type;
-  if (type === "rect") {
+  if (type === "rect" || type === "image") {
     circleArr = makeRectVertexes(rect);
   } else {
     circleArr = makeCircleVertexes(rect);

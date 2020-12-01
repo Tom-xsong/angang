@@ -1,4 +1,9 @@
-import { makeLineModel, makeRectModel, makeCircleModel } from "./models";
+import {
+  makeLineModel,
+  makeRectModel,
+  makeImageModel,
+  makeCircleModel
+} from "./models";
 import { add, initRender } from "./render/render";
 import { clearHandler } from "./handler/controller";
 export function init(el, { addModel }) {
@@ -10,11 +15,20 @@ export function init(el, { addModel }) {
   }
   function drop(e) {
     clearHandler();
-    const type = addModel();
+    const obj = addModel();
     let data;
-    switch (type) {
+    switch (obj.type) {
       case "rect":
-        data = makeRectModel(e.offsetX, e.offsetY);
+        data = makeRectModel(e.offsetX, e.offsetY, obj.width, obj.height);
+        break;
+      case "image":
+        data = makeImageModel(
+          obj.image,
+          e.offsetX,
+          e.offsetY,
+          obj.width,
+          obj.height
+        );
         break;
       case "circle":
         data = makeCircleModel(e.offsetX, e.offsetY);

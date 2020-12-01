@@ -3,8 +3,6 @@
 </template>
 
 <script>
-let img1 = require("../../assets/image/img1.png");
-let img2 = require("../../assets/image/img2.png");
 import zrender from "zrender";
 import { calcArrowCenter } from "./flowClient/helpers";
 export default {
@@ -31,6 +29,13 @@ export default {
             zlevel: 2
           });
           this.zr.add(rect);
+        } else if (/image/.test(data[i].type)) {
+          // 图片
+          let img = new zrender.Image({
+            style: data[i].style,
+            zlevel: 2
+          });
+          this.zr.add(img);
         } else if (data[i].type === "circle") {
           // 圆形
           let circle = new zrender.Circle({
@@ -39,25 +44,6 @@ export default {
             zlevel: 2
           });
           this.zr.add(circle);
-        } else if (/image/.test(data[i].type)) {
-          // 图片
-          let img = new zrender.Image({
-            style: {
-              image: data[i].type === "image1" ? img1 : img2,
-              x: data[i].left,
-              y: data[i].top,
-              width: data[i].width,
-              height: data[i].height,
-              text: data[i].type === "image1" ? data[i].text : "",
-              textFill: "#fff",
-              fontSize: 16,
-              textVerticalAlign: "bottom",
-              textAlign: "center",
-              textOffset: [0, 30],
-              zlevel: 2
-            }
-          });
-          this.zr.add(img);
         } else if (data[i].type === "text") {
           // 文字
           let text = new zrender.Text({
@@ -113,7 +99,8 @@ export default {
           },
           style: {
             fill: lineData[i].style.stroke,
-            stroke: 1
+            stroke: lineData[i].style.stroke,
+            lineWidth: 1
           },
           zIndex: 1,
           rotation: Math.PI * rotation,
@@ -163,6 +150,6 @@ export default {
 #canvas {
   width: 100%;
   height: 100vh;
-  background: #fff;
+  background: #000f26;
 }
 </style>

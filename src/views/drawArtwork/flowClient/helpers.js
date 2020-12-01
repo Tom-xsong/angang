@@ -1,5 +1,8 @@
 export function makeRectVertexes(rect) {
-  const shape = rect.shape;
+  let shape = rect.style;
+  if (rect.shape) {
+    shape = rect.shape;
+  }
   const halfW = shape.width / 2;
   const halfH = shape.height / 2;
   return [

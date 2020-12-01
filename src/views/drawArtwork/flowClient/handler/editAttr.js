@@ -149,7 +149,7 @@ function openLineStyle() {
 // 修改样式确定
 export function submitStyle(param, func) {
   let style = JSON.parse(JSON.stringify(param));
-  if (curType === "rect") {
+  if (curType === "rect" || curType === "image") {
     curRect.attr({
       style: style
     });

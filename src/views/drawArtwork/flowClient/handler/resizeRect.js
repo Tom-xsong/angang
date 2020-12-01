@@ -109,7 +109,7 @@ export function resizeRect(type, circle, index) {
       y: e.offsetY - prevEvent.offsetY
     };
     prevEvent = e;
-    if (type === "rect") {
+    if (type === "rect" || type === "image") {
       [
         resizeLT,
         resizeT,
@@ -137,7 +137,7 @@ export function resizeRect(type, circle, index) {
 
 function vertexFollowRectResize(type) {
   let circleArr = [];
-  if (type === "rect") {
+  if (type === "rect" || type === "image") {
     circleArr = makeRectVertexes(curRect);
   } else {
     circleArr = makeCircleVertexes(curRect);
@@ -152,12 +152,25 @@ function vertexFollowRectResize(type) {
 
 // 左上
 function resizeLT(offset) {
-  const shape = curRect.shape;
-  shape.x += offset.x;
-  shape.y += offset.y;
-  shape.width -= offset.x * 2;
-  shape.height -= offset.y;
-  curRect.setShape(shape);
+  if (curRect.data.type === "rect") {
+    let shape = curRect.shape;
+    shape.x += offset.x;
+    shape.y += offset.y;
+    shape.width -= offset.x * 2;
+    shape.height -= offset.y;
+    curRect.setShape(shape);
+  } else {
+    let style = curRect.style;
+    style.x += offset.x;
+    style.y += offset.y;
+    style.width -= offset.x * 2;
+    style.height -= offset.y;
+    curRect.setStyle(style);
+    curRect.data.style.x = style.x;
+    curRect.data.style.y = style.y;
+    curRect.data.style.width = style.width;
+    curRect.data.style.height = style.height;
+  }
 
   const id2element = getId2element();
 
@@ -179,10 +192,19 @@ function resizeLT(offset) {
 
 // 上
 function resizeT(offset) {
-  const shape = curRect.shape;
-  shape.y += offset.y;
-  shape.height -= offset.y * 2;
-  curRect.setShape(shape);
+  if (curRect.data.type === "rect") {
+    let shape = curRect.shape;
+    shape.y += offset.y;
+    shape.height -= offset.y * 2;
+    curRect.setShape(shape);
+  } else {
+    let style = curRect.style;
+    style.y += offset.y;
+    style.height -= offset.y * 2;
+    curRect.setStyle(style);
+    curRect.data.style.y = style.y;
+    curRect.data.style.height = style.height;
+  }
 
   const id2element = getId2element();
 
@@ -199,12 +221,25 @@ function resizeT(offset) {
 
 // 右上
 function resizeRT(offset) {
-  const shape = curRect.shape;
-  shape.x -= offset.x;
-  shape.width += offset.x * 2;
-  shape.y += offset.y;
-  shape.height -= offset.y;
-  curRect.setShape(shape);
+  if (curRect.data.type === "rect") {
+    let shape = curRect.shape;
+    shape.x -= offset.x;
+    shape.width += offset.x * 2;
+    shape.y += offset.y;
+    shape.height -= offset.y;
+    curRect.setShape(shape);
+  } else {
+    let style = curRect.style;
+    style.x -= offset.x;
+    style.width += offset.x * 2;
+    style.y += offset.y;
+    style.height -= offset.y;
+    curRect.setStyle(style);
+    curRect.data.style.x = style.x;
+    curRect.data.style.y = style.y;
+    curRect.data.style.width = style.width;
+    curRect.data.style.height = style.height;
+  }
 
   const id2element = getId2element();
 
@@ -226,10 +261,19 @@ function resizeRT(offset) {
 
 // 右
 function resizeR(offset) {
-  const shape = curRect.shape;
-  shape.x -= offset.x;
-  shape.width += offset.x * 2;
-  curRect.setShape(shape);
+  if (curRect.data.type === "rect") {
+    let shape = curRect.shape;
+    shape.x -= offset.x;
+    shape.width += offset.x * 2;
+    curRect.setShape(shape);
+  } else {
+    let style = curRect.style;
+    style.x -= offset.x;
+    style.width += offset.x * 2;
+    curRect.setStyle(style);
+    curRect.data.style.x = style.x;
+    curRect.data.style.width = style.width;
+  }
 
   const id2element = getId2element();
 
@@ -246,11 +290,22 @@ function resizeR(offset) {
 
 // 右下
 function resizeRB(offset) {
-  const shape = curRect.shape;
-  shape.x -= offset.x;
-  shape.width += offset.x * 2;
-  shape.height += offset.y;
-  curRect.setShape(shape);
+  if (curRect.data.type === "rect") {
+    let shape = curRect.shape;
+    shape.x -= offset.x;
+    shape.width += offset.x * 2;
+    shape.height += offset.y;
+    curRect.setShape(shape);
+  } else {
+    let style = curRect.style;
+    style.x -= offset.x;
+    style.width += offset.x * 2;
+    style.height += offset.y;
+    curRect.setStyle(style);
+    curRect.data.style.x = style.x;
+    curRect.data.style.width = style.width;
+    curRect.data.style.height = style.height;
+  }
 
   const id2element = getId2element();
 
@@ -272,10 +327,19 @@ function resizeRB(offset) {
 
 // 下
 function resizeB(offset) {
-  const shape = curRect.shape;
-  shape.y -= offset.y;
-  shape.height += offset.y * 2;
-  curRect.setShape(shape);
+  if (curRect.data.type === "rect") {
+    let shape = curRect.shape;
+    shape.y -= offset.y;
+    shape.height += offset.y * 2;
+    curRect.setShape(shape);
+  } else {
+    let style = curRect.style;
+    style.y -= offset.y;
+    style.height += offset.y * 2;
+    curRect.setStyle(style);
+    curRect.data.style.y = style.y;
+    curRect.data.style.height = style.height;
+  }
 
   const id2element = getId2element();
 
@@ -292,11 +356,22 @@ function resizeB(offset) {
 
 // 左下
 function resizeLB(offset) {
-  const shape = curRect.shape;
-  shape.x += offset.x;
-  shape.width -= offset.x * 2;
-  shape.height += offset.y;
-  curRect.setShape(shape);
+  if (curRect.data.type === "rect") {
+    let shape = curRect.shape;
+    shape.x += offset.x;
+    shape.width -= offset.x * 2;
+    shape.height += offset.y;
+    curRect.setShape(shape);
+  } else {
+    let style = curRect.style;
+    style.x += offset.x;
+    style.width -= offset.x * 2;
+    style.height += offset.y;
+    curRect.setStyle(style);
+    curRect.data.style.x = style.x;
+    curRect.data.style.width = style.width;
+    curRect.data.style.height = style.height;
+  }
 
   const id2element = getId2element();
 
@@ -318,10 +393,19 @@ function resizeLB(offset) {
 
 // 左
 function resizeL(offset) {
-  const shape = curRect.shape;
-  shape.x += offset.x;
-  shape.width -= offset.x * 2;
-  curRect.setShape(shape);
+  if (curRect.data.type === "rect") {
+    let shape = curRect.shape;
+    shape.x += offset.x;
+    shape.width -= offset.x * 2;
+    curRect.setShape(shape);
+  } else {
+    let style = curRect.style;
+    style.x += offset.x;
+    style.width -= offset.x * 2;
+    curRect.setStyle(style);
+    curRect.data.style.x = style.x;
+    curRect.data.style.width = style.width;
+  }
 
   const id2element = getId2element();
 

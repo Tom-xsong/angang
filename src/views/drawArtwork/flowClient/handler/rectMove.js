@@ -49,15 +49,24 @@ function rectMove(rect) {
   }
 
   function dragend() {
-    const shape = rect.shape;
     if (rect.data.type === "rect") {
+      let shape = rect.shape;
       shape.x += rect.position[0];
       shape.y += rect.position[1];
+      rect.setShape(shape);
+    } else if (rect.data.type === "image") {
+      let style = rect.style;
+      style.x += rect.position[0];
+      style.y += rect.position[1];
+      rect.setStyle(style);
+      rect.data.style.x = style.x;
+      rect.data.style.y = style.y;
     } else {
+      let shape = rect.shape;
       shape.cx += rect.position[0];
       shape.cy += rect.position[1];
+      rect.setShape(shape);
     }
-    rect.setShape(shape);
     resetTransform(rect);
   }
   rect.on("dragstart", dragstart);

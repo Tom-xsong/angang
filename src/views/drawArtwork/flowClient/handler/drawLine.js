@@ -88,26 +88,30 @@ function addDrawLine(rect) {
 function clickToStart(e, rect) {
   const x = ~~e.offsetX + 0.5;
   const y = ~~e.offsetY + 0.5;
+  let shape = rect.style;
+  if (rect.shape) {
+    shape = rect.shape;
+  }
   const near = [
     {
       isRight: false,
-      value: x - rect.shape.x,
-      point: [rect.shape.x, y]
+      value: x - shape.x,
+      point: [shape.x, y]
     },
     {
       isRight: true,
-      value: rect.shape.x + rect.shape.width - x,
-      point: [rect.shape.x + rect.shape.width, y]
+      value: shape.x + shape.width - x,
+      point: [shape.x + shape.width, y]
     },
     {
       isBottom: false,
-      value: y - rect.shape.y,
-      point: [x, rect.shape.y]
+      value: y - shape.y,
+      point: [x, shape.y]
     },
     {
       isBottom: true,
-      value: rect.shape.y + rect.shape.height - y,
-      point: [x, rect.shape.y + rect.shape.height]
+      value: shape.y + shape.height - y,
+      point: [x, shape.y + shape.height]
     }
   ];
   const min = Math.min(...near.map(d => d.value));
@@ -133,21 +137,25 @@ function clickToEnd(rect) {
   let isBottom = false;
   let isRight = false;
   let arrowDirection;
+  let shape = rect.style;
+  if (rect.shape) {
+    shape = rect.shape;
+  }
   if (isVertical) {
-    point = [last[0], rect.shape.y];
+    point = [last[0], shape.y];
     arrowDirection = "B";
-    if (last[1] > rect.shape.y) {
+    if (last[1] > shape.y) {
       isBottom = true;
       arrowDirection = "T";
-      point[1] += rect.shape.height;
+      point[1] += shape.height;
     }
   } else {
-    point = [rect.shape.x, last[1]];
+    point = [shape.x, last[1]];
     arrowDirection = "R";
-    if (last[0] > rect.shape.x) {
+    if (last[0] > shape.x) {
       isRight = true;
       arrowDirection = "L";
-      point[0] += rect.shape.width;
+      point[0] += shape.width;
     }
   }
   points[points.length - 1] = point;

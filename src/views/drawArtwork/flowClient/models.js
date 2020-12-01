@@ -1,23 +1,44 @@
 let uid = 1;
 
 // 画矩形
-export function makeRectModel(x, y) {
+export function makeRectModel(x, y, w, h) {
   return {
     id: uid++,
     type: "rect",
     shape: {
       x: ~~x + 0.5,
       y: ~~y + 0.5,
-      width: 200,
-      height: 100
+      width: w / 2,
+      height: h / 2
     },
     style: {
-      lineWidth: 1,
-      stroke: "#999",
-      fill: "#fff",
+      lineWidth: 2,
+      stroke: "#00FF84",
+      fill: "#002815",
       text: "",
-      fontSize: 16,
-      textFill: "#999"
+      fontSize: 14,
+      textFill: "#fff",
+      textPosition: "inside"
+    },
+    lineRelations: []
+  };
+}
+
+// 画图片
+export function makeImageModel(url, x, y, w, h) {
+  return {
+    id: uid++,
+    type: "image",
+    style: {
+      image: url,
+      x: ~~x + 0.5,
+      y: ~~y + 0.5,
+      width: w / 2,
+      height: h / 2,
+      text: "",
+      fontSize: 14,
+      textFill: "#fff",
+      textPosition: "top"
     },
     lineRelations: []
   };
@@ -35,11 +56,11 @@ export function makeCircleModel(x, y) {
     },
     style: {
       lineWidth: 1,
-      stroke: "#999",
+      stroke: "#fff",
       fill: "#fff",
       text: "",
       fontSize: 16,
-      textFill: "#999"
+      textFill: "#fff"
     },
     lineRelations: []
   };
@@ -54,11 +75,11 @@ export function makeLineModel(point) {
       points: point ? [point] : []
     },
     style: {
-      lineWidth: 1,
-      stroke: "#999",
+      lineWidth: 2,
+      stroke: "#fff",
       text: "",
       fontSize: 16,
-      textFill: "#999"
+      textFill: "#fff"
     },
     lineRelations: [],
     animate: false
