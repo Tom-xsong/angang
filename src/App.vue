@@ -20,6 +20,7 @@ body {
   .menu-item {
     display: flex;
     align-items: center;
+    width: 90px;
     padding: 0 14px;
     line-height: 30px;
     font-size: 14px;

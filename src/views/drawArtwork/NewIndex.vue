@@ -73,47 +73,62 @@
       width="400px"
     >
       <el-form size="small" :model="form" label-width="100px">
-        <el-form-item label="边框宽度：">
-          <el-input-number
-            v-model="form.lineWidth"
-            :min="0"
-            :max="10"
-            :step-strictly="true"
-            class="inpW"
-          ></el-input-number>
+        <el-form-item label="设备编码：" v-if="curType !== 'line'">
+          <el-input v-model="form.code" :maxlength="100" clearable></el-input>
         </el-form-item>
-        <el-form-item label="边框颜色：">
-          <el-color-picker v-model="form.stroke"></el-color-picker>
-        </el-form-item>
-        <el-form-item label="背景颜色：" v-if="curType !== 'line'">
-          <el-color-picker v-model="form.fill"></el-color-picker>
-        </el-form-item>
-        <el-form-item label="添加文字：">
+        <el-form-item label="设备名称：">
           <el-input
+            type="textarea"
+            :rows="2"
+            :autosize="{ minRows: 1, maxRows: 2 }"
             v-model="form.text"
             :maxlength="100"
-            class="inpW"
             clearable
           ></el-input>
         </el-form-item>
-        <el-form-item label="文字大小：">
-          <el-input-number
-            v-model="form.fontSize"
-            :min="10"
-            :step="2"
-            :step-strictly="true"
-            class="inpW"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item label="文字颜色：">
-          <el-color-picker v-model="form.textFill"></el-color-picker>
-        </el-form-item>
+        <el-row>
+          <el-col :span="15">
+            <el-form-item label="文字大小：">
+              <el-input-number
+                v-model="form.fontSize"
+                :min="10"
+                :step="2"
+                :step-strictly="true"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="9">
+            <el-form-item label="文字颜色：">
+              <el-color-picker v-model="form.textFill"></el-color-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="文字位置：">
           <el-radio-group v-model="form.textPosition">
             <el-radio-button v-for="li in posArr" :label="li.id" :key="li.id">{{
               li.text
             }}</el-radio-button>
           </el-radio-group>
+        </el-form-item>
+        <el-row>
+          <el-col :span="15">
+            <el-form-item label="边框宽度：">
+              <el-input-number
+                v-model="form.lineWidth"
+                :min="0"
+                :max="10"
+                :step-strictly="true"
+              ></el-input-number>
+            </el-form-item>
+          </el-col>
+          <el-col :span="9">
+            <el-form-item label="边框颜色：">
+              <el-color-picker v-model="form.stroke"></el-color-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="背景颜色：">
+          <el-color-picker v-model="form.fill"></el-color-picker>
         </el-form-item>
       </el-form>
       <div slot="footer">
@@ -165,30 +180,21 @@ export default {
       configData: [
         {
           id: 1,
-          type: "image",
-          label: "配料仓",
-          image: image1,
-          width: 120,
-          height: 120
+          type: "rect",
+          label: "矩形",
+          width: 220,
+          height: 100
         },
         {
           id: 2,
           type: "image",
-          label: "成品仓",
-          image: image2,
-          width: 212,
-          height: 83
+          label: "皮带秤",
+          image: belt,
+          width: 240,
+          height: 50
         },
         {
           id: 3,
-          type: "image",
-          label: "露天堆场",
-          image: image3,
-          width: 176,
-          height: 144
-        },
-        {
-          id: 4,
           type: "image",
           label: "大仓",
           image: image4,
@@ -196,7 +202,7 @@ export default {
           height: 42
         },
         {
-          id: 5,
+          id: 4,
           type: "image",
           label: "小仓",
           image: image5,
@@ -204,15 +210,31 @@ export default {
           height: 42
         },
         {
+          id: 5,
+          type: "image",
+          label: "配料仓",
+          image: image1,
+          width: 120,
+          height: 120
+        },
+        {
           id: 6,
           type: "image",
-          label: "皮带",
-          image: belt,
-          width: 240,
-          height: 50
+          label: "露天堆场",
+          image: image3,
+          width: 176,
+          height: 144
         },
         {
           id: 7,
+          type: "image",
+          label: "成品仓",
+          image: image2,
+          width: 212,
+          height: 83
+        },
+        {
+          id: 8,
           type: "image",
           label: "计量秤",
           image: scale,
@@ -220,7 +242,7 @@ export default {
           height: 36
         },
         {
-          id: 8,
+          id: 9,
           type: "image",
           label: "检化验",
           image: test,
@@ -228,19 +250,12 @@ export default {
           height: 36
         },
         {
-          id: 9,
+          id: 10,
           type: "image",
           label: "提示",
           image: tip,
           width: 44,
           height: 20
-        },
-        {
-          id: 10,
-          type: "rect",
-          label: "矩形",
-          width: 220,
-          height: 100
         }
       ],
       posArr: [
@@ -254,13 +269,14 @@ export default {
       handleStatus: -1,
       colorDialog: false,
       form: {
-        lineWidth: 1,
-        stroke: "#00FF84",
-        fill: "#002815",
+        code: "",
         text: "",
         fontSize: 14,
         textFill: "#fff",
-        textPosition: "inside"
+        textPosition: "inside",
+        lineWidth: 1,
+        stroke: "#00FF84",
+        fill: "#002815"
       },
       curType: ""
     };
@@ -299,6 +315,7 @@ export default {
     handleOpenStyle(param) {
       this.curType = param.type;
       mapValue(this.form, param.style);
+      this.form.code = param.code;
       this.colorDialog = true;
     },
     // 修改样式确定
@@ -467,8 +484,5 @@ export default {
       height: 100vh;
     }
   }
-}
-.inpW {
-  width: 260px;
 }
 </style>

@@ -130,6 +130,7 @@ function openModifyStyle() {
   curType = "rect";
   let param = {
     type: "rect",
+    code: curRect.data.code,
     style: curRect.style
   };
   emit("handleOpen", param);
@@ -153,6 +154,7 @@ export function submitStyle(param, func) {
   if (curType === "rect" || curType === "image") {
     curRect.setStyle(style);
     mapKey(curRect.data.style, style);
+    curRect.data.code = style.code;
   } else {
     curLine.attr({
       style: style

@@ -1,20 +1,51 @@
 <template>
-  <div id="canvas"></div>
+  <div class="canvas-wrap">
+    <div id="canvas"></div>
+    <div
+      class="liaotiao"
+      v-for="li in liaotArr"
+      :key="li.code"
+      :style="{
+        width: li.width + 'px',
+        height: li.height + 'px',
+        left: li.left + 'px',
+        top: li.top + 'px',
+        borderWidth: li.borderWidth + 'px',
+        borderColor: li.borderColor,
+        background: li.back
+      }"
+    >
+      <div class="name">{{ li.name }}</div>
+      <div class="block">
+        <div
+          class="col"
+          :class="['col' + (j + 1)]"
+          :style="{ width: '20%' }"
+          v-for="(j, i) in li.num"
+          :key="i"
+        ></div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+let belt = require("../../assets/image/belt-warning.png");
 import zrender from "zrender";
 import { calcArrowCenter } from "./flowClient/helpers";
 export default {
   name: "ArtView",
   data() {
     return {
-      zr: null
+      zr: null,
+      liaotArr: []
     };
   },
   mounted() {
     this.zr = zrender.init(document.getElementById("canvas"));
     this.getJSOnData();
+    // 用来保存配有code的设备
+    this.id2element = {};
   },
   methods: {
     // 获取json数据
@@ -38,23 +69,37 @@ export default {
         }
       };
     },
+    // 绘制图片
     drawRect(data) {
+      this.liaotArr = [];
       for (let i in data) {
         if (data[i].type === "rect") {
           // 矩形
-          let rect = new zrender.Rect({
-            shape: data[i].shape,
-            style: data[i].style,
-            zlevel: 2
-          });
-          this.zr.add(rect);
+          if (/liaotiao/.test(data[i].code)) {
+            this.getLiaotiao(data[i]);
+          } else {
+            let rect = new zrender.Rect({
+              shape: data[i].shape,
+              style: data[i].style,
+              zlevel: 2,
+              data: data[i]
+            });
+            this.zr.add(rect);
+            if (data[i].code) {
+              this.id2element[data[i].code] = rect;
+            }
+          }
         } else if (/image/.test(data[i].type)) {
           // 图片
           let img = new zrender.Image({
             style: data[i].style,
-            zlevel: 2
+            zlevel: 2,
+            data: data[i]
           });
           this.zr.add(img);
+          if (data[i].code) {
+            this.id2element[data[i].code] = img;
+          }
         } else if (data[i].type === "circle") {
           // 圆形
           let circle = new zrender.Circle({
@@ -80,6 +125,7 @@ export default {
           this.zr.add(text);
         }
       }
+      this.changeState();
     },
     // 绘制线段
     drawLine(lineData) {
@@ -159,15 +205,102 @@ export default {
         });
       }
       animation.start();
+    },
+    // div绘制料条分层
+    getLiaotiao(data) {
+      let obj = {
+        code: data.code,
+        width: data.shape.width,
+        height: data.shape.height,
+        left: data.shape.x,
+        top: data.shape.y,
+        borderWidth: data.style.lineWidth,
+        borderColor: data.style.stroke,
+        background: data.style.fill,
+        name: data.style.text,
+        num: 5
+      };
+      this.liaotArr.push(obj);
+    },
+    // 更换图片
+    changeState() {
+      let code = "belt1";
+      let rect = this.id2element[code];
+      rect.data.style.image = belt;
+      rect.attr({
+        style: {
+          image: belt
+        }
+      });
+    },
+    // 初始化weosocket
+    initWebSocket() {
+      const wsuri = "ws://127.0.0.1:8080/websocket/123";
+      this.websock = new WebSocket(wsuri);
+      this.websock.onmessage = this.websocketonmessage;
+      // this.websock.onopen = this.websocketonopen;
+      this.websock.onerror = this.websocketonerror;
+      // this.websock.onclose = this.websocketclose;
+    },
+    // 连接建立失败重连
+    websocketonerror() {
+      this.initWebSocket();
+    },
+    // 数据接收后执行的操作
+    websocketonmessage(e) {
+      const redata = e.data;
+      console.log(redata);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.canvas-wrap {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
 #canvas {
   width: 100%;
   height: 100vh;
   background: #000f26;
+}
+.liaotiao {
+  position: absolute;
+  border-style: solid;
+  padding: 10px;
+  .name {
+    font-size: 14px;
+    color: #fff;
+  }
+  .block {
+    display: flex;
+    width: 100%;
+    height: 60%;
+    margin-top: 10px;
+    .col {
+      height: 100%;
+      margin-right: 1px;
+    }
+    .col1 {
+      background: #1187ff;
+    }
+    .col2 {
+      background: #344bff;
+    }
+    .col3 {
+      background: #b053ba;
+    }
+    .col4 {
+      background: #ea508b;
+    }
+    .col5 {
+      background: #fa4949;
+    }
+    .col6 {
+      background: #ff862c;
+    }
+  }
 }
 </style>

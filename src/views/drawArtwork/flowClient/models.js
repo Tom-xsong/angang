@@ -4,6 +4,7 @@ let uid = 1;
 export function makeRectModel(x, y, w, h) {
   return {
     id: uid++,
+    code: "",
     type: "rect",
     shape: {
       x: ~~x + 0.5,
@@ -28,6 +29,7 @@ export function makeRectModel(x, y, w, h) {
 export function makeImageModel(url, x, y, w, h) {
   return {
     id: uid++,
+    code: "",
     type: "image",
     style: {
       image: url,
