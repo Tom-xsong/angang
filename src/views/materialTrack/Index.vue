@@ -1,6 +1,6 @@
 <template>
   <div class="track-wrap">
-    <img src="../../assets/header-img.png" class="header-img" />
+    <header-logo></header-logo>
     <div id="material-track"></div>
     <div class="matou">燃供码头</div>
     <div class="matou" style="left: 1394px;top: 721px;">原料码头</div>
@@ -23,6 +23,9 @@
 import zrender from "zrender";
 export default {
   name: "MaterialTrack",
+  components: {
+    HeaderLogo: () => import("../../components/HeaderLogo")
+  },
   data() {
     return {
       blockData: [
@@ -171,13 +174,6 @@ export default {
   z-index: 1;
   width: 100vw;
   height: 100vh;
-  .header-img {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 2;
-    width: 585px;
-  }
 }
 #material-track {
   width: 1920px;
