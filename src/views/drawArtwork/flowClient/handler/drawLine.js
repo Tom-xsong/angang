@@ -70,7 +70,6 @@ function clickRoot() {
 function addDrawLine(rect) {
   function click(e) {
     isClickRoot = false;
-
     if (curDrawLine) {
       clickToEnd(rect);
     } else {

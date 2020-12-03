@@ -12,7 +12,7 @@
         top: li.top + 'px',
         borderWidth: li.borderWidth + 'px',
         borderColor: li.borderColor,
-        background: li.back
+        background: li.back,
       }"
     >
       <div class="name">{{ li.name }}</div>
@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       zr: null,
-      liaotArr: []
+      liaotArr: [],
     };
   },
   mounted() {
@@ -55,7 +55,7 @@ export default {
       let request = new XMLHttpRequest();
       request.open("get", url);
       request.send(null);
-      request.onload = function() {
+      request.onload = function () {
         if (request.status === 200) {
           let json = JSON.parse(request.responseText);
           let rectData = json.rectData;
@@ -82,7 +82,7 @@ export default {
               shape: data[i].shape,
               style: data[i].style,
               zlevel: 2,
-              data: data[i]
+              data: data[i],
             });
             this.zr.add(rect);
             if (data[i].code) {
@@ -94,7 +94,7 @@ export default {
           let img = new zrender.Image({
             style: data[i].style,
             zlevel: 2,
-            data: data[i]
+            data: data[i],
           });
           this.zr.add(img);
           if (data[i].code) {
@@ -105,7 +105,7 @@ export default {
           let circle = new zrender.Circle({
             shape: data[i].shape,
             style: data[i].style,
-            zlevel: 2
+            zlevel: 2,
           });
           this.zr.add(circle);
         } else if (data[i].type === "text") {
@@ -119,8 +119,8 @@ export default {
               textHeight: data[i].height,
               x: data[i].left,
               y: data[i].top,
-              zlevel: 2
-            }
+              zlevel: 2,
+            },
           });
           this.zr.add(text);
         }
@@ -134,7 +134,7 @@ export default {
         const polyline = new zrender.Polyline({
           shape: lineData[i].shape,
           style: lineData[i].style,
-          zlevel: 1
+          zlevel: 1,
         });
         this.zr.add(polyline);
         let rotation = "";
@@ -159,16 +159,16 @@ export default {
             x: x,
             y: y,
             r: 6,
-            n: 3
+            n: 3,
           },
           style: {
             fill: lineData[i].style.stroke,
             stroke: lineData[i].style.stroke,
-            lineWidth: 1
+            lineWidth: 1,
           },
           zIndex: 1,
           rotation: Math.PI * rotation,
-          origin: [x, y]
+          origin: [x, y],
         });
         this.zr.add(triangle);
         if (lineData[i].animate) {
@@ -183,11 +183,11 @@ export default {
         shape: {
           cx: polyline[0][0],
           cy: polyline[0][1],
-          r: 5
+          r: 5,
         },
         style: {
-          fill: color
-        }
+          fill: color,
+        },
       });
       this.zr.add(cir);
       const animation = cir.animate("shape", true);
@@ -201,7 +201,7 @@ export default {
         delay += distance * 5;
         animation.when(delay, {
           cx: cur[0],
-          cy: cur[1]
+          cy: cur[1],
         });
       }
       animation.start();
@@ -218,7 +218,7 @@ export default {
         borderColor: data.style.stroke,
         background: data.style.fill,
         name: data.style.text,
-        num: 5
+        num: 5,
       };
       this.liaotArr.push(obj);
     },
@@ -226,12 +226,14 @@ export default {
     changeState() {
       let code = "belt1";
       let rect = this.id2element[code];
-      rect.data.style.image = belt;
-      rect.attr({
-        style: {
-          image: belt
-        }
-      });
+      if (rect) {
+        rect.data.style.image = belt;
+        rect.attr({
+          style: {
+            image: belt,
+          },
+        });
+      }
     },
     // 初始化weosocket
     initWebSocket() {
@@ -250,8 +252,8 @@ export default {
     websocketonmessage(e) {
       const redata = e.data;
       console.log(redata);
-    }
-  }
+    },
+  },
 };
 </script>
 

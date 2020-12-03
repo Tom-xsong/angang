@@ -1,9 +1,8 @@
-let uid = 1;
 
 // 画矩形
 export function makeRectModel(x, y, w, h) {
   return {
-    id: uid++,
+    id: "rect" + new Date().getTime(),
     code: "",
     type: "rect",
     shape: {
@@ -28,7 +27,7 @@ export function makeRectModel(x, y, w, h) {
 // 画图片
 export function makeImageModel(url, x, y, w, h) {
   return {
-    id: uid++,
+    id: "image" + new Date().getTime(),
     code: "",
     type: "image",
     style: {
@@ -49,7 +48,7 @@ export function makeImageModel(url, x, y, w, h) {
 // 画圆形
 export function makeCircleModel(x, y) {
   return {
-    id: uid++,
+    id: "cricle" + new Date().getTime(),
     type: "circle",
     shape: {
       cx: x,
@@ -71,7 +70,7 @@ export function makeCircleModel(x, y) {
 // 画线
 export function makeLineModel(point) {
   return {
-    id: uid++,
+    id: "line" + new Date().getTime(),
     type: "line",
     shape: {
       points: point ? [point] : []
