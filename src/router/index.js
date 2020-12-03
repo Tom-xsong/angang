@@ -6,7 +6,12 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/drawArtwork"
+    redirect: "/materialTrack"
+  },
+  {
+    path: "/materialTrack",
+    name: "铁区生产物料跟踪系统",
+    component: () => import("@/views/materialTrack/Index.vue")
   },
   {
     path: "/drawArtwork",
