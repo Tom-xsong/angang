@@ -265,11 +265,11 @@ export default {
 .canvas-wrap {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 1080px;
 }
 #canvas {
   width: 100%;
-  height: 100vh;
+  height: 1080px;
   background: #000f26;
 }
 .liaotiao {

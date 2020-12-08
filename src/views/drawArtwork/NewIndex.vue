@@ -485,7 +485,7 @@ export default {
     overflow: auto;
     .wrap {
       width: 100vw;
-      height: 100vh;
+      height: 1080px;
     }
   }
 }

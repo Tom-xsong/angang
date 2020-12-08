@@ -13,10 +13,10 @@ const productionGzip = true;
 // 需要gzip压缩的文件后缀
 const productionGzipExtensions = ["js", "css"];
 
-const serveUrl = "http://10.8.0.5:8018/";
+const serveUrl = "http://119.84.70.208:7506/";
 
 module.exports = {
-  outputDir: "dist",
+  outputDir: "drawArt",
   assetsDir: "static",
   publicPath: "/",
   productionSourceMap: false,
