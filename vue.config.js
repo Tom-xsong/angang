@@ -13,7 +13,7 @@ const productionGzip = true;
 // 需要gzip压缩的文件后缀
 const productionGzipExtensions = ["js", "css"];
 
-const serveUrl = "http://10.8.0.5:8018/";
+
 
 module.exports = {
   outputDir: "dist",
@@ -23,13 +23,12 @@ module.exports = {
   devServer: {
     port: 5000,
     proxy: {
-      "/api": {
-        target: serveUrl,
-        changeOrigin: true
-      },
-      "/admin": {
-        target: serveUrl,
-        changeOrigin: true
+      '/api': {
+        target: 'http://351o99y726.qicp.vip',
+        changeOrigin: true, 
+        pathRewrite: {   
+          '^/api': 'http://351o99y726.qicp.vip'
+        }
       }
     }
   },
