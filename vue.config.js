@@ -14,9 +14,8 @@ const productionGzip = true;
 const productionGzipExtensions = ["js", "css"];
 
 
-
 module.exports = {
-  outputDir: "dist",
+  outputDir: "drawArt",
   assetsDir: "static",
   publicPath: "/",
   productionSourceMap: false,

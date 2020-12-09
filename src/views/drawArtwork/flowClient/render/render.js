@@ -76,7 +76,7 @@ function renderRect(data) {
 function renderImage(data) {
   const image = new Image({
     style: data.style,
-    zlevel: 2,
+    zlevel: 3,
     data
   });
   zr.add(image);
@@ -89,7 +89,7 @@ function renderCircle(data) {
   const circle = new Circle({
     shape: data.shape,
     style: data.style,
-    zlevel: 2,
+    zlevel: 3,
     data
   });
   zr.add(circle);

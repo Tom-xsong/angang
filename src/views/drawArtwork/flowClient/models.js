@@ -1,4 +1,3 @@
-
 // 画矩形
 export function makeRectModel(x, y, w, h) {
   return {
@@ -8,8 +7,8 @@ export function makeRectModel(x, y, w, h) {
     shape: {
       x: ~~x + 0.5,
       y: ~~y + 0.5,
-      width: w / 2,
-      height: h / 2
+      width: w,
+      height: h
     },
     style: {
       lineWidth: 2,
@@ -34,8 +33,8 @@ export function makeImageModel(url, x, y, w, h) {
       image: url,
       x: ~~x + 0.5,
       y: ~~y + 0.5,
-      width: w / 2,
-      height: h / 2,
+      width: w,
+      height: h,
       text: "",
       fontSize: 14,
       textFill: "#fff",
@@ -60,7 +59,7 @@ export function makeCircleModel(x, y) {
       stroke: "#fff",
       fill: "#fff",
       text: "",
-      fontSize: 16,
+      fontSize: 14,
       textFill: "#fff"
     },
     lineRelations: []
@@ -79,7 +78,7 @@ export function makeLineModel(point) {
       lineWidth: 2,
       stroke: "#fff",
       text: "",
-      fontSize: 16,
+      fontSize: 14,
       textFill: "#fff"
     },
     lineRelations: [],

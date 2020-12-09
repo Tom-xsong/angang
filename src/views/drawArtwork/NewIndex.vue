@@ -62,6 +62,7 @@
       </ol>
       <!-- 画布 -->
       <div id="artBody">
+        <header-logo></header-logo>
         <div class="wrap" ref="configWrap" @dragstart.prevent></div>
       </div>
     </div>
@@ -175,6 +176,9 @@ let tip = require("../../assets/image/tip-success.png");
 
 export default {
   name: "Test",
+  components: {
+    HeaderLogo: () => import("../../components/HeaderLogo")
+  },
   data() {
     return {
       configData: [
@@ -182,80 +186,80 @@ export default {
           id: 1,
           type: "rect",
           label: "矩形",
-          width: 220,
-          height: 100
+          width: 70,
+          height: 30
         },
         {
           id: 2,
           type: "image",
           label: "皮带秤",
           image: belt,
-          width: 240,
-          height: 50
+          width: 96,
+          height: 21
         },
         {
           id: 3,
           type: "image",
           label: "大仓",
-          image: image4,
-          width: 60,
-          height: 42
+          image: image1,
+          width: 44,
+          height: 32
         },
         {
           id: 4,
           type: "image",
           label: "小仓",
-          image: image5,
-          width: 34,
-          height: 42
+          image: image2,
+          width: 24,
+          height: 26
         },
         {
           id: 5,
           type: "image",
           label: "配料仓",
-          image: image1,
-          width: 120,
-          height: 120
+          image: image4,
+          width: 52,
+          height: 52
         },
         {
           id: 6,
           type: "image",
-          label: "露天堆场",
-          image: image3,
-          width: 176,
-          height: 144
+          label: "成品仓",
+          image: image5,
+          width: 96,
+          height: 38
         },
         {
           id: 7,
           type: "image",
-          label: "成品仓",
-          image: image2,
-          width: 212,
-          height: 83
+          label: "露天堆场",
+          image: image3,
+          width: 72,
+          height: 60
         },
         {
           id: 8,
           type: "image",
           label: "计量秤",
           image: scale,
-          width: 36,
-          height: 36
+          width: 18,
+          height: 18
         },
         {
           id: 9,
           type: "image",
           label: "检化验",
           image: test,
-          width: 36,
-          height: 36
+          width: 18,
+          height: 18
         },
         {
           id: 10,
           type: "image",
           label: "提示",
           image: tip,
-          width: 44,
-          height: 20
+          width: 34,
+          height: 14
         }
       ],
       posArr: [
@@ -348,7 +352,7 @@ export default {
       });
       var aTag = document.createElement("a");
       aTag.href = window.URL.createObjectURL(blob);
-      aTag.download = "data.json";
+      aTag.download = "pellet-data.json";
       if (document.createEvent) {
         var event = document.createEvent("MouseEvents");
         event.initEvent("click", true, true);
@@ -359,7 +363,7 @@ export default {
     },
     // 获取json数据
     getJSOnData() {
-      let url = "/static/json/data.json";
+      let url = "/static/json/pellet-data.json";
       let request = new XMLHttpRequest();
       request.open("get", url);
       request.send(null);
@@ -481,7 +485,7 @@ export default {
     overflow: auto;
     .wrap {
       width: 100vw;
-      height: 100vh;
+      height: 1080px;
     }
   }
 }
