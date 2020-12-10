@@ -5,7 +5,7 @@ import axios from "axios"
 
 axios.defaults.timeout = 10000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-axios.defaults.baseURL = 'http://351o99y726.qicp.vip';
+axios.defaults.baseURL = 'http://119.84.70.208:7506';
 
 
 

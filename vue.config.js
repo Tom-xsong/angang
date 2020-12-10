@@ -23,10 +23,10 @@ module.exports = {
     port: 5000,
     proxy: {
       '/api': {
-        target: 'http://351o99y726.qicp.vip',
+        target: 'http://119.84.70.208:7506',
         changeOrigin: true, 
         pathRewrite: {   
-          '^/api': 'http://351o99y726.qicp.vip'
+          '^/api': 'http://119.84.70.208:7506'
         }
       }
     }

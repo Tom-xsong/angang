@@ -1,5 +1,5 @@
 <template>
-  <div class="job">
+  <div class="work">
     <div class="btn-open" @click="info.isShow = true">
       <p>展开</p>
     </div>
@@ -9,7 +9,7 @@
         <div class="main-top">
           <div class="title-logo"></div>
           <div class="title-text">{{ info.objs.name }}</div>
-          <el-button class="btn-enter" type="primary">进入</el-button>
+          <el-button class="btn-enter" @click="enter" type="primary">进入</el-button>
         </div>
 
         <!-- 作业区情况 -->
@@ -214,7 +214,16 @@ export default {
     };
   },
 
-  methods: {},
+  methods: {
+
+
+    enter(){
+      this.$router.push("/artView")
+    }
+  },
+
+  
+  
 
   mounted() {
     workArea({ operationAreaCode: "BF1" }).then((res) => {
@@ -232,14 +241,14 @@ export default {
 </script>
 
 <style  scoped>
-.job >>> .el-drawer__wrapper {
+.work >>> .el-drawer__wrapper {
   position: absolute;
   right: 0;
   top: 0;
   height: 1080px;
 }
 
-.job >>> .el-drawer__wrapper .el-drawer.rtl {
+.work >>> .el-drawer__wrapper .el-drawer.rtl {
   width: 750px;
   border: 0;
   background: linear-gradient(
@@ -250,11 +259,11 @@ export default {
   );
 }
 
-.job >>> .el-drawer__wrapper .el-drawer.rtl:focus {
+.work >>> .el-drawer__wrapper .el-drawer.rtl:focus {
   outline: 0;
 }
 
-.job .btn-open {
+.work .btn-open {
   width: 53px;
   height: 120px;
   background: url("../../../assets/tag.png") no-repeat center;
@@ -264,7 +273,7 @@ export default {
   top: 460px;
 }
 
-.job .btn-open p {
+.work .btn-open p {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -274,7 +283,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.job .btn-close {
+.work .btn-close {
   width: 53px;
   height: 120px;
   background: url("../../../assets/tag.png") no-repeat center;
@@ -283,7 +292,7 @@ export default {
   top: 480px;
 }
 
-.job .btn-close p {
+.work .btn-close p {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -293,19 +302,19 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.job .main {
+.work .main {
   width: 370px;
   height: 100%;
   float: right;
 }
 
-.job .main .main-top {
+.work .main .main-top {
   overflow: hidden;
   width: 350px;
   margin-bottom: 20px;
 }
 
-.job .title-logo {
+.work .title-logo {
   float: left;
   margin-top: 28px;
   margin-right: 20px;
@@ -314,7 +323,7 @@ export default {
   background: linear-gradient(180deg, #042055 0%, #1a63de 100%);
 }
 
-.job .title-text {
+.work .title-text {
   margin-top: 22px;
   float: left;
   font-size: 24px;
@@ -323,7 +332,7 @@ export default {
   overflow: hidden;
 }
 
-.job .btn-enter {
+.work .btn-enter {
   float: right;
   margin-top: 24px;
   width: 72px;
@@ -334,7 +343,7 @@ export default {
   padding: 0;
 }
 
-.job .main .title {
+.work .main .title {
   width: 350px;
   height: 30px;
   padding-left: 16px;
@@ -353,29 +362,29 @@ export default {
   overflow: hidden;
 }
 
-.job .main .title span {
+.work .main .title span {
   float: left;
   color: #ffffff;
   line-height: 30px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.job .main .title img {
+.work .main .title img {
   float: right;
   margin-top: 10px;
 }
 
-.job .main .yuanliao {
+.work .main .yuanliao {
   width: 350px;
   overflow: hidden;
 }
 
-.job .main .yuanliao .yuanliao-top {
+.work .main .yuanliao .yuanliao-top {
   width: 350px;
   overflow: hidden;
 }
 
-.job .main .yuanliao .yuanliao-top .title1 {
+.work .main .yuanliao .yuanliao-top .title1 {
   float: left;
   margin: 20px 0 10px 20px;
   font-size: 14px;
@@ -384,7 +393,7 @@ export default {
   color: #ffffff;
 }
 
-.job .main .yuanliao .yuanliao-top .title2 {
+.work .main .yuanliao .yuanliao-top .title2 {
   float: right;
   margin: 20px 20px 10px 0;
   font-size: 14px;
@@ -393,12 +402,12 @@ export default {
   color: #ffffff;
 }
 
-.job .main .yuanliao .content {
+.work .main .yuanliao .content {
   width: 350px;
   overflow: hidden;
 }
 
-.job .main .yuanliao .content li {
+.work .main .yuanliao .content li {
   width: 350px;
   height: 34px;
   background: url("../../../assets/rectbg.png") no-repeat center;
@@ -407,7 +416,7 @@ export default {
   margin-top: 10px;
 }
 
-.job .main .yuanliao .content li .name {
+.work .main .yuanliao .content li .name {
   float: left;
   margin-left: 20px;
   font-size: 16px;
@@ -417,7 +426,7 @@ export default {
   line-height: 34px;
 }
 
-.job .main .yuanliao .content li .num {
+.work .main .yuanliao .content li .num {
   float: right;
   margin-right: 20px;
   font-size: 16px;
@@ -427,29 +436,29 @@ export default {
   line-height: 34px;
 }
 
-.job .bar-chart {
+.work .bar-chart {
   width: 350px;
   overflow: hidden;
   margin: 10px 0;
 }
 
-.job .sign {
+.work .sign {
   width: 350px;
   overflow: hidden;
   margin-top: 10px;
 }
 
-.job .sign div {
+.work .sign div {
   float: right;
 }
 
-.job .sign .gong {
+.work .sign .gong {
   width: 10px;
   height: 10px;
   background: #0f7ae9;
 }
 
-.job .sign .gong-text {
+.work .sign .gong-text {
   height: 10px;
   line-height: 10px;
   color: #fff;
@@ -457,13 +466,13 @@ export default {
   margin-right: 20px;
 }
 
-.job .sign .shou {
+.work .sign .shou {
   width: 10px;
   height: 10px;
   background: #0bcdff;
 }
 
-.job .sign .shou-text {
+.work .sign .shou-text {
   height: 10px;
   line-height: 10px;
   color: #fff;
@@ -471,34 +480,34 @@ export default {
   margin-right: 20px;
 }
 
-.job .bar-chart .list1 {
+.work .bar-chart .list1 {
   width: 350px;
   overflow: hidden;
   margin-top: 20px;
 }
 
-.job .bar-chart .item {
+.work .bar-chart .item {
   width: 350px;
   height: 10px;
 
   margin-top: 10px;
 }
 
-.job .bar-chart .item .box {
+.work .bar-chart .item .box {
   float: left;
   width: 300px;
   height: 100%;
   overflow: hidden;
 }
 
-.job .bar-chart .item .box .item-gong {
+.work .bar-chart .item .box .item-gong {
   float: left;
   width: 100px;
   height: 100%;
   background: #0f7ae9;
 }
 
-.job .bar-chart .item .box .item-shou {
+.work .bar-chart .item .box .item-shou {
   float: left;
   width: 100px;
   height: 100%;
@@ -506,37 +515,37 @@ export default {
   background: #0bcdff;
 }
 
-.job .bar-chart .item .item-text {
+.work .bar-chart .item .item-text {
   float: right;
   color: #fff;
   font-size: 10px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.job .bar-chart .x-num {
+.work .bar-chart .x-num {
   width: 350px;
   height: 30px;
   position: relative;
 }
 
-.job .bar-chart .x-num span {
+.work .bar-chart .x-num span {
   margin-top: 5px;
   color: #fff;
   font-size: 12px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.job .main .search {
+.work .main .search {
   width: 350px;
   overflow: hidden;
   margin: 10px 0;
 }
 
-.job .main .search .el-form-item {
+.work .main .search .el-form-item {
   margin-bottom: 10px;
 }
 
-.job >>> .main .search .el-input__inner {
+.work >>> .main .search .el-input__inner {
   width: 96px;
   height: 32px;
   border-radius: 2px;
@@ -545,7 +554,7 @@ export default {
   color: #fff;
 }
 
-.job >>> .search .el-form-item__label {
+.work >>> .search .el-form-item__label {
   font-size: 16px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
@@ -553,15 +562,15 @@ export default {
   padding: 0 !important;
 }
 
-.job >>> .search .jhypc .el-form-item__label {
+.work >>> .search .jhypc .el-form-item__label {
   width: 90px !important;
 }
 
-.job >>> .search .jhypc .el-input__inner {
+.work >>> .search .jhypc .el-input__inner {
   width: 250px;
 }
 
-.job .main table {
+.work .main table {
   table-layout: fixed;
   width: 350px;
   border-collapse: collapse;
@@ -569,28 +578,28 @@ export default {
   border: 1px solid #1183f8;
 }
 
-.job .main table tr {
+.work .main table tr {
   height: 30px;
 }
 
-.job .table {
+.work .table {
   margin-top: 10px;
   margin-bottom: 20px;
 }
 
-.job .main table td {
+.work .main table td {
   font-size: 12px;
   color: #fff;
   border: 1px solid #1187ff;
   text-align: center;
 }
 
-.job .main table .query {
+.work .main table .query {
   color: #1187ff;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.job .table-list {
+.work .table-list {
   display: flex;
   flex-wrap: nowrap;
   overflow: auto;
@@ -599,13 +608,13 @@ export default {
   border-left: 1px solid #1183f8;
 }
 
-.job .table-list::-webkit-scrollbar {
+.work .table-list::-webkit-scrollbar {
   width: 10px;
 
   height: 10px;
 }
 
-.job .table-list::-webkit-scrollbar-thumb {
+.work .table-list::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
 
   border-radius: 10px;
@@ -613,7 +622,7 @@ export default {
   background: #1183f8;
 }
 
-.job .table-list::-webkit-scrollbar-track {
+.work .table-list::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
 
   border-radius: 10px;
@@ -621,10 +630,10 @@ export default {
   background: #ededed;
 }
 
-.job .table-list li {
+.work .table-list li {
   justify-content: flex-start;
 }
-.job .table-list li div {
+.work .table-list li div {
   padding: 0 12px;
 
   color: #fff;
@@ -635,7 +644,7 @@ export default {
   border-bottom: 1px solid #1183f8;
 }
 
-.job >>> .el-pagination.is-background .el-pager li {
+.work >>> .el-pagination.is-background .el-pager li {
   min-width: 16px;
   width: 24px;
   height: 24px;
@@ -646,7 +655,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.job >>> .el-pagination.is-background .btn-prev {
+.work >>> .el-pagination.is-background .btn-prev {
   min-width: 16px;
   width: 24px;
   height: 24px;
@@ -655,13 +664,13 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.job >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
+.work >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
   background: #1187ff;
   color: #fff;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.job >>> .el-pagination.is-background .btn-next {
+.work >>> .el-pagination.is-background .btn-next {
   min-width: 16px;
   width: 24px;
   height: 24px;
