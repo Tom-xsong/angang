@@ -8,7 +8,7 @@
         <div class="main-top" v-if="info.objs.length == 1">
           <div class="title-logo"></div>
           <div class="title-text">
-            {{ info.objs[0][0].name }}--->{{ info.objs[0][1].name }}
+            {{ info.objs[0][0].name }}  --->  {{ info.objs[0][1].name }}
           </div>
           <!-- <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item>
@@ -43,34 +43,29 @@
 
         <!-- 柱状图 -->
         <div class="title">
-          <span>码头进料</span>
+          <span>运输统计</span>
           <img src="../../../assets/title-bg.png" />
         </div>
 
-        <div class="bar-chart">
+         <div class="bar-chart">
           <ul class="list1">
             <li v-for="item in arr2" class="item" :key="item.name">
-              <div class="name">
-                <span>{{ item.name }}</span>
+              <div class="box">
+                <div
+                  class="item-gong"
+                  :style="{ width: item.num / 100 + 'px' }"
+                ></div>
+               
               </div>
-              <ul
-                v-for="(item2, index) in item.content"
-                class="list2"
-                :key="item2.num"
-              >
-                <li :class="item.content.length - 1 == index ? 'qq' : ''">
-                  <div :style="{ width: item2.num / 100 + 'px' }"></div>
-                  <span>{{ item2.name }}</span>
-                </li>
-              </ul>
+              <span class="item-text">{{ item.name }}</span>
             </li>
           </ul>
           <div class="x-num">
-            <span style="position: absolute; top: 0; left: 25px">0</span>
-            <span style="position: absolute; top: 0; left: 75px">5000</span>
-            <span style="position: absolute; top: 0; left: 125px">10000</span>
-            <span style="position: absolute; top: 0; left: 175px">15000</span>
-            <span style="position: absolute; top: 0; left: 225px">20000</span>
+            <span style="position: absolute; top: 0; left: 0">0</span>
+            <span style="position: absolute; top: 0; left: 50px">5000</span>
+            <span style="position: absolute; top: 0; left: 100px">10000</span>
+            <span style="position: absolute; top: 0; left: 150px">15000</span>
+            <span style="position: absolute; top: 0; left: 200px">20000</span>
           </div>
         </div>
 
@@ -106,12 +101,14 @@
         </table>
 
         <!-- 分页器 -->
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :total="1000"
-          :pager-count="5"
-        ></el-pagination>
+       <div class="pagination-box">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="50"
+            :pager-count="5"
+          ></el-pagination>
+        </div>
       </div>
       <div class="btn-close" @click="info.isShow = false">
         <p>收起</p>
@@ -126,14 +123,12 @@ export default {
   props: ["info"],
   data() {
     return {
-      drawer: false,
+      
 
       arr: [1, 2, 3, 4],
 
-      arr2: [
-        {
-          name: "码1",
-          content: [
+     
+          arr2: [
             {
               name: "澳矿",
               num: 4000,
@@ -148,27 +143,8 @@ export default {
               name: "铁粉",
               num: 17000,
             },
-          ],
-        },
 
-        {
-          name: "码2",
-          content: [
-            {
-              name: "澳矿",
-              num: 4000,
-            },
 
-            {
-              name: "巴西碳",
-              num: 12000,
-            },
-          ],
-        },
-
-        {
-          name: "码3",
-          content: [
             {
               name: "澳矿",
               num: 4000,
@@ -183,9 +159,56 @@ export default {
               name: "铁粉",
               num: 17000,
             },
+
+
+
+             {
+              name: "澳矿",
+              num: 4000,
+            },
+
+            {
+              name: "巴西碳",
+              num: 12000,
+            },
+
+            {
+              name: "铁粉",
+              num: 17000,
+            },
+
+
+            {
+              name: "澳矿",
+              num: 4000,
+            },
+
+            {
+              name: "巴西碳",
+              num: 12000,
+            },
+
+            {
+              name: "铁粉",
+              num: 17000,
+            },
+
+             {
+              name: "澳矿",
+              num: 4000,
+            },
+
+            {
+              name: "巴西碳",
+              num: 12000,
+            },
+
+            {
+              name: "铁粉",
+              num: 17000,
+            },
           ],
-        },
-      ],
+      
 
       formInline: {
         user: "",
@@ -196,17 +219,17 @@ export default {
 
   mounted() {
     routeHistory({
-      currentPage: "1",
-      endOperationAreaCode: "SIN1",
-      pageSize: "1",
-      startOperationAreaId: "BF1",
+      currentPage: 1,
+      endOperationAreaCode: "BF1",
+      pageSize: 2,
+      startOperationAreaCode: "SIN1",
     }).then((res) => {
       console.log(res);
     });
 
     route({
-      endOperationAreaCode: "SIN1",
-      startOperationAreaCode: "BF1",
+      endOperationAreaCode: "BF1",
+      startOperationAreaCode: "SIN1",
     }).then((res) => {
       console.log(res);
     });
@@ -399,45 +422,80 @@ export default {
   margin: 10px 0;
 }
 
-.route .bar-chart .item {
-  position: relative;
+.route .sign {
+  width: 350px;
   overflow: hidden;
   margin-top: 10px;
 }
-.route .bar-chart .item .name {
-  font-size: 12px;
-  position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  color: #fff;
-  font-family: PingFangSC-Medium, PingFang SC;
+
+.route .sign div {
+  float: right;
 }
 
-.route .bar-chart .item .list2 li {
-  width: 325px;
+.route .sign .gong {
+  width: 10px;
   height: 10px;
-  margin-bottom: 5px;
+  background: #0f7ae9;
 }
 
-.route .bar-chart .item .list2 li div {
+.route .sign .gong-text {
+  height: 10px;
+  line-height: 10px;
+  color: #fff;
+  font-size: 10px;
+  margin-right: 20px;
+}
+
+
+
+
+.route .bar-chart .list1 {
+  width: 350px;
+  overflow:auto;
+  height: 250px;
+}
+
+.route .bar-chart .list1::-webkit-scrollbar{
+  width: 0;
+}
+
+.route .bar-chart .list1::-webkit-scrollbar{
+  width: 0;
+}
+			      
+.route .bar-chart .item {
+  width: 350px;
+  height: 10px;
+  margin-top: 10px;
+}
+
+.route .bar-chart .item .box {
+  float: left;
+  width: 300px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.route .bar-chart .item .box .item-gong {
   float: left;
   width: 100px;
   height: 100%;
-  background-color: rgba(17, 135, 255, 1);
+  background: #0f7ae9;
 }
 
-.route .bar-chart .item .list2 li span {
+.route .bar-chart .item .box .item-shou {
+  float: left;
+  width: 100px;
+  height: 100%;
+
+  background: #0bcdff;
+}
+
+.route .bar-chart .item .item-text {
   float: right;
   color: #fff;
   font-size: 10px;
   font-family: PingFangSC-Medium, PingFang SC;
-}
-
-.route .bar-chart .item .list2 {
-  float: left;
-  border-left: 1px solid #ffffff;
-  margin-left: 20px;
-  padding-left: 5px;
 }
 
 .route .bar-chart .x-num {
@@ -452,6 +510,7 @@ export default {
   font-size: 12px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
+
 
 .route .main table {
   table-layout: fixed;
@@ -476,21 +535,35 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
+.route .pagination-box {
+  width: 350px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+  margin: 20px 0 20px 0;
+}
+.route >>> .el-pagination {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%,0);
+} 
+
 .route >>> .el-pagination.is-background .el-pager li {
   min-width: 16px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #09345f;
   color: #fff;
   text-align: center;
-  line-height: 24px;
+  line-height: 20px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
 .route >>> .el-pagination.is-background .btn-prev {
   min-width: 16px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #09345f;
   color: #fff;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -504,8 +577,8 @@ export default {
 
 .route >>> .el-pagination.is-background .btn-next {
   min-width: 16px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #09345f;
   color: #fff;
   font-family: PingFangSC-Medium, PingFang SC;

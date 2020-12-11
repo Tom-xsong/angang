@@ -19,7 +19,7 @@
     <route-box v-if="info.isBox == 'line'"   :info="info"></route-box>
     <matou-box v-if="info.isBox == 'matou'"   :info="info"></matou-box>
     <job-box  v-if="info.isBox == 'workArea'" :info="info"></job-box>
-    <!-- <hun-box v-if="info.isBox == 'hun'"   :info="info"></hun-box> -->
+   
   </div>
 </template>
 
@@ -32,13 +32,13 @@ export default {
     RouteBox: () => import("./components/RouteBox"),
     MatouBox: ()=>import("./components/MatouBox"),
     JobBox: ()=>import("./components/WorkBox"),
-    // HunBox:()=>import("./components/HunBox")
+    
   },
   data() {
     return {
       info:{
         isShow:false,
-        isBox:"hun",
+        isBox:"matou",
         objs:{name:"燃供码头"},
 
       },

@@ -1,6 +1,6 @@
 <template>
   <div class="wharf">
-    <div class="btn-open" @click="info.isShow= true">
+    <div class="btn-open" @click="info.isShow = true">
       <p>展开</p>
     </div>
     <el-drawer
@@ -13,7 +13,7 @@
         <!-- 顶部 -->
         <div class="main-top">
           <div class="title-logo"></div>
-          <div class="title-text">{{info.objs.name}}</div>
+          <div class="title-text">{{ info.objs.name }}</div>
           <!-- <el-button class="btn-enter" type="primary">进入</el-button> -->
         </div>
 
@@ -108,48 +108,28 @@
           </table>
           <ul class="table-list">
             <li>
-              <div style="width:60px;height:29px;padding:0;">化学成分</div>
-              <div style="width:60px;height:29px">数值</div>
+              <div style="width: 60px; height: 29px; padding: 0">化学成分</div>
+              <div style="width: 60px; height: 29px">数值</div>
             </li>
 
-            <li>
+            <li v-for="n in 5" :key="n">
               <div>CaO</div>
               <div>数值</div>
             </li>
-
-            <li>
-              <div>CaO</div>
-              <div>数值</div>
-            </li>
-
-            <li>
-              <div>CaO</div>
-              <div>数值</div>
-            </li>
-
-            <li>
-              <div>CaO</div>
-              <div>数值</div>
-            </li>
-
-            <li>
-              <div>CaOwerre</div>
-              <div>数值</div>
-            </li>
-
-           
           </ul>
         </div>
 
         <!-- 分页 -->
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :total="1000"
-          :pager-count="5"
-        ></el-pagination>
+        <div class="pagination-box">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="50"
+            :pager-count="5"
+          ></el-pagination>
+        </div>
       </div>
-      <div class="btn-close" @click="info.isShow= false">
+      <div class="btn-close" @click="info.isShow = false">
         <p>收起</p>
       </div>
     </el-drawer>
@@ -157,13 +137,14 @@
 </template>
 
 <script>
+import { matou, matouJian } from "../../../api/home";
 export default {
-  props:["info"],
+  props: ["info"],
   data() {
     return {
       drawer: false,
 
-      arr: [1, 2,3],
+      arr: [1, 2, 3],
 
       arr2: [
         {
@@ -227,6 +208,24 @@ export default {
         region: "",
       },
     };
+  },
+
+  mounted() {
+    matou({ wharf: "码头1" }).then((res) => {
+      console.log(res);
+    });
+
+    matouJian({
+      contractCode: "11",
+      currentPage: 1,
+      materielCode: "11",
+      materielName: "11",
+      pageSize: 1,
+      time: "2015",
+      wharf: "码头1",
+    }).then((res) => {
+      console.log(res);
+    });
   },
 };
 </script>
@@ -441,7 +440,7 @@ export default {
   border-radius: 2px;
   border: 1px solid #1183f8;
   background: #000;
-  color:#fff;
+  color: #fff;
 }
 
 .wharf >>> .search .el-form-item__label {
@@ -461,10 +460,9 @@ export default {
   border: 1px solid #1183f8;
 }
 
-
-.wharf .table{
-    margin-top: 10px;
-    margin-bottom: 20px;
+.wharf .table {
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .wharf .main table td {
@@ -489,71 +487,70 @@ export default {
 }
 
 .wharf .table-list::-webkit-scrollbar {
+  width: 10px;
 
-        width: 10px;     
-
-        height: 10px;
-
-    }
-
-    .wharf .table-list::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
-
-        border-radius: 10px;
-
-         
-
-        background: #1183f8;
-
-    }
-
-.wharf .table-list::-webkit-scrollbar-track {/*滚动条里面轨道*/
-
-        
-
-        border-radius: 10px;
-
-        background: #EDEDED;
-
+  height: 10px;
 }
 
-	
+.wharf .table-list::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+
+  border-radius: 10px;
+
+  background: #1183f8;
+}
+
+.wharf .table-list::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+
+  border-radius: 10px;
+
+  background: #ededed;
+}
+
 .wharf .table-list li {
-  
   justify-content: flex-start;
- 
-  
 }
 .wharf .table-list li div {
-  padding:0 12px;
-  
+  padding: 0 12px;
+
   color: #fff;
   font-size: 12px;
   text-align: center;
   line-height: 28px;
   border-right: 1px solid #1183f8;
   border-bottom: 1px solid #1183f8;
-
 }
 
-
-
-
+.wharf .pagination-box {
+  width: 350px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+  margin: 20px 0 20px 0;
+}
+.wharf >>> .el-pagination {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
 
 .wharf >>> .el-pagination.is-background .el-pager li {
   min-width: 16px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #09345f;
   color: #fff;
   text-align: center;
-  line-height: 24px;
+  line-height: 20px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
 .wharf >>> .el-pagination.is-background .btn-prev {
   min-width: 16px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #09345f;
   color: #fff;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -567,8 +564,8 @@ export default {
 
 .wharf >>> .el-pagination.is-background .btn-next {
   min-width: 16px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #09345f;
   color: #fff;
   font-family: PingFangSC-Medium, PingFang SC;

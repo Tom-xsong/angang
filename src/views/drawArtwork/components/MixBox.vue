@@ -1,5 +1,5 @@
 <template>
-  <div class="hun">
+  <div class="mix">
     <div class="btn-open" @click="info.isShow = true">
       <p>展开</p>
     </div>
@@ -52,20 +52,15 @@
 
         <div class="title">
           <span>检化验情况</span>
-          <img src="../../../assets/title-bg.png"/>
+          <img src="../../../assets/title-bg.png" />
         </div>
 
-
-        <div class="broken-line" id="brokenLine">
-
-        </div>
+        <div class="broken-line" id="brokenLine"></div>
 
         <div class="title">
           <span>作业区情况</span>
           <img src="../../../assets/title-bg.png" />
         </div>
-
-
       </div>
       <div class="btn-close" @click="info.isShow = false">
         <p>收起</p>
@@ -75,11 +70,14 @@
 </template>
 
 <script>
-import {brokenLine} from "./chart"
+import { storageProduct,storageMaterielStock} from "../../../api/home";
 export default {
-  props: ["info"],
   data() {
     return {
+      info: {
+        isShow: false ,
+      },
+
       workAreaSave: [],
 
       drawer: false,
@@ -105,33 +103,41 @@ export default {
           shou: 8000,
         },
       ],
-
-      operationAreaAnalysisDTO: {
-        analysisFrequency: "",
-        materielCode: "",
-        materielName:"",
-        operationAreaCode:"BF1"
-      },
     };
   },
 
   methods: {},
 
   mounted() {
-   brokenLine(this.refs.brokenLine)
+    storageProduct({
+      materialName: "1",
+      operationAreaCode: "SIN1",
+    }).then((res) => {
+      console.log(res);
+    });
+
+
+    storageMaterielStock({
+     storageCode:"1"
+    }).then((res) => {
+      console.log(res);
+    });
+
+
+   
   },
 };
 </script>
 
 <style  scoped>
-.hun >>> .el-drawer__wrapper {
+.mix >>> .el-drawer__wrapper {
   position: absolute;
   right: 0;
   top: 0;
   height: 1080px;
 }
 
-.hun >>> .el-drawer__wrapper .el-drawer.rtl {
+.mix >>> .el-drawer__wrapper .el-drawer.rtl {
   width: 750px;
   border: 0;
   background: linear-gradient(
@@ -142,11 +148,11 @@ export default {
   );
 }
 
-.hun >>> .el-drawer__wrapper .el-drawer.rtl:focus {
+.mix >>> .el-drawer__wrapper .el-drawer.rtl:focus {
   outline: 0;
 }
 
-.hun .btn-open {
+.mix .btn-open {
   width: 53px;
   height: 120px;
   background: url("../../../assets/tag.png") no-repeat center;
@@ -156,7 +162,7 @@ export default {
   top: 460px;
 }
 
-.hun .btn-open p {
+.mix .btn-open p {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -166,7 +172,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.hun .btn-close {
+.mix .btn-close {
   width: 53px;
   height: 120px;
   background: url("../../../assets/tag.png") no-repeat center;
@@ -175,7 +181,7 @@ export default {
   top: 480px;
 }
 
-.hun .btn-close p {
+.mix .btn-close p {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -185,19 +191,19 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.hun .main {
+.mix .main {
   width: 370px;
   height: 100%;
   float: right;
 }
 
-.hun .main .main-top {
+.mix .main .main-top {
   overflow: hidden;
   width: 350px;
   margin-bottom: 20px;
 }
 
-.hun .title-logo {
+.mix .title-logo {
   float: left;
   margin-top: 28px;
   margin-right: 20px;
@@ -206,7 +212,7 @@ export default {
   background: linear-gradient(180deg, #042055 0%, #1a63de 100%);
 }
 
-.hun .title-text {
+.mix .title-text {
   margin-top: 22px;
   float: left;
   font-size: 24px;
@@ -215,7 +221,7 @@ export default {
   overflow: hidden;
 }
 
-.hun .btn-enter {
+.mix .btn-enter {
   float: right;
   margin-top: 24px;
   width: 72px;
@@ -226,7 +232,7 @@ export default {
   padding: 0;
 }
 
-.hun .main .title {
+.mix .main .title {
   width: 350px;
   height: 30px;
   padding-left: 16px;
@@ -245,43 +251,41 @@ export default {
   overflow: hidden;
 }
 
-.hun .main .title span {
+.mix .main .title span {
   float: left;
   color: #ffffff;
   line-height: 30px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.hun .main .title img {
+.mix .main .title img {
   float: right;
   margin-top: 10px;
 }
 
-
-
-.hun .bar-chart {
+.mix .bar-chart {
   width: 350px;
   overflow: hidden;
   margin: 10px 0;
 }
 
-.hun .sign {
+.mix .sign {
   width: 350px;
   overflow: hidden;
   margin-top: 10px;
 }
 
-.hun .sign div {
+.mix .sign div {
   float: right;
 }
 
-.hun .sign .gong {
+.mix .sign .gong {
   width: 10px;
   height: 10px;
   background: #0f7ae9;
 }
 
-.hun .sign .gong-text {
+.mix .sign .gong-text {
   height: 10px;
   line-height: 10px;
   color: #fff;
@@ -289,13 +293,13 @@ export default {
   margin-right: 20px;
 }
 
-.hun .sign .shou {
+.mix .sign .shou {
   width: 10px;
   height: 10px;
   background: #0bcdff;
 }
 
-.hun .sign .shou-text {
+.mix .sign .shou-text {
   height: 10px;
   line-height: 10px;
   color: #fff;
@@ -303,34 +307,34 @@ export default {
   margin-right: 20px;
 }
 
-.hun .bar-chart .list1 {
+.mix .bar-chart .list1 {
   width: 350px;
   overflow: hidden;
   margin-top: 20px;
 }
 
-.hun .bar-chart .item {
+.mix .bar-chart .item {
   width: 350px;
   height: 10px;
 
   margin-top: 10px;
 }
 
-.hun .bar-chart .item .box {
+.mix .bar-chart .item .box {
   float: left;
   width: 300px;
   height: 100%;
   overflow: hidden;
 }
 
-.hun .bar-chart .item .box .item-gong {
+.mix .bar-chart .item .box .item-gong {
   float: left;
   width: 100px;
   height: 100%;
   background: #0f7ae9;
 }
 
-.hun .bar-chart .item .box .item-shou {
+.mix .bar-chart .item .box .item-shou {
   float: left;
   width: 100px;
   height: 100%;
@@ -338,33 +342,29 @@ export default {
   background: #0bcdff;
 }
 
-.hun .bar-chart .item .item-text {
+.mix .bar-chart .item .item-text {
   float: right;
   color: #fff;
   font-size: 10px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.hun .bar-chart .x-num {
+.mix .bar-chart .x-num {
   width: 350px;
   height: 30px;
   position: relative;
 }
 
-.hun .bar-chart .x-num span {
+.mix .bar-chart .x-num span {
   margin-top: 5px;
   color: #fff;
   font-size: 12px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-
-.hun .broken-line{
+.mix .broken-line {
   width: 350px;
   height: 250px;
   background-color: #fff;
 }
-
-
-
 </style>

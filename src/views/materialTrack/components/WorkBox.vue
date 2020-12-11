@@ -9,7 +9,9 @@
         <div class="main-top">
           <div class="title-logo"></div>
           <div class="title-text">{{ info.objs.name }}</div>
-          <el-button class="btn-enter" @click="enter" type="primary">进入</el-button>
+          <el-button class="btn-enter" @click="enter" type="primary"
+            >进入</el-button
+          >
         </div>
 
         <!-- 作业区情况 -->
@@ -25,21 +27,20 @@
             <span class="title2">库存量T</span>
           </div>
           <ul class="content">
-            <li>
-              <span class="name">巴润矿</span>
-              <span class="num">300</span>
-            </li>
-
-            <li>
-              <span class="name">巴润矿</span>
-              <span class="num">300</span>
-            </li>
-
-            <li>
+            <li v-for="n in 4" :key="n">
               <span class="name">巴润矿</span>
               <span class="num">300</span>
             </li>
           </ul>
+
+          <div class="pagination-box">
+            <el-pagination
+              background
+              layout="prev, pager, next"
+              :total="50"
+              :pager-count="5"
+            ></el-pagination>
+          </div>
         </div>
 
         <div class="title">
@@ -57,7 +58,7 @@
           </div>
 
           <ul class="list1">
-            <li v-for="item in arr2" class="item" :key="item.name">
+            <li v-for="(item, index) in arr2" class="item" :key="index">
               <div class="box">
                 <div
                   class="item-gong"
@@ -95,15 +96,21 @@
             class="demo-form-inline"
           >
             <el-form-item label="物料编号">
-              <el-input v-model="operationAreaAnalysisDTO.materielCode"></el-input>
+              <el-input
+                v-model="operationAreaAnalysisDTO.materielCode"
+              ></el-input>
             </el-form-item>
 
             <el-form-item label="物料名称">
-              <el-input v-model="operationAreaAnalysisDTO.materielName"></el-input>
+              <el-input
+                v-model="operationAreaAnalysisDTO.materielName"
+              ></el-input>
             </el-form-item>
 
             <el-form-item class="jhypc" label="检化验频次">
-              <el-input v-model="operationAreaAnalysisDTO.analysisFrequency"></el-input>
+              <el-input
+                v-model="operationAreaAnalysisDTO.analysisFrequency"
+              ></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -124,32 +131,10 @@
               <td colspan="5"></td>
             </tr>
           </table>
-          <ul class="table-list">
+          <ul class="table-list" v-for="n in 4" :key="n">
             <li>
-              <div style="width: 60px; height: 29px; padding: 0">化学成分</div>
-              <div style="width: 60px; height: 29px">数值</div>
-            </li>
-            <li v-for="item in 5" :key="item">
-              <div>CaO</div>
-              <div>数值</div>
-            </li>
-          </ul>
-
-          <ul class="table-list">
-            <li>
-              <div style="width: 60px; height: 29px; padding: 0">化学成分</div>
-              <div style="width: 60px; height: 29px">数值</div>
-            </li>
-            <li v-for="item in 5" :key="item">
-              <div>CaO</div>
-              <div>数值</div>
-            </li>
-          </ul>
-
-          <ul class="table-list">
-            <li>
-              <div style="width: 60px; height: 29px; padding: 0">化学成分</div>
-              <div style="width: 60px; height: 29px">数值</div>
+              <div style="width: 58px; height: 25px; padding: 0">化学成分</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
             </li>
             <li v-for="item in 5" :key="item">
               <div>CaO</div>
@@ -159,12 +144,14 @@
         </div>
 
         <!-- 分页 -->
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :total="1000"
-          :pager-count="5"
-        ></el-pagination>
+        <div class="pagination-box">
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="50"
+            :pager-count="5"
+          ></el-pagination>
+        </div>
       </div>
       <div class="btn-close" @click="info.isShow = false">
         <p>收起</p>
@@ -174,7 +161,12 @@
 </template>
 
 <script>
-import { workArea, workAreaShou, workAreaJian } from "../../../api/home";
+import {
+  workArea,
+  workAreaShou,
+  workAreaJian,
+  workAreaAll,
+} from "../../../api/home";
 export default {
   props: ["info"],
   data() {
@@ -203,27 +195,73 @@ export default {
           gong: 10000,
           shou: 8000,
         },
+        {
+          name: "巴西矿",
+          gong: 5000,
+          shou: 8000,
+        },
+
+        {
+          name: "石灰石",
+          gong: 4000,
+          shou: 10000,
+        },
+
+        {
+          name: "铁矿",
+          gong: 10000,
+          shou: 8000,
+        },
+        {
+          name: "巴西矿",
+          gong: 5000,
+          shou: 8000,
+        },
+
+        {
+          name: "石灰石",
+          gong: 4000,
+          shou: 10000,
+        },
+
+        {
+          name: "铁矿",
+          gong: 10000,
+          shou: 8000,
+        },
+        {
+          name: "巴西矿",
+          gong: 5000,
+          shou: 8000,
+        },
+
+        {
+          name: "石灰石",
+          gong: 4000,
+          shou: 10000,
+        },
+
+        {
+          name: "铁矿",
+          gong: 10000,
+          shou: 8000,
+        },
       ],
 
       operationAreaAnalysisDTO: {
         analysisFrequency: "",
         materielCode: "",
-        materielName:"",
-        operationAreaCode:"BF1"
+        materielName: "",
+        operationAreaCode: "BF1",
       },
     };
   },
 
   methods: {
-
-
-    enter(){
-      this.$router.push("/artView")
-    }
+    enter() {
+      this.$router.push("/artView");
+    },
   },
-
-  
-  
 
   mounted() {
     workArea({ operationAreaCode: "BF1" }).then((res) => {
@@ -233,7 +271,16 @@ export default {
         console.log(res);
       });
 
-    workAreaJian(this.operationAreaAnalysisDTO).then((res) => {
+    workAreaJian({
+      analysisFrequency: "1",
+      materielCode: "1",
+      materielName: "1",
+      operationAreaCode: "SIN1",
+    }).then((res) => {
+      console.log(res);
+    });
+
+    workAreaAll().then((res) => {
       console.log(res);
     });
   },
@@ -316,7 +363,7 @@ export default {
 
 .work .title-logo {
   float: left;
-  margin-top: 28px;
+  margin-top: 20px;
   margin-right: 20px;
   width: 18px;
   height: 18px;
@@ -324,7 +371,7 @@ export default {
 }
 
 .work .title-text {
-  margin-top: 22px;
+  margin-top: 15px;
   float: left;
   font-size: 24px;
   font-family: PingFangSC-Semibold, PingFang SC;
@@ -334,7 +381,7 @@ export default {
 
 .work .btn-enter {
   float: right;
-  margin-top: 24px;
+  margin-top: 15px;
   width: 72px;
   height: 33px;
   background: linear-gradient(180deg, rgba(5, 37, 94, 0.2) 0%, #1a61d9 100%);
@@ -386,7 +433,7 @@ export default {
 
 .work .main .yuanliao .yuanliao-top .title1 {
   float: left;
-  margin: 20px 0 10px 20px;
+  margin: 15px 0 10px 20px;
   font-size: 14px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
@@ -395,7 +442,7 @@ export default {
 
 .work .main .yuanliao .yuanliao-top .title2 {
   float: right;
-  margin: 20px 20px 10px 0;
+  margin: 15px 20px 10px 0;
   font-size: 14px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
@@ -409,31 +456,30 @@ export default {
 
 .work .main .yuanliao .content li {
   width: 350px;
-  height: 34px;
+  height: 25px;
   background: url("../../../assets/rectbg.png") no-repeat center;
   background-size: 100% 100%;
-
   margin-top: 10px;
 }
 
 .work .main .yuanliao .content li .name {
   float: left;
   margin-left: 20px;
-  font-size: 16px;
+  font-size: 12px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #ffffff;
-  line-height: 34px;
+  line-height: 25px;
 }
 
 .work .main .yuanliao .content li .num {
   float: right;
   margin-right: 20px;
-  font-size: 16px;
+  font-size: 12px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #ffffff;
-  line-height: 34px;
+  line-height: 25px;
 }
 
 .work .bar-chart {
@@ -482,8 +528,13 @@ export default {
 
 .work .bar-chart .list1 {
   width: 350px;
-  overflow: hidden;
+  overflow: auto;
+  height: 150px;
   margin-top: 20px;
+}
+
+.work .bar-chart .list1::-webkit-scrollbar {
+  width: 0;
 }
 
 .work .bar-chart .item {
@@ -547,7 +598,7 @@ export default {
 
 .work >>> .main .search .el-input__inner {
   width: 96px;
-  height: 32px;
+  height: 28px;
   border-radius: 2px;
   border: 1px solid #1183f8;
   background: #000;
@@ -579,11 +630,10 @@ export default {
 }
 
 .work .main table tr {
-  height: 30px;
+  height: 25px;
 }
 
 .work .table {
-  margin-top: 10px;
   margin-bottom: 20px;
 }
 
@@ -604,7 +654,7 @@ export default {
   flex-wrap: nowrap;
   overflow: auto;
   width: 350px;
-  height: 58px;
+  height: 50px;
   border-left: 1px solid #1183f8;
 }
 
@@ -635,30 +685,44 @@ export default {
 }
 .work .table-list li div {
   padding: 0 12px;
-
+  height: 25px;
   color: #fff;
   font-size: 12px;
   text-align: center;
-  line-height: 28px;
+  line-height: 25px;
   border-right: 1px solid #1183f8;
   border-bottom: 1px solid #1183f8;
 }
 
+.work .pagination-box {
+  width: 350px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+  margin: 20px 0 20px 0;
+}
+.work >>> .el-pagination {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%,0);
+} 
+
 .work >>> .el-pagination.is-background .el-pager li {
   min-width: 16px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #09345f;
   color: #fff;
   text-align: center;
-  line-height: 24px;
+  line-height: 20px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
 .work >>> .el-pagination.is-background .btn-prev {
   min-width: 16px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #09345f;
   color: #fff;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -672,8 +736,8 @@ export default {
 
 .work >>> .el-pagination.is-background .btn-next {
   min-width: 16px;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   background: #09345f;
   color: #fff;
   font-family: PingFangSC-Medium, PingFang SC;
