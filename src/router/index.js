@@ -21,7 +21,7 @@ const routes = [
   {
     path: "/artView",
     name: "工艺图展示",
-    component: () => import("@/views/drawArtwork/ArtView.vue")
+    component: () => import("@/views/artView/ArtView.vue")
   }
 ];
 

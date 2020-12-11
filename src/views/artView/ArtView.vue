@@ -44,7 +44,7 @@ import {
 
 let belt = require("../../assets/image/belt-warning.png");
 import zrender from "zrender";
-import { calcArrowCenter } from "./flowClient/helpers";
+import { calcArrowCenter } from "../drawArtwork/flowClient/helpers";
 export default {
   name: "ArtView",
   components: {
