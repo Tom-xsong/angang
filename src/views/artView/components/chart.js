@@ -1,91 +1,368 @@
 let echarts = require('echarts');
 
+
+
+//折线图
 export function brokenLine(el) {
+    
+    console.log(el)
     var myChart = echarts.init(el);
 
-    var colors = ['#5793f3', '#d14a61', '#675bba'];
+   
 
 
     let option = {
-        color: colors,
-
-        tooltip: {
-            trigger: 'none',
-            axisPointer: {
-                type: 'cross'
-            }
-        },
+        color: ["#0F7AE9", "#00FF84", "#FF862C"],
+        
+       
         legend: {
-            data: ['2015 降水量', '2016 降水量']
+            x: "150px",
+            // y: 'top',
+            itemWidth: 4,
+            itemHeight: 4,
+            orient: 'horizontal',
+            itemGap: 30,
+            data: ["Tfe", "R", "FeO"],
+            textStyle: {
+                color: '#CCC', // 图例文字颜色
+            }
         },
         grid: {
-            top: 70,
-            bottom: 50
+
+            left: '0%',
+            right: '0%',
+            bottom: '10%',
+            show: true,
+            containLabel: true,
+            borderWidth: 0,
         },
-        xAxis: [
-            {
-                type: 'category',
+      
+        xAxis: {
+            gridIndex: 0,
+
                 axisTick: {
-                    alignWithLabel: true
+                    show: false
                 },
+
                 axisLine: {
-                    onZero: false,
                     lineStyle: {
-                        color: colors[1]
+                        color: "#1183F8"
                     }
+
                 },
-                axisPointer: {
-                    label: {
-                        formatter: function (params) {
-                            return '降水量  ' + params.value
-                                + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-                        }
-                    }
+
+
+
+                axisLabel: {
+                    color: "#ccc"
+
                 },
-                data: ['2016-1', '2016-2', '2016-3', '2016-4', '2016-5', '2016-6', '2016-7', '2016-8', '2016-9', '2016-10', '2016-11', '2016-12']
-            },
-            {
                 type: 'category',
-                axisTick: {
-                    alignWithLabel: true
-                },
-                axisLine: {
-                    onZero: false,
-                    lineStyle: {
-                        color: colors[0]
-                    }
-                },
-                axisPointer: {
-                    label: {
-                        formatter: function (params) {
-                            return '降水量  ' + params.value
-                                + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-                        }
-                    }
-                },
-                data: ['2015-1', '2015-2', '2015-3', '2015-4', '2015-5', '2015-6', '2015-7', '2015-8', '2015-9', '2015-10', '2015-11', '2015-12']
-            }
-        ],
-        yAxis: [
-            {
-                type: 'value'
-            }
-        ],
-        series: [
-            {
-                name: '2015 降水量',
-                type: 'line',
-                xAxisIndex: 1,
-                smooth: true,
-                data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+                boundaryGap: false,
+                data: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00']
+        },
+
+        yAxis: {
+            nameTextStyle: {
+                color: "#CCC"
             },
-            {
-                name: '2016 降水量',
-                type: 'line',
-                smooth: true,
-                data: [3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7]
+            name: "单位(t)",
+
+            axisTick: {
+                show: false
+            },
+
+            axisLine: {
+
+                lineStyle: {
+                    color: "#1183F8"
+                }
+
+            },
+
+
+            axisLabel: {
+                color: "#ccc"
+
+            },
+
+            splitLine: {
+                lineStyle: {
+                    color: "#1183F8",
+                    width:"0.5"
+                }
+            },
+
+
+        },
+        series: [{
+            name: 'Tfe',
+            type: 'line',
+
+            data: [120, 132, 101, 134, 90, 230, 210]
+        },
+        {
+            name: 'R',
+            type: 'line',
+
+            data: [220, 182, 191, 234, 290, 330, 310]
+        },
+        {
+            name: 'FeO',
+            type: 'line',
+            data: [150, 232, 201, 154, 190, 330, 410]
+        },
+
+
+    ]
+    };
+    
+      
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+
+}
+
+
+
+
+
+//饼状图
+
+export function pieChart(el) {
+    
+    console.log(el)
+    var myChart = echarts.init(el);
+
+   
+
+
+    let option = {
+       
+    color:["#0F7AE9","#0BCDFF","#00FF84","#FF862C"],
+   
+    legend: {
+        orient: 'vertical',
+        left: 10,
+        data: ['直接访问', '邮件营销', '联盟广告', '视频广告']
+    },
+    series: [
+    // {       
+    //         name: '访问来源',
+    //         type: 'pie',
+    //         selectedMode: 'single',
+    //         radius: [0, '30%'],
+
+    //         label: {
+    //             show:false
+    //         },
+    //         labelLine: {
+    //             show: false
+    //         },
+    //         data: [
+    //             {value: 335, name: '直达'},
+    //         ]
+    //     },
+
+
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['45%', '50%'],
+            // avoidLabelOverlap: false,
+            // selectedMode: 'single',
+            selectedOffset: 3,
+
+
+            
+            label: {
+                show: false,
+                position: 'center'
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: '20',
+                    color:"#fff",
+                    fontWeight: 'bold'
+                }
+            },
+            labelLine: {
+                show: false
+            },
+            data: [
+                {value: 14, name: '14%', selected: true},
+                {value: 34, name: '34%', selected: true},
+                {value: 23, name: '23%', selected: true},
+                {value: 33, name: '33%', selected: true},
+               
+            ]
+        }
+    ]
+      
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//柱状图
+export function barChart(el) {
+    
+    console.log(el)
+    var myChart = echarts.init(el);
+
+   
+
+
+    let option = {
+       
+        color: ["#0F7AE9", "#00FF84", "#FF862C"],
+
+        // 图例
+        legend: {
+            x: "100px",
+            itemWidth: 10,
+            itemHeight: 10,
+            itemGap: 30,
+            data: ["库存量", "入库量", "出库量"],
+            textStyle: {
+                color: '#CCC', // 图例文字颜色
+
             }
+        },
+
+
+        grid: {
+            left: '0%',
+            right: '0%',
+            bottom: '10%',
+            show: true,
+            containLabel: true,
+            backgroundColor: 'rgba(0,0,0)',
+            borderWidth: 0,
+
+
+
+        },
+
+
+
+        xAxis: {
+            axisTick: {
+                show: false
+            },
+
+            axisLine: {
+                lineStyle: {
+                    color: "#1183F8"
+                }
+
+            },
+
+
+
+            axisLabel: {
+                color: "#ccc"
+
+            },
+
+
+            data: ["12/05", "12/06", "12/07", "12/08", "12/09", "12/10", "12/11"],
+
+
+        },
+
+
+
+
+
+        yAxis: {
+
+            nameTextStyle: {
+                color: "#CCC"
+            },
+            name: "单位(t)",
+
+            axisTick: {
+                show: false
+            },
+
+            axisLine: {
+
+                lineStyle: {
+                    color: "#1183F8",
+                }
+
+            },
+
+
+            axisLabel: {
+                color: "#ccc"
+
+            },
+
+            splitLine: {
+                lineStyle: {
+                    color: "#1183F8",
+                    width:"0.5"
+                }
+            }
+        },
+        series: [{
+                name: '库存量',
+                type: 'bar',
+                barWidth: 10,
+                stack: '总量',
+                data: [5, 20, 36, 10, 10, 20, 15]
+            },
+
+
+
+            {
+                name: '入库量',
+                type: 'bar',
+                stack: '总量',
+                data: [5, 20, 36, 10, 10, 16, 12]
+            },
+
+            {
+                name: '出库量',
+                type: 'bar',
+                stack: '总量',
+                data: [5, 20, 36, 10, 10, 20, 12]
+            },
         ]
+
     };
 
 

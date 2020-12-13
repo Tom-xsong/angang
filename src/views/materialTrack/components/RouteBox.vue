@@ -459,10 +459,7 @@ export default {
   width: 0;
 }
 
-.route .bar-chart .list1::-webkit-scrollbar{
-  width: 0;
-}
-			      
+	      
 .route .bar-chart .item {
   width: 350px;
   height: 10px;

@@ -9,17 +9,17 @@
         <div class="main-top">
           <div class="title-logo"></div>
           <div class="title-text">混匀</div>
-          <el-button class="btn-enter" type="primary">进入</el-button>
         </div>
 
         <div class="title">
-          <span>供/受料情况</span>
+          <span>受料/消耗情况</span>
           <img src="../../../assets/title-bg.png" />
         </div>
 
         <!-- 柱状图 -->
-        <!-- <div class="bar-chart">
+        <div class="bar-chart">
           <div class="sign">
+            <div class="sign-title">原料材质</div>
             <div class="shou-text">受料</div>
             <div class="shou"></div>
             <div class="gong-text">供料</div>
@@ -48,20 +48,64 @@
             <span style="position: absolute; top: 0; left: 150px">15000</span>
             <span style="position: absolute; top: 0; left: 200px">20000</span>
           </div>
-        </div> -->
+        </div>
+
+        <div class="broken-line" ref="brokenLine"></div>
 
         <div class="title">
-          <span>检化验情况</span>
+          <span>原料库存</span>
           <img src="../../../assets/title-bg.png" />
         </div>
 
-        <div class="broken-line" id="brokenLine"></div>
+        <div class="Pie-chart-box">
+          <div class="Pie-chart" ref="pieChart"></div>
+          <div class="Pie-legend">
+            <ul>
+              <li>
+                <span class="legend"></span><span class="name">肥煤</span
+                ><span class="num">314T</span>
+              </li>
+              <li>
+                <span class="legend" style="background: #0bcdff"></span
+                ><span class="name">肥煤</span><span class="num">314T</span>
+              </li>
+              <li>
+                <span class="legend" style="background: #00ff84"></span
+                ><span class="name">肥煤</span><span class="num">314T</span>
+              </li>
+              <li>
+                <span class="legend" style="background: #ff862c"></span
+                ><span class="name">肥煤</span><span class="num">314T</span>
+              </li>
+            </ul>
+          </div>
+        </div>
 
         <div class="title">
-          <span>作业区情况</span>
+          <span>产品数据库</span>
           <img src="../../../assets/title-bg.png" />
+        </div>
+
+        <div class="product-data">
+          <div class="product-data-top">
+            <el-form :inline="true" :model="form" class="demo-form-inline">
+              <el-form-item class="input-select" label="产品矿">
+                <el-select
+                  :popper-append-to-body="false"
+                  v-model="form.region"
+                  placeholder="路径选择"
+                >
+                  <el-option label="混匀矿" value="shanghai"></el-option>
+                  <el-option label="巴西矿" value="beijing"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+          </div>
+
+          <div class="product-data-content" ref="barChart"></div>
         </div>
       </div>
+
       <div class="btn-close" @click="info.isShow = false">
         <p>收起</p>
       </div>
@@ -70,12 +114,17 @@
 </template>
 
 <script>
-import { storageProduct,storageMaterielStock} from "../../../api/home";
+import { brokenLine, pieChart, barChart } from "./chart";
+// import { storageProduct,storageMaterielStock} from "../../../api/home";
 export default {
   data() {
     return {
+      form: {
+        region: "",
+      },
+
       info: {
-        isShow: false ,
+        isShow: true,
       },
 
       workAreaSave: [],
@@ -102,6 +151,27 @@ export default {
           gong: 10000,
           shou: 8000,
         },
+        {
+          name: "铁矿",
+          gong: 10000,
+          shou: 8000,
+        },
+         {
+          name: "石灰石",
+          gong: 4000,
+          shou: 10000,
+        },
+
+        {
+          name: "铁矿",
+          gong: 10000,
+          shou: 8000,
+        },
+        {
+          name: "铁矿",
+          gong: 10000,
+          shou: 8000,
+        },
       ],
     };
   },
@@ -109,22 +179,26 @@ export default {
   methods: {},
 
   mounted() {
-    storageProduct({
-      materialName: "1",
-      operationAreaCode: "SIN1",
-    }).then((res) => {
-      console.log(res);
+    this.$nextTick(() => {
+      console.log(this.$refs.pieChart);
+
+      brokenLine(this.$refs.brokenLine);
+      pieChart(this.$refs.pieChart);
+      barChart(this.$refs.barChart);
     });
 
+    // storageProduct({
+    //   materialName: "1",
+    //   operationAreaCode: "SIN1",
+    // }).then((res) => {
+    //   console.log(res);
+    // });
 
-    storageMaterielStock({
-     storageCode:"1"
-    }).then((res) => {
-      console.log(res);
-    });
-
-
-   
+    // storageMaterielStock({
+    //  storageCode:"1"
+    // }).then((res) => {
+    //   console.log(res);
+    // });
   },
 };
 </script>
@@ -272,17 +346,32 @@ export default {
 .mix .sign {
   width: 350px;
   overflow: hidden;
-  margin-top: 10px;
+ 
 }
 
 .mix .sign div {
   float: right;
 }
 
+.mix .sign .sign-title {
+  float: left;
+  width: 72px;
+  height: 24px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  line-height: 24px;
+  background: linear-gradient(180deg, rgba(5, 37, 94, 0.2) 0%, #1a61d9 100%);
+  border-radius: 2px;
+  border: 1px solid rgba(17, 135, 255, 0.5);
+  
+}
+
 .mix .sign .gong {
   width: 10px;
   height: 10px;
   background: #0f7ae9;
+  margin-top: 5px;
 }
 
 .mix .sign .gong-text {
@@ -291,12 +380,14 @@ export default {
   color: #fff;
   font-size: 10px;
   margin-right: 20px;
+  margin-top: 5px;
 }
 
 .mix .sign .shou {
   width: 10px;
   height: 10px;
   background: #0bcdff;
+  margin-top: 5px;
 }
 
 .mix .sign .shou-text {
@@ -305,18 +396,26 @@ export default {
   color: #fff;
   font-size: 10px;
   margin-right: 20px;
+  margin-top: 5px;
 }
 
 .mix .bar-chart .list1 {
   width: 350px;
-  overflow: hidden;
+  height: 80px;
+  overflow: auto;
   margin-top: 20px;
+
+  
+}
+
+
+.mix .bar-chart .list1::-webkit-scrollbar{
+  width: 0;
 }
 
 .mix .bar-chart .item {
   width: 350px;
   height: 10px;
-
   margin-top: 10px;
 }
 
@@ -365,6 +464,133 @@ export default {
 .mix .broken-line {
   width: 350px;
   height: 250px;
-  background-color: #fff;
+  background-color: #000;
 }
+
+.mix .Pie-chart-box {
+  width: 350px;
+  height: 180px;
+  background-color: #000;
+}
+
+.mix .Pie-chart-box .Pie-chart {
+  float: left;
+  width: 60%;
+  height: 100%;
+  background-color: #000;
+}
+
+.mix .Pie-chart-box .Pie-legend {
+  float: left;
+  width: 40%;
+  height: 100%;
+  background-color: #000;
+  color: #fff;
+}
+
+.mix .Pie-chart-box .Pie-legend ul {
+  overflow: hidden;
+  margin-top: 30px;
+}
+
+.mix .Pie-chart-box .Pie-legend ul li {
+  overflow: hidden;
+  width: 100px;
+  margin-bottom: 20px;
+}
+.mix .Pie-chart-box .Pie-legend .legend {
+  float: left;
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(17, 135, 255, 1);
+  margin-top: 3px;
+  margin-right: 10px;
+}
+
+.mix .Pie-chart-box .Pie-legend .name {
+  float: left;
+  font-size: 14px;
+}
+
+.mix .Pie-chart-box .Pie-legend .num {
+  float: right;
+  font-size: 14px;
+}
+
+.mix .main .product-data {
+  width: 350px;
+}
+
+.mix .main .product-data .product-data-top {
+  width: 100%;
+}
+
+.mix .input-select {
+  margin-top: 10px;
+}
+
+.mix >>> .el-input--suffix .el-input__inner {
+  width: 280px;
+  height: 33px;
+  border: 1px solid #1a61d9;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.mix >>> .el-form-item__label {
+  color: #fff;
+  font-family: PingFangSC-Medium, PingFang SC;
+}
+
+.mix >>> .el-select .el-input__inner {
+  color: #fff;
+}
+
+.mix >>> .el-select-dropdown {
+  background-color: rgb(0, 0, 0);
+  position: absolute !important;
+  left: 0 !important;
+  top: 40px !important;
+  border: 2px solid #1a61d9;
+}
+
+.mix >>> .el-popper[x-placement^="bottom"] .popper__arrow::after {
+  border-bottom-color: #1a61d9;
+}
+.mix >>> .el-select-dropdown__item {
+  color: #fff;
+}
+
+.mix >>> .el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
+  color: #fff;
+  background-color: #1a61d9;
+}
+
+.mix >>> .el-select-dropdown__item.selected {
+  color: #fff;
+}
+
+.mix .product-data .product-data-content {
+  width: 350px;
+  height: 250px;
+}
+
+/* <div class="product-data">
+        <div class="top">
+          <el-form :inline="true" :model="form" class="demo-form-inline">
+            <el-form-item class="input-select" label="产品矿">
+              <el-select
+                :popper-append-to-body="false"
+                v-model="form.region"
+                placeholder="路径选择"
+              >
+                <el-option label="混匀矿" value="shanghai"></el-option>
+                <el-option label="巴西矿" value="beijing"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div> */
 </style>

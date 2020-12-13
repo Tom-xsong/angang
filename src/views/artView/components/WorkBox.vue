@@ -8,10 +8,10 @@
         <!-- 顶部 -->
         <div class="main-top">
           <div class="title-logo"></div>
-          <div class="title-text">{{ info.objs.name }}</div>
-          <el-button class="btn-enter" @click="enter" type="primary"
+          <div class="title-text">作业区情况</div>
+          <!-- <el-button class="btn-enter" @click="enter" type="primary"
             >进入</el-button
-          >
+          > -->
         </div>
 
         <!-- 作业区情况 -->
@@ -173,8 +173,6 @@ export default {
     return {
       workAreaSave: [],
 
-      drawer: false,
-
       arr: [1],
 
       arr2: [
@@ -259,7 +257,7 @@ export default {
 
   methods: {
     enter() {
-      this.$router.push("/artView/?code="+this.info.objs.code);
+      this.$router.push("/artView");
     },
   },
 

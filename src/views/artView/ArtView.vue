@@ -27,20 +27,21 @@
         ></div>
       </div>
     </div>
-    <mix-box></mix-box>
+    <mix-box v-if="code=='MMS1'||code=='MMS2'"></mix-box>
+    <work-box :info="info" v-else></work-box>
   </div>
 </template>
 
 <script>
-import {
-  secondAnalysis,
-  facilityStatus,
-  feedAndReceiving,
-  operationAreaFeedAndReceiving,
-  operationAreaMaterielStock,
-  processDetails,
-  stripProportion
-} from "../../api/home";
+// import {
+//   secondAnalysis,
+//   facilityStatus,
+//   feedAndReceiving,
+//   operationAreaFeedAndReceiving,
+//   operationAreaMaterielStock,
+//   processDetails,
+//   stripProportion
+// } from "../../api/home";
 
 let belt = require("../../assets/image/belt-warning.png");
 import zrender from "zrender";
@@ -49,50 +50,64 @@ export default {
   name: "ArtView",
   components: {
     HeaderLogo: () => import("../../components/HeaderLogo"),
-    MixBox: () => import("./components/MixBox")
+    MixBox: () => import("./components/MixBox"),
+    WorkBox: () => import("./components/WorkBox")
   },
   data() {
     return {
+
+       info:{
+        isShow:true,
+        objs:{name:"燃供码头"},
+        code:""
+
+      },
       zr: null,
       liaotArr: [],
     };
   },
   mounted() {
+      this.code = this.$route.query.code
+
+    
+     
+
+
     this.zr = zrender.init(document.getElementById("canvas"));
     this.getJSOnData();
     // 用来保存配有code的设备
     this.id2element = {};
 
-    secondAnalysis({ analysisCode: "1" }).then((res) => {
-      console.log(res);
-    });
+  //   secondAnalysis({ analysisCode: "1" }).then((res) => {
+  //     console.log(res);
+  //   });
 
-    facilityStatus().then((res) => {
-      console.log(res);
-    });
+  //   facilityStatus().then((res) => {
+  //     console.log(res);
+  //   });
 
-    feedAndReceiving({ storageCode: "1" }).then((res) => {
-      console.log(res);
-    });
+  //   feedAndReceiving({ storageCode: "1" }).then((res) => {
+  //     console.log(res);
+  //   });
 
-    operationAreaFeedAndReceiving({ operationAreaCode: "SIN1" }).then((res) => {
-      console.log(res);
-    });
+  //   operationAreaFeedAndReceiving({ operationAreaCode: "SIN1" }).then((res) => {
+  //     console.log(res);
+  //   });
 
-    operationAreaMaterielStock({ operationAreaCode: "SIN1" }).then((res) => {
-      console.log(res);
-    });
+  //   operationAreaMaterielStock({ operationAreaCode: "SIN1" }).then((res) => {
+  //     console.log(res);
+  //   });
 
-    processDetails({
-      analysisCode: "1",
-      processDetailsName: "第一区",
-    }).then((res) => {
-      console.log(res);
-    });
+  //   processDetails({
+  //     analysisCode: "1",
+  //     processDetailsName: "第一区",
+  //   }).then((res) => {
+  //     console.log(res);
+  //   });
 
-   stripProportion().then((res) => {
-      console.log(res);
-    });
+  //  stripProportion().then((res) => {
+  //     console.log(res);
+  //   });
     
   },
   methods: {
@@ -308,7 +323,7 @@ export default {
 <style lang="scss" scoped>
 .canvas-wrap {
   position: relative;
-  width: 100vw;
+  width: 1920px;
   height: 1080px;
 }
 #canvas {
