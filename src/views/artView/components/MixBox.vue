@@ -27,7 +27,7 @@
           </div>
 
           <ul class="list1">
-            <li v-for="item in arr2" class="item" :key="item.name">
+            <li v-for="(item,index) in arr2" class="item" :key="index">
               <div class="box">
                 <div
                   class="item-gong"
@@ -552,11 +552,24 @@ export default {
   position: absolute !important;
   left: 0 !important;
   top: 40px !important;
-  border: 2px solid #1a61d9;
+  border: 1px solid #1a61d9;
 }
 
-.mix >>> .el-popper[x-placement^="bottom"] .popper__arrow::after {
-  border-bottom-color: #1a61d9;
+
+.mix >>> .el-popper .popper__arrow::after{
+    content: " ";
+    border-width:0 !important;
+}
+
+.mix >>> .el-popper .popper__arrow{
+  border-width:0 !important;
+}
+
+
+
+
+.mix >>> .el-select .el-input .el-select__caret{
+  color: #1a61d9;
 }
 .mix >>> .el-select-dropdown__item {
   color: #fff;

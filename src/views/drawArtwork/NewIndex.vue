@@ -32,9 +32,7 @@
         >
           编辑
         </li>
-        <li class="item danger" @click="clearAllState">
-          清除状态
-        </li>
+        <li class="item danger" @click="clearAllState">清除状态</li>
       </ol>
       <div class="button">
         <el-button size="small" @click.stop="handleClear">清除</el-button>
@@ -87,6 +85,27 @@
             clearable
           ></el-input>
         </el-form-item>
+
+        <el-form-item label="关联id：" v-if="curType !== 'line'">
+          <el-input v-model="form.associatedId" :maxlength="100" clearable></el-input>
+        </el-form-item>
+
+        <!-- <el-form-item label="设备类型：" v-if="curType !== 'line'">
+          <el-input
+            v-model="form.equipmentType"
+            :maxlength="100"
+            clearable
+          ></el-input>
+        </el-form-item> -->
+        <el-form-item label="设备类型：" v-if="curType !== 'line'">
+          <el-cascader
+            v-model="form.equipmentType"
+            :options="options"
+            @change="handleChange"
+          >
+          </el-cascader>
+        </el-form-item>
+
         <el-row>
           <el-col :span="15">
             <el-form-item label="文字大小：">
@@ -153,13 +172,13 @@ import {
   endRectMove,
   startEdit,
   endEdit,
-  submitStyle
+  submitStyle,
 } from "./flowClient/index";
 import {
   add,
   getRectModelList,
   getLineModelList,
-  clearAll
+  clearAll,
 } from "./flowClient/render/render";
 import { on, off } from "./flowClient/event/index";
 import { mapValue } from "@/utils/validate";
@@ -177,7 +196,7 @@ let tip = require("../../assets/image/tip-success.png");
 export default {
   name: "Test",
   components: {
-    HeaderLogo: () => import("../../components/HeaderLogo")
+    HeaderLogo: () => import("../../components/HeaderLogo"),
   },
   data() {
     return {
@@ -187,7 +206,7 @@ export default {
           type: "rect",
           label: "矩形",
           width: 70,
-          height: 30
+          height: 30,
         },
         {
           id: 2,
@@ -195,7 +214,7 @@ export default {
           label: "皮带秤",
           image: belt,
           width: 96,
-          height: 21
+          height: 21,
         },
         {
           id: 3,
@@ -203,7 +222,7 @@ export default {
           label: "大仓",
           image: image1,
           width: 44,
-          height: 32
+          height: 32,
         },
         {
           id: 4,
@@ -211,7 +230,7 @@ export default {
           label: "小仓",
           image: image2,
           width: 24,
-          height: 26
+          height: 26,
         },
         {
           id: 5,
@@ -219,7 +238,7 @@ export default {
           label: "配料仓",
           image: image4,
           width: 52,
-          height: 52
+          height: 52,
         },
         {
           id: 6,
@@ -227,7 +246,7 @@ export default {
           label: "成品仓",
           image: image5,
           width: 96,
-          height: 38
+          height: 38,
         },
         {
           id: 7,
@@ -235,7 +254,7 @@ export default {
           label: "露天堆场",
           image: image3,
           width: 72,
-          height: 60
+          height: 60,
         },
         {
           id: 8,
@@ -243,7 +262,7 @@ export default {
           label: "计量秤",
           image: scale,
           width: 18,
-          height: 18
+          height: 18,
         },
         {
           id: 9,
@@ -251,7 +270,7 @@ export default {
           label: "检化验",
           image: test,
           width: 18,
-          height: 18
+          height: 18,
         },
         {
           id: 10,
@@ -259,30 +278,76 @@ export default {
           label: "提示",
           image: tip,
           width: 34,
-          height: 14
-        }
+          height: 14,
+        },
       ],
       posArr: [
         { id: "inside", text: "居中" },
         { id: "top", text: "上" },
         { id: "bottom", text: "下" },
         { id: "left", text: "左" },
-        { id: "right", text: "右" }
+        { id: "right", text: "右" },
       ],
       currentItem: {},
       handleStatus: -1,
       colorDialog: false,
       form: {
         code: "",
+        equipmentType: "",
         text: "",
+        associatedId:"",
         fontSize: 14,
         textFill: "#fff",
         textPosition: "inside",
         lineWidth: 1,
         stroke: "#00FF84",
-        fill: "#002815"
+        fill: "#002815",
+       
       },
-      curType: ""
+      curType: "",
+
+      options: [
+        {
+          value: "rect",
+          label: "矩形",
+          children: [
+            {
+              value: "liaotiao",
+              label: "料条",
+            },
+            {
+              value: "tie",
+              label: "铁",
+            },
+          ],
+        },
+        {
+          value: "wareHouse",
+          label: "仓",
+        },
+        {
+          value: "mixWarehouse",
+          label: "配料仓",
+        },
+
+        {
+          value: "exposedHeap",
+          label: "露天堆场",
+        },
+        {
+          value: "beltScale",
+          label: "皮带秤",
+        },
+
+         {
+          value: "beltScale",
+          label: "计量秤",
+        },
+        {
+          value:"screeningTests",
+          label: "检化验",
+        }
+      ],
     };
   },
   mounted() {
@@ -291,7 +356,7 @@ export default {
       addModel: () => {
         this.handleStatus = -1;
         return this.currentItem;
-      }
+      },
     });
     // 定义事件
     on("handleOpen", this.handleOpenStyle);
@@ -320,6 +385,9 @@ export default {
       this.curType = param.type;
       mapValue(this.form, param.style);
       this.form.code = param.code;
+      this.form.equipmentType = param.equipmentType;
+      this.form.text = param.text;
+      this.form.associatedId = param.associatedId
       this.colorDialog = true;
     },
     // 修改样式确定
@@ -344,11 +412,11 @@ export default {
       console.log(lineArr);
       let obj = {
         rectData: rectArr,
-        lineData: lineArr
+        lineData: lineArr,
       };
       var content = JSON.stringify(obj);
       var blob = new Blob([content], {
-        type: "application/octet-stream"
+        type: "application/octet-stream",
       });
       var aTag = document.createElement("a");
       aTag.href = window.URL.createObjectURL(blob);
@@ -367,7 +435,7 @@ export default {
       let request = new XMLHttpRequest();
       request.open("get", url);
       request.send(null);
-      request.onload = function() {
+      request.onload = function () {
         if (request.status === 200) {
           let json = JSON.parse(request.responseText);
           let rectData = json.rectData;
@@ -384,8 +452,8 @@ export default {
           }
         }
       };
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -30,7 +30,7 @@ export function brokenLine(el) {
         grid: {
 
             left: '0%',
-            right: '0%',
+            right: '4%',
             bottom: '10%',
             show: true,
             containLabel: true,
@@ -95,6 +95,8 @@ export function brokenLine(el) {
 
 
         },
+
+        
         series: [{
             name: 'Tfe',
             type: 'line',

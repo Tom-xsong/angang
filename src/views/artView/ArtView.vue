@@ -27,7 +27,7 @@
         ></div>
       </div>
     </div>
-    <mix-box v-if="code=='MMS1'||code=='MMS2'"></mix-box>
+    <mix-box v-if="info.code =='MMS1'|| info.code=='MMS2'"></mix-box>
     <work-box :info="info" v-else></work-box>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default {
     };
   },
   mounted() {
-      this.code = this.$route.query.code
+      this.info.code = this.$route.query.code
 
     
      
@@ -148,6 +148,7 @@ export default {
               data: data[i],
             });
             this.zr.add(rect);
+            rect.on("click", this.equipmentClick);
             if (data[i].code) {
               this.id2element[data[i].code] = rect;
             }
@@ -160,6 +161,7 @@ export default {
             data: data[i],
           });
           this.zr.add(img);
+          img.on("click", this.equipmentClick);
           if (data[i].code) {
             this.id2element[data[i].code] = img;
           }
@@ -297,6 +299,11 @@ export default {
           },
         });
       }
+    },
+
+
+    equipmentClick(e){
+          console.log(e.target)
     },
     // 初始化weosocket
     initWebSocket() {

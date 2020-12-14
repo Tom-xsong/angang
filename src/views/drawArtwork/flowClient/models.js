@@ -3,6 +3,9 @@ export function makeRectModel(x, y, w, h) {
   return {
     id: "rect" + new Date().getTime(),
     code: "",
+    equipmentType:"",
+    text:"",
+    associatedId:"",
     type: "rect",
     shape: {
       x: ~~x + 0.5,
@@ -28,6 +31,9 @@ export function makeImageModel(url, x, y, w, h) {
   return {
     id: "image" + new Date().getTime(),
     code: "",
+    equipmentType:"",
+    text:"",
+    associatedId:"",
     type: "image",
     style: {
       image: url,

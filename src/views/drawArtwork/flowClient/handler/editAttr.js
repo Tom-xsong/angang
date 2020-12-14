@@ -131,7 +131,11 @@ function openModifyStyle() {
   let param = {
     type: "rect",
     code: curRect.data.code,
-    style: curRect.style
+    style: curRect.style,
+    equipmentType: curRect.data.equipmentType,
+    text: curRect.data.text,
+    associatedId:curRect.data.associatedId
+
   };
   emit("handleOpen", param);
   removeMenu();
@@ -155,6 +159,9 @@ export function submitStyle(param, func) {
     curRect.setStyle(style);
     mapKey(curRect.data.style, style);
     curRect.data.code = style.code;
+    curRect.data.equipmentType = style.equipmentType;
+    curRect.data.text = style.text;
+    curRect.data.associatedId = style.associatedId;
   } else {
     curLine.attr({
       style: style

@@ -30,7 +30,7 @@
                 <el-option
                   v-for="(item, index) in info.objs"
                   :key="index"
-                  :label="item[0].name + '--->' + item[1].name"
+                  :label="item[0].name + '  --->  ' + item[1].name"
                   :value="index"
                 ></el-option>
               </el-select>
@@ -355,6 +355,19 @@ export default {
   left: 0 !important;
   top: 40px !important;
   border: 1px solid #1a61d9;
+}
+
+.route >>> .el-popper .popper__arrow::after{
+    content: " ";
+    border-width:0 !important;
+}
+
+.route >>> .el-popper .popper__arrow{
+  border-width:0 !important;
+}
+
+.route >>> .el-select .el-input .el-select__caret{
+  color: #1a61d9;
 }
 
 .route >>> .el-popper[x-placement^="bottom"] .popper__arrow::after {
