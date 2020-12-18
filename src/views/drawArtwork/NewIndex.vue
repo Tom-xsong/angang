@@ -85,25 +85,61 @@
             clearable
           ></el-input>
         </el-form-item>
-
-        <el-form-item label="关联id：" v-if="curType !== 'line'">
-          <el-input v-model="form.associatedId" :maxlength="100" clearable></el-input>
-        </el-form-item>
-
-        <!-- <el-form-item label="设备类型：" v-if="curType !== 'line'">
+        <el-form-item label="关联code：" v-if="curLabel == '检化验'|| curLabel == '计量秤'">
           <el-input
-            v-model="form.equipmentType"
+            v-model="form.associatedCode"
             :maxlength="100"
             clearable
           ></el-input>
-        </el-form-item> -->
-        <el-form-item label="设备类型：" v-if="curType !== 'line'">
-          <el-cascader
+        </el-form-item>
+
+
+        <el-form-item label="设备类型：" v-if="curType == 'image'">
+          <el-input
             v-model="form.equipmentType"
-            :options="options"
-            @change="handleChange"
+            :maxlength="100"
+             clearable
+            :disabled="false"
           >
-          </el-cascader>
+          </el-input>
+        </el-form-item>
+
+        <el-form-item label="设备类型： "  v-if="curType == 'rect'">
+           <el-input
+            v-model="form.equipmentType"
+            :maxlength="100"
+             clearable
+            :disabled="false"
+          >
+          </el-input>
+        </el-form-item>
+
+
+        <el-form-item label="设备状态： "  v-if="curType == 'image'&& curLabel !== '皮带秤'">
+          <el-select
+            v-model="form.state"
+            placeholder="选择状态"
+            clearable
+          >
+            <el-option label="报错" value="error"></el-option>
+            <el-option label="正常" value="success"></el-option>
+            <el-option label="警告" value="warning"></el-option>
+          </el-select>
+        </el-form-item>
+
+
+
+
+        <el-form-item label="设备状态： "  v-if="curType == 'image'&& curLabel == '皮带秤'">
+          <el-select
+            v-model="form.state"
+            placeholder="选择状态"
+            clearable
+          >
+            <el-option label="停止" value="stop"></el-option>
+            <el-option label="正常" value="success"></el-option>
+            <el-option label="警告" value="warning"></el-option>
+          </el-select>
         </el-form-item>
 
         <el-row>
@@ -295,59 +331,17 @@ export default {
         code: "",
         equipmentType: "",
         text: "",
-        associatedId:"",
+        associatedCode: "",
+        state:"",
         fontSize: 14,
         textFill: "#fff",
         textPosition: "inside",
         lineWidth: 1,
         stroke: "#00FF84",
         fill: "#002815",
-       
       },
       curType: "",
-
-      options: [
-        {
-          value: "rect",
-          label: "矩形",
-          children: [
-            {
-              value: "liaotiao",
-              label: "料条",
-            },
-            {
-              value: "tie",
-              label: "铁",
-            },
-          ],
-        },
-        {
-          value: "wareHouse",
-          label: "仓",
-        },
-        {
-          value: "mixWarehouse",
-          label: "配料仓",
-        },
-
-        {
-          value: "exposedHeap",
-          label: "露天堆场",
-        },
-        {
-          value: "beltScale",
-          label: "皮带秤",
-        },
-
-         {
-          value: "beltScale",
-          label: "计量秤",
-        },
-        {
-          value:"screeningTests",
-          label: "检化验",
-        }
-      ],
+      curLabel: "",
     };
   },
   mounted() {
@@ -383,11 +377,13 @@ export default {
     // 打开修改样式弹窗
     handleOpenStyle(param) {
       this.curType = param.type;
+      this.curLabel = param.label;
       mapValue(this.form, param.style);
       this.form.code = param.code;
       this.form.equipmentType = param.equipmentType;
       this.form.text = param.text;
-      this.form.associatedId = param.associatedId
+      this.form.associatedCode = param.associatedCode;
+      this.form.state= param.state;
       this.colorDialog = true;
     },
     // 修改样式确定

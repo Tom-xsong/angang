@@ -19,7 +19,7 @@ export function init(el, { addModel }) {
     let data;
     switch (obj.type) {
       case "rect":
-        data = makeRectModel(e.offsetX, e.offsetY, obj.width, obj.height);
+        data = makeRectModel(e.offsetX, e.offsetY, obj.width, obj.height,obj.label);
         break;
       case "image":
         data = makeImageModel(
@@ -27,7 +27,8 @@ export function init(el, { addModel }) {
           e.offsetX,
           e.offsetY,
           obj.width,
-          obj.height
+          obj.height,
+          obj.label
         );
         break;
       case "circle":

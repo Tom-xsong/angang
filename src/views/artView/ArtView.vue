@@ -15,6 +15,7 @@
         borderColor: li.borderColor,
         background: li.back,
       }"
+      @click="liaotiaoClick(li.info)"
     >
       <div class="name">{{ li.name }}</div>
       <div class="block">
@@ -27,8 +28,15 @@
         ></div>
       </div>
     </div>
-    <mix-box v-if="info.code =='MMS1'|| info.code=='MMS2'"></mix-box>
-    <work-box :info="info" v-else></work-box>
+    <!-- <mix-box></mix-box> -->
+     <!-- <stockyard-box :info="info" ></stockyard-box> -->
+    <!-- <process-box :info="info"></process-box> -->
+    <!-- <liaodui-box :info="info"></liaodui-box> -->
+    <!-- <coking-box :info="info"></coking-box> -->
+    <!-- <pelletizing-box>  </pelletizing-box> -->
+    <!-- <sinma-box></sinma-box> -->
+    <blastfurnace-box></blastfurnace-box>
+    
   </div>
 </template>
 
@@ -43,72 +51,110 @@
 //   stripProportion
 // } from "../../api/home";
 
-let belt = require("../../assets/image/belt-warning.png");
+//皮带图片
+let beltWarning = require("../../assets/image/belt-warning.png");
+let beltSuccess = require("../../assets/image/belt-success.png");
+let beltStop = require("../../assets/image/belt-stop.png");
+
+//大仓
+let wareError = require("../../assets/image/store1-error.png");
+let wareSuccess = require("../../assets/image/store1-success.png");
+let wareWarning = require("../../assets/image/store1-warning.png");
+
+//成品仓
+let finishedError = require("../../assets/image/store5-error.png");
+let finishedSuccess = require("../../assets/image/store5-success.png");
+let finishedWarning = require("../../assets/image/store5-warning.png");
+
+//配料仓
+let mixError = require("../../assets/image/store4-error.png");
+let mixSuccess = require("../../assets/image/store4-success.png");
+let mixWarning = require("../../assets/image/store4-warning.png");
+
+//露天堆厂
+let exposedError = require("../../assets/image/store3-error.png");
+let exposedSuccess = require("../../assets/image/store3-success.png");
+let exposedWarning = require("../../assets/image/store3-warning.png");
+
+//计量秤
+let scaleSuccess = require("../../assets/image/scale-success.png");
+let scaleWarning = require("../../assets/image/scale-warning.png");
+
+//检化验
+let testSuccess = require("../../assets/image/test-success.png");
+let testWarning = require("../../assets/image/test-warning.png");
+
 import zrender from "zrender";
 import { calcArrowCenter } from "../drawArtwork/flowClient/helpers";
+
+
 export default {
   name: "ArtView",
   components: {
     HeaderLogo: () => import("../../components/HeaderLogo"),
-    MixBox: () => import("./components/MixBox"),
-    WorkBox: () => import("./components/WorkBox")
+    // MixBox: () => import("./components/mixwell/MixBox"),
+    // StockyardBox: () => import("./components/stockyard/StockyardBox"),
+    // ProcessBox: () => import("./components/process/ProcessBox"),
+    // LiaoduiBox: () => import("./components/liaodui/LiaoduiBox"),
+    // CokingBox: () => import("./components/coking/CokingBox"),
+    // PelletizingBox: () => import("./components/pelletizing/PelletizingBox"),
+    //  sinmaBox: () => import("./components/sinteringmachine/sinmaBox"),
+     BlastfurnaceBox: () => import("./components/blastfurnace/BlastfurnaceBox"),
+
+
   },
   data() {
     return {
-
-       info:{
-        isShow:true,
-        objs:{name:"燃供码头"},
-        code:""
-
+      info: {
+        isShow: true,
+        objs: { name: "燃供码头" },
+        code: "",
       },
       zr: null,
       liaotArr: [],
     };
   },
   mounted() {
-      this.info.code = this.$route.query.code
-
-    
-     
-
+    this.info.code = this.$route.query.code;
 
     this.zr = zrender.init(document.getElementById("canvas"));
     this.getJSOnData();
     // 用来保存配有code的设备
     this.id2element = {};
 
-  //   secondAnalysis({ analysisCode: "1" }).then((res) => {
-  //     console.log(res);
-  //   });
+    this.id2elementLine = {};
+    this.id2elementCirle = {};
 
-  //   facilityStatus().then((res) => {
-  //     console.log(res);
-  //   });
+    //   secondAnalysis({ analysisCode: "1" }).then((res) => {
+    //     console.log(res);
+    //   });
 
-  //   feedAndReceiving({ storageCode: "1" }).then((res) => {
-  //     console.log(res);
-  //   });
+    //   facilityStatus().then((res) => {
+    //     console.log(res);
+    //   });
 
-  //   operationAreaFeedAndReceiving({ operationAreaCode: "SIN1" }).then((res) => {
-  //     console.log(res);
-  //   });
+    //   feedAndReceiving({ storageCode: "1" }).then((res) => {
+    //     console.log(res);
+    //   });
 
-  //   operationAreaMaterielStock({ operationAreaCode: "SIN1" }).then((res) => {
-  //     console.log(res);
-  //   });
+    //   operationAreaFeedAndReceiving({ operationAreaCode: "SIN1" }).then((res) => {
+    //     console.log(res);
+    //   });
 
-  //   processDetails({
-  //     analysisCode: "1",
-  //     processDetailsName: "第一区",
-  //   }).then((res) => {
-  //     console.log(res);
-  //   });
+    //   operationAreaMaterielStock({ operationAreaCode: "SIN1" }).then((res) => {
+    //     console.log(res);
+    //   });
 
-  //  stripProportion().then((res) => {
-  //     console.log(res);
-  //   });
-    
+    //   processDetails({
+    //     analysisCode: "1",
+    //     processDetailsName: "第一区",
+    //   }).then((res) => {
+    //     console.log(res);
+    //   });
+
+    //  stripProportion().then((res) => {
+    //     console.log(res);
+    //   });
   },
   methods: {
     // 获取json数据
@@ -126,6 +172,7 @@ export default {
             _this.drawRect(rectData);
           }
           let lineData = json.lineData;
+          this.line = json.lineData;
           if (lineData) {
             _this.drawLine(lineData);
           }
@@ -190,7 +237,9 @@ export default {
           this.zr.add(text);
         }
       }
-      this.changeState();
+
+     
+
     },
     // 绘制线段
     drawLine(lineData) {
@@ -200,8 +249,15 @@ export default {
           shape: lineData[i].shape,
           style: lineData[i].style,
           zlevel: 1,
+          data: lineData[i],
         });
         this.zr.add(polyline);
+
+        if (lineData[i].id) {
+
+          this.id2elementLine[lineData[i].id] = polyline;
+        }
+
         let rotation = "";
         let j = points.length - 1;
         let direction = lineData[i].direction;
@@ -236,13 +292,175 @@ export default {
           origin: [x, y],
         });
         this.zr.add(triangle);
-        if (lineData[i].animate) {
-          this.circleAnimate(points, lineData[i].style.stroke);
-        }
+        // if (lineData[i].animate) {
+        //   this.circleAnimate(points, lineData[i].style.stroke,lineData[i].id);
+        // }
       }
+
+       
+      //  改变状态
+      for (let i in this.id2element) {
+        let state = this.id2element[i].data.state;
+         console.log("222"+state)
+         this.changeImage(state ,i);
+         this.changeAnimate(state,i);
+
+
+      }
+
+     
+    
+     
+      
     },
+    
+
+    //根据状态改变图片
+    changeImage(state,i) {
+      
+        let imageUrl = "";
+        if (this.id2element[i].data.equipmentType == "皮带秤") {
+          switch (state) {
+            case "stop":
+              imageUrl = beltStop;
+              break;
+            case "warning":
+              imageUrl = beltWarning;
+              break;
+            case "success":
+              imageUrl = beltSuccess;
+              break;
+          }
+        }
+
+       else if (this.id2element[i].data.equipmentType == "配料仓") {
+          switch (state) {
+            case "error":
+              imageUrl = mixError;
+              break;
+            case "warning":
+              imageUrl = mixWarning;
+              break;
+            case "success":
+              imageUrl = mixSuccess;
+              break;
+          }
+        }
+
+        else if (this.id2element[i].data.equipmentType == "成品仓") {
+          switch (state) {
+            case "error":
+              imageUrl = finishedError;
+              break;
+            case "warning":
+              imageUrl = finishedWarning;
+              break;
+            case "success":
+              imageUrl = finishedSuccess;
+              break;
+          }
+        }
+
+      else if (this.id2element[i].data.equipmentType == "大仓") {
+          switch (state) {
+            case "error":
+              imageUrl = wareError;
+              break;
+            case "warning":
+              imageUrl = wareWarning;
+              break;
+            case "success":
+              imageUrl = wareSuccess;
+              break;
+          }
+        }
+
+       else if (this.id2element[i].data.equipmentType == "露天堆场") {
+          switch (state) {
+            case "error":
+              imageUrl = exposedError;
+              break;
+            case "warning":
+              imageUrl = exposedWarning;
+              break;
+            case "success":
+              imageUrl = exposedSuccess;
+              break;
+          }
+        }
+
+       else if (this.id2element[i].data.equipmentType == "计量秤") {
+          switch (state) {
+            case "warning":
+              imageUrl = scaleWarning;
+              break;
+            case "success":
+              imageUrl = scaleSuccess;
+              break;
+          }
+        }
+
+       else if (this.id2element[i].data.equipmentType == "检化验") {
+          switch (state) {
+            case "warning":
+              imageUrl = testWarning;
+              break;
+            case "success":
+              imageUrl = testSuccess;
+              break;
+          }
+        }
+
+        this.id2element[i].attr({
+          style: {
+            image: imageUrl,
+          },
+        });
+      
+    },
+
+    // 根据状态改变动画
+    changeAnimate(state,i) {
+    
+        console.log(this.id2element[i], state);
+
+        if (this.id2element[i].data.lineRelations) {
+          let lineArrs = this.id2element[i].data.lineRelations.filter(
+            (item) => {
+              return item.isStart == true;
+            }
+          );
+
+          lineArrs.forEach((item) => {
+            let line = this.id2elementLine[item.id];
+
+            if (line.data.animate) {
+              if (state == "stop" || state == "error") {
+                let cir = this.id2elementCirle[line.data.id];
+                if (cir) {
+                  this.zr.remove(cir);
+                  delete this.id2elementCirle[line.data.id];
+                  
+                }
+              }
+
+              if (state == "success" || state == "warning") {
+                this.circleAnimate(
+                  line.data.shape.points,
+                  line.data.style.stroke,
+                  line.data.id
+                );
+               
+              }
+            } 
+            
+          });
+        }
+      
+    },
+
     // 动画
-    circleAnimate(polyline, color) {
+    circleAnimate(polyline, color, id) {
       // 实心圆
       let cir = new zrender.Circle({
         shape: {
@@ -256,6 +474,8 @@ export default {
       });
       this.zr.add(cir);
       const animation = cir.animate("shape", true);
+      this.id2elementCirle[id] = cir;
+
       let delay = 0;
       for (let i = 1; i < polyline.length; i++) {
         const prev = polyline[i - 1];
@@ -274,7 +494,12 @@ export default {
     // div绘制料条分层
     getLiaotiao(data) {
       let obj = {
-        code: data.code,
+        info: {
+          code: data.code,
+          equipmentType: data.equipmentType,
+          text: data.text,
+          associatedCode: data.associatedCode,
+        },
         width: data.shape.width,
         height: data.shape.height,
         left: data.shape.x,
@@ -287,23 +512,13 @@ export default {
       };
       this.liaotArr.push(obj);
     },
-    // 更换图片
-    changeState() {
-      let code = "belt1";
-      let rect = this.id2element[code];
-      if (rect) {
-        rect.data.style.image = belt;
-        rect.attr({
-          style: {
-            image: belt,
-          },
-        });
-      }
+
+    equipmentClick(e) {
+      console.log(e.target);
     },
 
-
-    equipmentClick(e){
-          console.log(e.target)
+    liaotiaoClick(info) {
+      console.log(info);
     },
     // 初始化weosocket
     initWebSocket() {

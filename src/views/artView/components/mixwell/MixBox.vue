@@ -13,7 +13,7 @@
 
         <div class="title">
           <span>受料/消耗情况</span>
-          <img src="../../../assets/title-bg.png" />
+          <img src="../../../../assets/title-bg.png" />
         </div>
 
         <!-- 柱状图 -->
@@ -54,7 +54,7 @@
 
         <div class="title">
           <span>原料库存</span>
-          <img src="../../../assets/title-bg.png" />
+          <img src="../../../../assets/title-bg.png" />
         </div>
 
         <div class="Pie-chart-box">
@@ -83,7 +83,7 @@
 
         <div class="title">
           <span>产品数据库</span>
-          <img src="../../../assets/title-bg.png" />
+          <img src="../../../../assets/title-bg.png" />
         </div>
 
         <div class="product-data">
@@ -114,8 +114,8 @@
 </template>
 
 <script>
-import { brokenLine, pieChart, barChart } from "./chart";
-// import { storageProduct,storageMaterielStock} from "../../../api/home";
+import { brokenLine, pieChart, barChart } from "./charts";
+// import { storageProduct,storageMaterielStock} from "../../../../api/home";
 export default {
   data() {
     return {
@@ -229,7 +229,7 @@ export default {
 .mix .btn-open {
   width: 53px;
   height: 120px;
-  background: url("../../../assets/tag.png") no-repeat center;
+  background: url("../../../../assets/tag.png") no-repeat center;
   background-size: 100% 100%;
   position: absolute;
   right: 0;
@@ -249,7 +249,7 @@ export default {
 .mix .btn-close {
   width: 53px;
   height: 120px;
-  background: url("../../../assets/tag.png") no-repeat center;
+  background: url("../../../../assets/tag.png") no-repeat center;
   position: absolute;
   right: 394px;
   top: 480px;
@@ -590,20 +590,5 @@ export default {
   height: 250px;
 }
 
-/* <div class="product-data">
-        <div class="top">
-          <el-form :inline="true" :model="form" class="demo-form-inline">
-            <el-form-item class="input-select" label="产品矿">
-              <el-select
-                :popper-append-to-body="false"
-                v-model="form.region"
-                placeholder="路径选择"
-              >
-                <el-option label="混匀矿" value="shanghai"></el-option>
-                <el-option label="巴西矿" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
-        </div>
-      </div> */
+
 </style>

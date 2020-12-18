@@ -129,12 +129,14 @@ function makeLineMenu() {
 function openModifyStyle() {
   curType = "rect";
   let param = {
-    type: "rect",
+    type: curRect.data.type,
+    label:curRect.data.label,
     code: curRect.data.code,
     style: curRect.style,
     equipmentType: curRect.data.equipmentType,
     text: curRect.data.text,
-    associatedId:curRect.data.associatedId
+    associatedCode:curRect.data.associatedCode,
+    state:curRect.data.state
 
   };
   emit("handleOpen", param);
@@ -161,7 +163,8 @@ export function submitStyle(param, func) {
     curRect.data.code = style.code;
     curRect.data.equipmentType = style.equipmentType;
     curRect.data.text = style.text;
-    curRect.data.associatedId = style.associatedId;
+    curRect.data.associatedCode = style.associatedCode;
+    curRect.data.state = style.state;
   } else {
     curLine.attr({
       style: style

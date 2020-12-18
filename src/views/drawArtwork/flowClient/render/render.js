@@ -29,7 +29,14 @@ export function getLineModelList() {
 }
 
 export function initRender(el) {
-  zr = initZR(el);
+  zr = initZR(el,{
+    renderer:'canvas',       
+    devicePixelRatio:1,      
+    width:'1920px',           
+    height:'1080px'           
+}
+
+);
   id2element = {};
 }
 

@@ -1,12 +1,12 @@
 // 画矩形
-export function makeRectModel(x, y, w, h) {
+export function makeRectModel(x, y, w, h,label) {
   return {
     id: "rect" + new Date().getTime(),
     code: "",
     equipmentType:"",
     text:"",
-    associatedId:"",
     type: "rect",
+    label:label,
     shape: {
       x: ~~x + 0.5,
       y: ~~y + 0.5,
@@ -14,6 +14,7 @@ export function makeRectModel(x, y, w, h) {
       height: h
     },
     style: {
+      state:"stop",
       lineWidth: 2,
       stroke: "#00FF84",
       fill: "#002815",
@@ -22,19 +23,24 @@ export function makeRectModel(x, y, w, h) {
       textFill: "#fff",
       textPosition: "inside"
     },
-    lineRelations: []
+    zlevel: -100,
+    lineRelations: [],
+    
   };
+  
 }
 
 // 画图片
-export function makeImageModel(url, x, y, w, h) {
+export function makeImageModel(url, x, y, w, h,label) {
   return {
     id: "image" + new Date().getTime(),
     code: "",
-    equipmentType:"",
+    equipmentType:label,
     text:"",
-    associatedId:"",
+    associatedCode:"",
     type: "image",
+    label:label,
+    state:"",
     style: {
       image: url,
       x: ~~x + 0.5,

@@ -1,5 +1,5 @@
 <template>
-  <div class="work">
+  <div class="stockyard">
     <div class="btn-open" @click="info.isShow = true">
       <p>展开</p>
     </div>
@@ -18,7 +18,7 @@
 
         <div class="title">
           <span>作业区情况</span>
-          <img src="../../../assets/title-bg.png" />
+          <img src="../../../../assets/title-bg.png" />
         </div>
 
         <div class="yuanliao">
@@ -45,7 +45,7 @@
 
         <div class="title">
           <span>供/受料情况</span>
-          <img src="../../../assets/title-bg.png" />
+          <img src="../../../../assets/title-bg.png" />
         </div>
 
         <!-- 柱状图 -->
@@ -83,7 +83,7 @@
 
         <div class="title">
           <span>检化验情况</span>
-          <img src="../../../assets/title-bg.png" />
+          <img src="../../../../assets/title-bg.png" />
         </div>
 
         <!-- 搜索表单 -->
@@ -161,12 +161,12 @@
 </template>
 
 <script>
-import {
-  workArea,
-  workAreaShou,
-  workAreaJian,
-  workAreaAll,
-} from "../../../api/home";
+// import {
+//   workArea,
+//   workAreaShou,
+//   workAreaJian,
+//   workAreaAll,
+// } from "../../../../api/home";
 export default {
   props: ["info"],
   data() {
@@ -262,38 +262,38 @@ export default {
   },
 
   mounted() {
-    workArea({ operationAreaCode: "BF1" }).then((res) => {
-      console.log(res);
-    }),
-      workAreaShou({ operationAreaCode: "BF1" }).then((res) => {
-        console.log(res);
-      });
+    // workArea({ operationAreaCode: "BF1" }).then((res) => {
+    //   console.log(res);
+    // }),
+    //   workAreaShou({ operationAreaCode: "BF1" }).then((res) => {
+    //     console.log(res);
+    //   });
 
-    workAreaJian({
-      analysisFrequency: "1",
-      materielCode: "1",
-      materielName: "1",
-      operationAreaCode: "SIN1",
-    }).then((res) => {
-      console.log(res);
-    });
+    // workAreaJian({
+    //   analysisFrequency: "1",
+    //   materielCode: "1",
+    //   materielName: "1",
+    //   operationAreaCode: "SIN1",
+    // }).then((res) => {
+    //   console.log(res);
+    // });
 
-    workAreaAll().then((res) => {
-      console.log(res);
-    });
+    // workAreaAll().then((res) => {
+    //   console.log(res);
+    // });
   },
 };
 </script>
 
 <style  scoped>
-.work >>> .el-drawer__wrapper {
+.stockyard >>> .el-drawer__wrapper {
   position: absolute;
   right: 0;
   top: 0;
   height: 1080px;
 }
 
-.work >>> .el-drawer__wrapper .el-drawer.rtl {
+.stockyard >>> .el-drawer__wrapper .el-drawer.rtl {
   width: 750px;
   border: 0;
   background: linear-gradient(
@@ -304,21 +304,21 @@ export default {
   );
 }
 
-.work >>> .el-drawer__wrapper .el-drawer.rtl:focus {
+.stockyard >>> .el-drawer__wrapper .el-drawer.rtl:focus {
   outline: 0;
 }
 
-.work .btn-open {
+.stockyard .btn-open {
   width: 53px;
   height: 120px;
-  background: url("../../../assets/tag.png") no-repeat center;
+  background: url("../../../../assets/tag.png") no-repeat center;
   background-size: 100% 100%;
   position: absolute;
   right: 0;
   top: 460px;
 }
 
-.work .btn-open p {
+.stockyard .btn-open p {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -328,16 +328,16 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work .btn-close {
+.stockyard .btn-close {
   width: 53px;
   height: 120px;
-  background: url("../../../assets/tag.png") no-repeat center;
+  background: url("../../../../assets/tag.png") no-repeat center;
   position: absolute;
   right: 394px;
   top: 480px;
 }
 
-.work .btn-close p {
+.stockyard .btn-close p {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -347,19 +347,19 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work .main {
+.stockyard .main {
   width: 370px;
   height: 100%;
   float: right;
 }
 
-.work .main .main-top {
+.stockyard .main .main-top {
   overflow: hidden;
   width: 350px;
   margin-bottom: 20px;
 }
 
-.work .title-logo {
+.stockyard .title-logo {
   float: left;
   margin-top: 20px;
   margin-right: 20px;
@@ -368,7 +368,7 @@ export default {
   background: linear-gradient(180deg, #042055 0%, #1a63de 100%);
 }
 
-.work .title-text {
+.stockyard .title-text {
   margin-top: 15px;
   float: left;
   font-size: 24px;
@@ -377,7 +377,7 @@ export default {
   overflow: hidden;
 }
 
-.work .btn-enter {
+.stockyard .btn-enter {
   float: right;
   margin-top: 15px;
   width: 72px;
@@ -388,7 +388,7 @@ export default {
   padding: 0;
 }
 
-.work .main .title {
+.stockyard .main .title {
   width: 350px;
   height: 30px;
   padding-left: 16px;
@@ -407,29 +407,29 @@ export default {
   overflow: hidden;
 }
 
-.work .main .title span {
+.stockyard .main .title span {
   float: left;
   color: #ffffff;
   line-height: 30px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work .main .title img {
+.stockyard .main .title img {
   float: right;
   margin-top: 10px;
 }
 
-.work .main .yuanliao {
+.stockyard .main .yuanliao {
   width: 350px;
   overflow: hidden;
 }
 
-.work .main .yuanliao .yuanliao-top {
+.stockyard .main .yuanliao .yuanliao-top {
   width: 350px;
   overflow: hidden;
 }
 
-.work .main .yuanliao .yuanliao-top .title1 {
+.stockyard .main .yuanliao .yuanliao-top .title1 {
   float: left;
   margin: 15px 0 10px 20px;
   font-size: 14px;
@@ -438,7 +438,7 @@ export default {
   color: #ffffff;
 }
 
-.work .main .yuanliao .yuanliao-top .title2 {
+.stockyard .main .yuanliao .yuanliao-top .title2 {
   float: right;
   margin: 15px 20px 10px 0;
   font-size: 14px;
@@ -447,20 +447,20 @@ export default {
   color: #ffffff;
 }
 
-.work .main .yuanliao .content {
+.stockyard .main .yuanliao .content {
   width: 350px;
   overflow: hidden;
 }
 
-.work .main .yuanliao .content li {
+.stockyard .main .yuanliao .content li {
   width: 350px;
   height: 25px;
-  background: url("../../../assets/rectbg.png") no-repeat center;
+  background: url("../../../../assets/rectbg.png") no-repeat center;
   background-size: 100% 100%;
   margin-top: 10px;
 }
 
-.work .main .yuanliao .content li .name {
+.stockyard .main .yuanliao .content li .name {
   float: left;
   margin-left: 20px;
   font-size: 12px;
@@ -470,7 +470,7 @@ export default {
   line-height: 25px;
 }
 
-.work .main .yuanliao .content li .num {
+.stockyard .main .yuanliao .content li .num {
   float: right;
   margin-right: 20px;
   font-size: 12px;
@@ -480,29 +480,29 @@ export default {
   line-height: 25px;
 }
 
-.work .bar-chart {
+.stockyard .bar-chart {
   width: 350px;
   overflow: hidden;
   margin: 10px 0;
 }
 
-.work .sign {
+.stockyard .sign {
   width: 350px;
   overflow: hidden;
   margin-top: 10px;
 }
 
-.work .sign div {
+.stockyard .sign div {
   float: right;
 }
 
-.work .sign .gong {
+.stockyard .sign .gong {
   width: 10px;
   height: 10px;
   background: #0f7ae9;
 }
 
-.work .sign .gong-text {
+.stockyard .sign .gong-text {
   height: 10px;
   line-height: 10px;
   color: #fff;
@@ -510,13 +510,13 @@ export default {
   margin-right: 20px;
 }
 
-.work .sign .shou {
+.stockyard .sign .shou {
   width: 10px;
   height: 10px;
   background: #0bcdff;
 }
 
-.work .sign .shou-text {
+.stockyard .sign .shou-text {
   height: 10px;
   line-height: 10px;
   color: #fff;
@@ -524,39 +524,39 @@ export default {
   margin-right: 20px;
 }
 
-.work .bar-chart .list1 {
+.stockyard .bar-chart .list1 {
   width: 350px;
   overflow: auto;
   height: 150px;
   margin-top: 20px;
 }
 
-.work .bar-chart .list1::-webkit-scrollbar {
+.stockyard .bar-chart .list1::-webkit-scrollbar {
   width: 0;
 }
 
-.work .bar-chart .item {
+.stockyard .bar-chart .item {
   width: 350px;
   height: 10px;
 
   margin-top: 10px;
 }
 
-.work .bar-chart .item .box {
+.stockyard .bar-chart .item .box {
   float: left;
   width: 300px;
   height: 100%;
   overflow: hidden;
 }
 
-.work .bar-chart .item .box .item-gong {
+.stockyard .bar-chart .item .box .item-gong {
   float: left;
   width: 100px;
   height: 100%;
   background: #0f7ae9;
 }
 
-.work .bar-chart .item .box .item-shou {
+.stockyard .bar-chart .item .box .item-shou {
   float: left;
   width: 100px;
   height: 100%;
@@ -564,37 +564,37 @@ export default {
   background: #0bcdff;
 }
 
-.work .bar-chart .item .item-text {
+.stockyard .bar-chart .item .item-text {
   float: right;
   color: #fff;
   font-size: 10px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work .bar-chart .x-num {
+.stockyard .bar-chart .x-num {
   width: 350px;
   height: 30px;
   position: relative;
 }
 
-.work .bar-chart .x-num span {
+.stockyard .bar-chart .x-num span {
   margin-top: 5px;
   color: #fff;
   font-size: 12px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work .main .search {
+.stockyard .main .search {
   width: 350px;
   overflow: hidden;
   margin: 10px 0;
 }
 
-.work .main .search .el-form-item {
+.stockyard .main .search .el-form-item {
   margin-bottom: 10px;
 }
 
-.work >>> .main .search .el-input__inner {
+.stockyard >>> .main .search .el-input__inner {
   width: 96px;
   height: 28px;
   border-radius: 2px;
@@ -603,7 +603,7 @@ export default {
   color: #fff;
 }
 
-.work >>> .search .el-form-item__label {
+.stockyard >>> .search .el-form-item__label {
   font-size: 16px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
@@ -611,15 +611,15 @@ export default {
   padding: 0 !important;
 }
 
-.work >>> .search .jhypc .el-form-item__label {
+.stockyard >>> .search .jhypc .el-form-item__label {
   width: 90px !important;
 }
 
-.work >>> .search .jhypc .el-input__inner {
+.stockyard >>> .search .jhypc .el-input__inner {
   width: 250px;
 }
 
-.work .main table {
+.stockyard .main table {
   table-layout: fixed;
   width: 350px;
   border-collapse: collapse;
@@ -627,27 +627,27 @@ export default {
   border: 1px solid #1183f8;
 }
 
-.work .main table tr {
+.stockyard .main table tr {
   height: 25px;
 }
 
-.work .table {
+.stockyard .table {
   margin-bottom: 20px;
 }
 
-.work .main table td {
+.stockyard .main table td {
   font-size: 12px;
   color: #fff;
   border: 1px solid #1187ff;
   text-align: center;
 }
 
-.work .main table .query {
+.stockyard .main table .query {
   color: #1187ff;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work .table-list {
+.stockyard .table-list {
   display: flex;
   flex-wrap: nowrap;
   overflow: auto;
@@ -656,13 +656,13 @@ export default {
   border-left: 1px solid #1183f8;
 }
 
-.work .table-list::-webkit-scrollbar {
+.stockyard .table-list::-webkit-scrollbar {
   width: 10px;
 
   height: 10px;
 }
 
-.work .table-list::-webkit-scrollbar-thumb {
+.stockyard .table-list::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
 
   border-radius: 10px;
@@ -670,7 +670,7 @@ export default {
   background: #1183f8;
 }
 
-.work .table-list::-webkit-scrollbar-track {
+.stockyard .table-list::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
 
   border-radius: 10px;
@@ -678,10 +678,10 @@ export default {
   background: #ededed;
 }
 
-.work .table-list li {
+.stockyard .table-list li {
   justify-content: flex-start;
 }
-.work .table-list li div {
+.stockyard .table-list li div {
   padding: 0 12px;
   height: 25px;
   color: #fff;
@@ -692,21 +692,21 @@ export default {
   border-bottom: 1px solid #1183f8;
 }
 
-.work .pagination-box {
+.stockyard .pagination-box {
   width: 350px;
   height: 20px;
   overflow: hidden;
   position: relative;
   margin: 20px 0 20px 0;
 }
-.work >>> .el-pagination {
+.stockyard >>> .el-pagination {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translate(-50%,0);
 } 
 
-.work >>> .el-pagination.is-background .el-pager li {
+.stockyard >>> .el-pagination.is-background .el-pager li {
   min-width: 16px;
   width: 20px;
   height: 20px;
@@ -717,7 +717,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work >>> .el-pagination.is-background .btn-prev {
+.stockyard >>> .el-pagination.is-background .btn-prev {
   min-width: 16px;
   width: 20px;
   height: 20px;
@@ -726,13 +726,13 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
+.stockyard >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
   background: #1187ff;
   color: #fff;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work >>> .el-pagination.is-background .btn-next {
+.stockyard >>> .el-pagination.is-background .btn-next {
   min-width: 16px;
   width: 20px;
   height: 20px;

@@ -70,6 +70,11 @@ export function post(url, params) {
 
 
 
+//文件上传封装
+
+
+
+
 
 
 
