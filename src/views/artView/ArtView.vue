@@ -538,12 +538,12 @@ export default {
       console.log(e.target);
       let type = e.target.data.equipmentType
       let state = e.target.data.state
-      if(type == "皮带" && (state == "success" || "warning")){
+      if(type == "皮带" && (state == "success" || state == "warning")){
        this.info.type="belt";
        this.info.isShow =true
         
       }
-      else if(type == "皮带" && (state == "success" || "warning")){
+      else if(type == "配料仓" && (state == "success" || state == "warning")){
        this.info.type="store";
        this.info.isShow =true
 
