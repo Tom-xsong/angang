@@ -1,4 +1,4 @@
-import { init as initZR, Rect, Image, Polyline, Circle, Isogon } from "zrender";
+import { init as initZR, Rect, Image, Polyline, Circle, Isogon,Text} from "zrender";
 import {
   calcArrowCenter,
   makeRectVertexes,
@@ -11,7 +11,10 @@ import { circleAnimate } from "../handler/editAttr";
 let zr = null;
 let rectModelList = [];
 let lineModelList = [];
+let textModelList = [];
 let id2element = {};
+// let animationElement={};
+// let circleElement = {};
 
 export function getZR() {
   return zr;
@@ -26,6 +29,10 @@ export function getRectModelList() {
 }
 export function getLineModelList() {
   return lineModelList;
+}
+
+export function getTextModelList() {
+  return textModelList;
 }
 
 export function initRender(el) {
@@ -55,6 +62,8 @@ export function add(data) {
     case "line":
       renderLine(data);
       break;
+    case "text":
+      renderText(data)
   }
 }
 
@@ -63,6 +72,7 @@ export function clearAll() {
   zr.clear();
   rectModelList = [];
   lineModelList = [];
+  textModelList = [];
   id2element = {};
 }
 
@@ -71,7 +81,7 @@ function renderRect(data) {
   const rect = new Rect({
     shape: data.shape,
     style: data.style,
-    zlevel: 2,
+    zlevel: data.z,
     data
   });
   zr.add(rect);
@@ -83,7 +93,7 @@ function renderRect(data) {
 function renderImage(data) {
   const image = new Image({
     style: data.style,
-    zlevel: 3,
+    zlevel: 10,
     data
   });
   zr.add(image);
@@ -96,7 +106,7 @@ function renderCircle(data) {
   const circle = new Circle({
     shape: data.shape,
     style: data.style,
-    zlevel: 3,
+    zlevel: 10,
     data
   });
   zr.add(circle);
@@ -109,7 +119,7 @@ export function renderLine(data, silent) {
   const polyline = new Polyline({
     shape: data.shape,
     style: data.style,
-    zlevel: 1,
+    zlevel: 5,
     data,
     silent
   });
@@ -125,7 +135,7 @@ export function renderLine(data, silent) {
     );
   }
   if (data.animate) {
-    circleAnimate(data.shape.points, data.style.stroke);
+    circleAnimate(polyline,data.shape.points, data.style.stroke);
   }
   return polyline;
 }
@@ -152,7 +162,7 @@ export function renderRectVertexes(rect) {
         fill: "#fff",
         stroke: "#999"
       },
-      zlevel: 3,
+      zlevel: 10,
       draggable: true
     });
     zr.add(circle);
@@ -191,7 +201,7 @@ export function renderArrow(point, color, direction) {
       stroke: color,
       lineWidth: 1
     },
-    zlevel: 2,
+    zlevel: 10,
     rotation: Math.PI * rotation,
     origin: [x, y],
     direction
@@ -199,3 +209,23 @@ export function renderArrow(point, color, direction) {
   zr.add(triangle);
   return triangle;
 }
+
+
+
+//绘制文本
+function renderText(data) {
+  console.log("2332")
+  const text = new Text({
+    style: data.style,
+    zlevel: 100,
+    data
+  });
+  zr.add(text);
+  textModelList.push(data);
+  id2element[data.id] = text;
+  console.log(textModelList,id2element)
+}
+
+
+
+

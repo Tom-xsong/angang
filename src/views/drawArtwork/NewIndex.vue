@@ -34,8 +34,51 @@
         </li>
         <li class="item danger" @click="clearAllState">清除状态</li>
       </ol>
+
+      <div class="art-set">
+        <el-form :inline="true" class="demo-form-inline">
+          <el-form-item label="画布宽:">
+            <el-input
+              class="input"
+              @change="changeArt"
+              v-model="canvasSize.width"
+              placeholder="请输入宽"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="画布高:">
+            <el-input
+              class="input"
+              @change="changeArt"
+              v-model="canvasSize.height"
+              placeholder="请输入高"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="当前作业区图:">
+            <el-select
+              @change="changeArtCode"
+              v-model="artCode"
+              placeholder="选择图"
+            >
+              <el-option
+                v-for="item in artArr"
+                :key="item.id"
+                :label="item.name"
+                :value="item.code"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item>
+            <el-button @click="dialogVisible = true" class="submit-btn" type="primary"
+              >提交</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </div>
       <div class="button">
-        <el-button size="small" @click.stop="handleClear">清除</el-button>
+        <el-button size="small" @click.stop="handleClear(true)">清除</el-button>
         <el-button size="small" type="primary" @click.stop="handleSave"
           >保存</el-button
         >
@@ -64,6 +107,29 @@
         <div class="wrap" ref="configWrap" @dragstart.prevent></div>
       </div>
     </div>
+
+    <!-- 数据提交弹框 -->
+    <el-dialog :title="artObj.code==''?'添加':'修改'" :visible.sync="dialogVisible" width="20%">
+     
+      <el-form  label-width="80px">
+        <el-form-item label="name:">
+          <el-input v-model="artObj.name"></el-input>
+        </el-form-item>
+        <el-form-item label="code:">
+          <el-input  v-model="artObj.code"></el-input>
+        </el-form-item>
+        <el-form-item label="id:">
+          <el-input v-model="artObj.id"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dataSubmit"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+
     <!-- 修改矩形样式 -->
     <el-dialog
       title="修改样式"
@@ -72,10 +138,13 @@
       width="400px"
     >
       <el-form size="small" :model="form" label-width="100px">
-        <el-form-item label="设备编码：" v-if="curType !== 'line'">
+        <el-form-item
+          label="设备编码："
+          v-if="curType !== 'line' && curType !== 'text'"
+        >
           <el-input v-model="form.code" :maxlength="100" clearable></el-input>
         </el-form-item>
-        <el-form-item label="设备名称：">
+        <el-form-item label="名称：">
           <el-input
             type="textarea"
             :rows="2"
@@ -85,7 +154,10 @@
             clearable
           ></el-input>
         </el-form-item>
-        <el-form-item label="关联code：" v-if="curLabel == '检化验'|| curLabel == '计量秤'">
+        <el-form-item
+          label="关联code："
+          v-if="curLabel == '检化验' || curLabel == '计量秤'"
+        >
           <el-input
             v-model="form.associatedCode"
             :maxlength="100"
@@ -93,49 +165,35 @@
           ></el-input>
         </el-form-item>
 
-
-        <el-form-item label="设备类型：" v-if="curType == 'image'">
+        <el-form-item
+          label="设备类型： "
+          v-if="curType == 'rect' || curType == 'image'"
+        >
           <el-input
             v-model="form.equipmentType"
             :maxlength="100"
-             clearable
-            :disabled="false"
-          >
-          </el-input>
-        </el-form-item>
-
-        <el-form-item label="设备类型： "  v-if="curType == 'rect'">
-           <el-input
-            v-model="form.equipmentType"
-            :maxlength="100"
-             clearable
-            :disabled="false"
-          >
-          </el-input>
-        </el-form-item>
-
-
-        <el-form-item label="设备状态： "  v-if="curType == 'image'&& curLabel !== '皮带秤'">
-          <el-select
-            v-model="form.state"
-            placeholder="选择状态"
             clearable
+            :disabled="false"
           >
+          </el-input>
+        </el-form-item>
+
+        <el-form-item
+          label="设备状态： "
+          v-if="curType == 'image' && curLabel !== '皮带'"
+        >
+          <el-select v-model="form.state" placeholder="选择状态" clearable>
             <el-option label="报错" value="error"></el-option>
             <el-option label="正常" value="success"></el-option>
             <el-option label="警告" value="warning"></el-option>
           </el-select>
         </el-form-item>
 
-
-
-
-        <el-form-item label="设备状态： "  v-if="curType == 'image'&& curLabel == '皮带秤'">
-          <el-select
-            v-model="form.state"
-            placeholder="选择状态"
-            clearable
-          >
+        <el-form-item
+          label="设备状态： "
+          v-if="curType == 'image' && curLabel == '皮带'"
+        >
+          <el-select v-model="form.state" placeholder="选择状态" clearable>
             <el-option label="停止" value="stop"></el-option>
             <el-option label="正常" value="success"></el-option>
             <el-option label="警告" value="warning"></el-option>
@@ -144,7 +202,7 @@
 
         <el-row>
           <el-col :span="15">
-            <el-form-item label="文字大小：">
+            <el-form-item label="文字大小：" v-if="curLabel !== 'line'">
               <el-input-number
                 v-model="form.fontSize"
                 :min="10"
@@ -154,12 +212,15 @@
             </el-form-item>
           </el-col>
           <el-col :span="9">
-            <el-form-item label="文字颜色：">
+            <el-form-item label="文字颜色：" v-if="curLabel !== 'line'">
               <el-color-picker v-model="form.textFill"></el-color-picker>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="文字位置：">
+        <el-form-item
+          label="文字位置："
+          v-if="curType == 'rect' || curType == 'image'"
+        >
           <el-radio-group v-model="form.textPosition">
             <el-radio-button v-for="li in posArr" :label="li.id" :key="li.id">{{
               li.text
@@ -168,7 +229,10 @@
         </el-form-item>
         <el-row>
           <el-col :span="15">
-            <el-form-item label="边框宽度：">
+            <el-form-item
+              label="边框宽度："
+              v-if="curType == 'rect' || curType == 'line'"
+            >
               <el-input-number
                 v-model="form.lineWidth"
                 :min="0"
@@ -178,12 +242,15 @@
             </el-form-item>
           </el-col>
           <el-col :span="9">
-            <el-form-item label="边框颜色：">
+            <el-form-item
+              label="边框颜色："
+              v-if="curType == 'rect' || curType == 'line'"
+            >
               <el-color-picker v-model="form.stroke"></el-color-picker>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="背景颜色：">
+        <el-form-item label="背景颜色：" v-if="curType == 'rect'">
           <el-color-picker v-model="form.fill"></el-color-picker>
         </el-form-item>
       </el-form>
@@ -212,8 +279,10 @@ import {
 } from "./flowClient/index";
 import {
   add,
+  getZR,
   getRectModelList,
   getLineModelList,
+  getTextModelList,
   clearAll,
 } from "./flowClient/render/render";
 import { on, off } from "./flowClient/event/index";
@@ -227,8 +296,8 @@ let image5 = require("../../assets/image/store5-success.png");
 let belt = require("../../assets/image/belt-success.png");
 let scale = require("../../assets/image/scale-success.png");
 let test = require("../../assets/image/test-success.png");
-let tip = require("../../assets/image/tip-success.png");
 
+import { addOrUpdate, workArtList, workArtdetail } from "../../api/home";
 export default {
   name: "Test",
   components: {
@@ -244,10 +313,27 @@ export default {
           width: 70,
           height: 30,
         },
+
+        {
+          id: 10,
+          type: "rect",
+          label: "虚线框",
+          width: 70,
+          height: 30,
+        },
+
+        {
+          id: 11,
+          type: "text",
+          label: "文本",
+          width: 70,
+          height: 30,
+        },
+
         {
           id: 2,
           type: "image",
-          label: "皮带秤",
+          label: "皮带",
           image: belt,
           width: 96,
           height: 21,
@@ -300,6 +386,7 @@ export default {
           width: 18,
           height: 18,
         },
+
         {
           id: 9,
           type: "image",
@@ -307,14 +394,6 @@ export default {
           image: test,
           width: 18,
           height: 18,
-        },
-        {
-          id: 10,
-          type: "image",
-          label: "提示",
-          image: tip,
-          width: 34,
-          height: 14,
         },
       ],
       posArr: [
@@ -324,15 +403,29 @@ export default {
         { id: "left", text: "左" },
         { id: "right", text: "右" },
       ],
+
       currentItem: {},
       handleStatus: -1,
       colorDialog: false,
+      dialogVisible: false,
+      canvasSize: {
+        width: 1920,
+        height: 1080,
+      },
+      artArr: [],
+      artCode: "",
+      artObj:{
+        name:"",
+        code:"",
+        id:"",
+      },
+
       form: {
         code: "",
         equipmentType: "",
         text: "",
         associatedCode: "",
-        state:"",
+        state: "",
         fontSize: 14,
         textFill: "#fff",
         textPosition: "inside",
@@ -356,6 +449,11 @@ export default {
     on("handleOpen", this.handleOpenStyle);
     clearAll();
     this.getJSOnData();
+
+    //查询列表
+    workArtList().then((res) => {
+      this.artArr = res.data.data;
+    });
   },
   beforeDestroy() {
     off("handleOpen");
@@ -374,6 +472,8 @@ export default {
         this.handleStatus = -1;
       }
     },
+
+
     // 打开修改样式弹窗
     handleOpenStyle(param) {
       this.curType = param.type;
@@ -383,9 +483,11 @@ export default {
       this.form.equipmentType = param.equipmentType;
       this.form.text = param.text;
       this.form.associatedCode = param.associatedCode;
-      this.form.state= param.state;
+      this.form.state = param.state;
       this.colorDialog = true;
     },
+
+    
     // 修改样式确定
     handleModifyStyle() {
       submitStyle(this.form, () => {
@@ -393,22 +495,116 @@ export default {
         this.colorDialog = false;
       });
     },
-    // 清除画布
-    handleClear() {
-      clearAll();
-      localStorage.clear();
+
+    //修改画布大小
+    changeArt() {
+      let zr = getZR();
+      zr.resize({
+        width: this.canvasSize.width,
+        height: this.canvasSize.height,
+      });
     },
+
+    // 清除画布
+    handleClear(bool) {
+      clearAll();
+      this.artObj={
+        name:"",
+        code:"",
+        id:"",
+      }
+
+      if(bool){
+        this.artCode="";
+        console.log(bool)
+      }
+      
+     
+      // localStorage.clear();
+     
+    },
+
+    //添加或修改图
+    dataSubmit() {
+      let rectArr = getRectModelList();
+      let lineArr = getLineModelList();
+      let textArr = getTextModelList();
+      let artSize = {
+        width: this.canvasSize.width,
+        height: this.canvasSize.height,
+      };
+
+      let obj = {
+        rectData: rectArr,
+        lineData: lineArr,
+        textData: textArr,
+        artData: artSize,
+      };
+
+      let content = JSON.stringify(obj);
+
+      let parmas = {
+        body: content,
+        code: this.artObj.code,
+        id: this.artObj.id,
+        name: this.artObj.name,
+      };
+
+      addOrUpdate(parmas).then((res) => {
+        if(res.data.code=="00000"){
+           this.$message.success("编辑成功");
+           this.dialogVisible=false;
+        }
+      });
+    },
+
+    //切换图
+    changeArtCode() {
+      workArtdetail({ code: this.artCode }).then((res) => {
+        this.handleClear(false);
+        let data = JSON.parse(res.data.data.body);
+        
+        let rectData = data.rectData;
+        if (rectData) {
+          for (let i in rectData) {
+            add(rectData[i]);
+          }
+        }
+        let lineData = data.lineData;
+        if (lineData) {
+          for (let i in lineData) {
+            add(lineData[i]);
+          }
+        }
+
+        let textData = data.textData;
+        if (textData) {
+          for (let i in textData) {
+            add(textData[i]);
+          }
+        }
+        console.log(data.artData)
+
+        this.canvasSize = data.artData;
+        this.changeArt();
+        this.artObj = res.data.data
+      });
+    },
+
     // 保存数据
     handleSave() {
       let rectArr = getRectModelList();
       let lineArr = getLineModelList();
-      localStorage.setItem("rectData", JSON.stringify(rectArr));
-      localStorage.setItem("lineData", JSON.stringify(lineArr));
-      console.log(rectArr);
-      console.log(lineArr);
+      let textArr = getTextModelList();
+
+      // localStorage.setItem("rectData", JSON.stringify(rectArr));
+      // localStorage.setItem("lineData", JSON.stringify(lineArr));
+      // console.log(rectArr);
+      // console.log(lineArr);
       let obj = {
         rectData: rectArr,
         lineData: lineArr,
+        textData: textArr,
       };
       var content = JSON.stringify(obj);
       var blob = new Blob([content], {
@@ -425,6 +621,7 @@ export default {
         aTag.click();
       }
     },
+
     // 获取json数据
     getJSOnData() {
       let url = "/static/json/pellet-data.json";
@@ -444,6 +641,13 @@ export default {
           if (lineData) {
             for (let i in lineData) {
               add(lineData[i]);
+            }
+          }
+
+          let textData = json.textData;
+          if (textData) {
+            for (let i in textData) {
+              add(textData[i]);
             }
           }
         }
@@ -491,6 +695,11 @@ export default {
         border-color: #f56c6c;
         color: #f56c6c;
       }
+    }
+
+    .art-set {
+      margin-top: 20px;
+      flex: auto;
     }
     .button {
       flex: none;
@@ -552,5 +761,25 @@ export default {
       height: 1080px;
     }
   }
+}
+
+.art-wrap ::v-deep .input .el-input__inner {
+  width: 100px;
+  height: 30px !important;
+}
+
+.art-wrap ::v-deep .input .el-input__inner {
+  width: 100px;
+  height: 30px !important;
+}
+
+.art-wrap ::v-deep .el-select .el-input__inner {
+  width: 200px;
+  height: 30px;
+}
+.art-wrap ::v-deep .submit-btn {
+  width: 50px;
+  height: 30px;
+  padding: 0;
 }
 </style>

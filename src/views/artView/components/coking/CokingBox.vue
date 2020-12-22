@@ -125,15 +125,13 @@
 import { brokenLine, pieChart, barChart,barChart1} from "./charts";
 // import { storageProduct,storageMaterielStock} from "../../../../api/home";
 export default {
+  props:["info"],
   data() {
     return {
       form: {
         region: "",
       },
 
-      info: {
-        isShow: true,
-      },
 
       workAreaSave: [],
 

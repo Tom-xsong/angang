@@ -70,7 +70,7 @@ export const processDetails = p => post("/api/materiel/interactive/two-dimension
 
 
 //库存信息
-export const pileInformation = p => post("/api/materiel/interactive/two-dimensional/second/pileInformation",p);
+export const pileInformation = p => get("/api/materiel/interactive/two-dimensional/second/pileInformation",p);
 
 //库存每一层的详情
 export const pileInfopileDetailrmation = p => post("/api/materiel/interactive/two-dimensional/second/pileInfopileDetailrmation",p);
@@ -105,8 +105,14 @@ export const storageProduct = p => post("/api/materiel/interactive/two-dimension
 
 
 
+//工作台添加或修改
+export const addOrUpdate = p => post("/api/material/graph/addOrUpdate",p);
 
 
+//工作台列表添加
+export const workArtList = p => get("/api/material/graph/list",p);
 
 
+//查看工序图详情
+export const workArtdetail = p => get("/api/material/graph/detail",p);
 

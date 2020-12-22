@@ -3,6 +3,7 @@ import {
   getId2element,
   getLineModelList,
   getRectModelList,
+  getTextModelList,
   getZR
 } from "../render/render";
 import { clearHandler } from "./controller";
@@ -13,8 +14,9 @@ let isEdit = false;
 let curRect;
 let curLine;
 let curType;
-let animation;
-let circle;
+let animationElement={};
+let circleElement = {};
+
 
 // 开启编辑状态
 export function startEdit() {
@@ -22,6 +24,8 @@ export function startEdit() {
   isEdit = true;
   const rectModelList = getRectModelList();
   const lineModeList = getLineModelList();
+  const textModeList = getTextModelList();
+ 
   const id2element = getId2element();
   rectModelList.forEach(rectModel => {
     rectEdit(id2element[rectModel.id]);
@@ -29,6 +33,11 @@ export function startEdit() {
   lineModeList.forEach(lineModel => {
     lineEdit(id2element[lineModel.id]);
   });
+
+  textModeList.forEach(textModel => {
+    rectEdit(id2element[textModel.id]);
+  });
+
   getZR().on("click", clickRoot);
 }
 
@@ -38,12 +47,17 @@ export function endEdit() {
   isEdit = false;
   const rectModelList = getRectModelList();
   const lineModeList = getLineModelList();
+  const textModeList = getTextModelList();
   const id2element = getId2element();
   rectModelList.forEach(rectModel => {
     id2element[rectModel.id].offEdit();
   });
-  lineModeList.forEach(rectModel => {
-    id2element[rectModel.id].offEdit();
+  lineModeList.forEach(lineModel => {
+    id2element[lineModel.id].offEdit();
+  });
+
+  textModeList.forEach(textModel => {
+    id2element[textModel.id].offEdit();
   });
   getZR().off("click", clickRoot);
 }
@@ -75,6 +89,8 @@ function rectEdit(rect) {
   };
 }
 
+ 
+
 function lineEdit(line) {
   line.silent = false;
   line.on("contextmenu", e => {
@@ -103,12 +119,24 @@ function makeRectMenu() {
   for (let i in arr) {
     let oLi = document.createElement("li");
     oLi.classList.add("menu-item");
-    oLi.onclick = [openModifyStyle, rectDel][i];
+    if(curRect.data.type=="rect"||curRect.data.type=="image"){
+      oLi.onclick = [openModifyStyle,rectDel][i];
+    }
+
+    else if(curRect.data.type=="text"){
+      oLi.onclick = [openModifyStyle, textDel][i];
+    }
+    
     oLi.innerHTML = arr[i];
     node.appendChild(oLi);
   }
   return node;
 }
+
+
+
+
+
 
 // 自定义菜单-线段
 function makeLineMenu() {
@@ -143,7 +171,7 @@ function openModifyStyle() {
   removeMenu();
 }
 
-// 修改矩形样式
+// 修改线条样式
 function openLineStyle() {
   curType = "line";
   let param = {
@@ -192,6 +220,7 @@ function rectDel(e) {
       break;
     }
   }
+  
   // 删除矩形相关的线段
   let relations = curRect.data.lineRelations;
   for (let i in relations) {
@@ -212,6 +241,24 @@ function rectDel(e) {
   e.stopPropagation();
 }
 
+
+
+ //删除文字
+ function textDel(e) {
+  const zr = getZR();
+  zr.remove(curRect);
+  const textModelList = getTextModelList();
+  for (let i = textModelList.length - 1; i >= 0; i--) {
+    if (textModelList[i].id === curRect.data.id) {
+      textModelList.splice(i, 1);
+      break;
+    }
+  }
+
+  removeMenu();
+  e.stopPropagation();
+}
+
 // 移除菜单
 function removeMenu() {
   let body = document.getElementById("artBody");
@@ -223,14 +270,16 @@ function removeMenu() {
 function addAnimate() {
   let shape = curLine.shape;
   curLine.data.animate = true;
-  circleAnimate(shape.points, curLine.style.stroke);
+  circleAnimate(curLine,shape.points, curLine.style.stroke);
   removeMenu();
+
+
 }
 
 // 动画
-export function circleAnimate(polyline, color) {
+export function circleAnimate(curLine,polyline, color) {
   // 实心圆
-  circle = new Circle({
+ let circle = new Circle({
     shape: {
       cx: polyline[0][0],
       cy: polyline[0][1],
@@ -242,7 +291,8 @@ export function circleAnimate(polyline, color) {
   });
   const zr = getZR();
   zr.add(circle);
-  animation = circle.animate("shape", true);
+  circleElement[curLine.data.id] = circle
+  let animation = circle.animate("shape", true);
   let delay = 0;
   for (let i = 1; i < polyline.length; i++) {
     const prev = polyline[i - 1];
@@ -257,11 +307,15 @@ export function circleAnimate(polyline, color) {
     });
   }
   animation.start();
+  animationElement[curLine.data.id] = animation
+
 }
 
 // 停止动画
 function stopAnimate() {
-  if (animation) {
+  let circle = circleElement[curLine.data.id]
+  let animation = animationElement[curLine.data.id]
+  if (curLine.data.animate){
     curLine.data.animate = false;
     const zr = getZR();
     zr.remove(circle);
@@ -271,6 +325,8 @@ function stopAnimate() {
   }
   removeMenu();
 }
+
+
 
 // 删除线段
 function lineDel() {
@@ -285,6 +341,8 @@ function lineDel() {
       break;
     }
   }
+
+
   // 删除关联关系里面的id
   let lineId = curLine.data.id;
   const rectModelList = getRectModelList();

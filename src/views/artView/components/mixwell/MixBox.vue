@@ -117,15 +117,14 @@
 import { brokenLine, pieChart, barChart } from "./charts";
 // import { storageProduct,storageMaterielStock} from "../../../../api/home";
 export default {
+  props:["info"],
   data() {
     return {
       form: {
         region: "",
       },
 
-      info: {
-        isShow: true,
-      },
+      
 
       workAreaSave: [],
 

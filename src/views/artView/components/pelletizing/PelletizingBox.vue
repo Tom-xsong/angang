@@ -8,7 +8,7 @@
         <!-- 顶部 -->
         <div class="main-top">
           <div class="title-logo"></div>
-          <div class="title-text">焦化</div>
+          <div class="title-text">球团</div>
         </div>
 
         <div class="title">
@@ -125,16 +125,14 @@
 import { brokenLine, pieChart, barChart,barChart1} from "./charts";
 // import { storageProduct,storageMaterielStock} from "../../../../api/home";
 export default {
+  props:["info"],
   data() {
     return {
       form: {
         region: "",
       },
 
-      info: {
-        isShow: true,
-      },
-
+     
       workAreaSave: [],
 
       drawer: false,

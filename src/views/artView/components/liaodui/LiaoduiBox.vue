@@ -115,11 +115,10 @@
 <script>
 import {funnelChart} from "./charts"
 export default {
+  props:["info"],
   data() {
     return {
-      info: {
-        isShow: true,
-      },
+     
     };
   },
 

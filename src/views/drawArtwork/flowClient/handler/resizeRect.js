@@ -52,6 +52,8 @@ export function endResize() {
   rectModelList.forEach(rectModel => {
     id2element[rectModel.id].offHighlight();
   });
+  isRootTarget = false;
+  curRect = null
   clearVertexes();
 }
 
@@ -76,6 +78,7 @@ function clearVertexes() {
 
 function addHighlight(rect) {
   function mousedown() {
+  
     isRootTarget = false;
     if (curRect) {
       if (curRect === rect) return;
@@ -90,7 +93,9 @@ function addHighlight(rect) {
   };
 
   rect.offHighlight = () => {
+    
     rect.off("mousedown", mousedown);
+   
   };
 
   rect.onHighlight();

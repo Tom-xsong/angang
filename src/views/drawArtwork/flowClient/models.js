@@ -1,12 +1,12 @@
 // 画矩形
-export function makeRectModel(x, y, w, h,label) {
+export function makeRectModel(x, y, w, h, label) {
   return {
     id: "rect" + new Date().getTime(),
     code: "",
-    equipmentType:"",
-    text:"",
+    equipmentType: "",
+    text: "",
     type: "rect",
-    label:label,
+    label: label,
     shape: {
       x: ~~x + 0.5,
       y: ~~y + 0.5,
@@ -14,7 +14,7 @@ export function makeRectModel(x, y, w, h,label) {
       height: h
     },
     style: {
-      state:"stop",
+      state: "stop",
       lineWidth: 2,
       stroke: "#00FF84",
       fill: "#002815",
@@ -23,24 +23,24 @@ export function makeRectModel(x, y, w, h,label) {
       textFill: "#fff",
       textPosition: "inside"
     },
-    zlevel: -100,
+    z:10,
     lineRelations: [],
-    
+
   };
-  
+
 }
 
 // 画图片
-export function makeImageModel(url, x, y, w, h,label) {
+export function makeImageModel(url, x, y, w, h, label) {
   return {
     id: "image" + new Date().getTime(),
     code: "",
-    equipmentType:label,
-    text:"",
-    associatedCode:"",
+    equipmentType: label,
+    text: "",
+    associatedCode: "",
     type: "image",
-    label:label,
-    state:"",
+    label: label,
+    state: "",
     style: {
       image: url,
       x: ~~x + 0.5,
@@ -96,4 +96,62 @@ export function makeLineModel(point) {
     lineRelations: [],
     animate: false
   };
+}
+
+
+//绘制虚线框
+
+export function makeBorderRectModel(x, y, w, h, label) {
+  return {
+    id: "borderRect" + new Date().getTime(),
+    code: "",
+    type: "rect",
+    label: label,
+    shape: {
+      x: ~~x + 0.5,
+      y: ~~y + 0.5,
+      width: w,
+      height: h
+    },
+    style: {
+      lineWidth: 2,
+      stroke: "#00FF84",
+      fill: "rgba(0,0,0,0)",
+      lineDash: [3],
+      text: "",
+      fontSize: 14,
+      textFill: "#fff",
+      textPosition: "inside"
+    },
+    z:1,
+    lineRelations: [],
+
+  };
+
+}
+
+
+
+
+//文本
+export function makeTextModel(x, y, w, h, label) {
+  return {
+    id: "text" + new Date().getTime(),
+    code: "",
+    type: "text",
+    label: label,
+    style: {
+      text: '添加文字',
+      x: x,
+      y: y,
+      textFill: '#FFF',             //文字颜色
+      fontSize: 12,                 //文字大小
+      fontFamily: '',               //字体
+      fontStyle: 'normal',          //字形
+      fontWeight: 'normal',         //加粗
+    },
+    lineRelations: [],
+
+  };
+
 }

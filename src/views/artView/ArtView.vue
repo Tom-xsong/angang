@@ -1,7 +1,7 @@
 <template>
-  <div class="canvas-wrap">
+  <div class="canvas-wrap" ref="canvasWrap" style="width:1980px;height:1080px">
     <header-logo></header-logo>
-    <div id="canvas"></div>
+    <div id="canvas" ref="canvas" style="width:1980px;height:1080px"></div>
     <div
       class="liaotiao"
       v-for="li in liaotArr"
@@ -28,15 +28,14 @@
         ></div>
       </div>
     </div>
-    <!-- <mix-box></mix-box> -->
-     <!-- <stockyard-box :info="info" ></stockyard-box> -->
-    <!-- <process-box :info="info"></process-box> -->
-    <!-- <liaodui-box :info="info"></liaodui-box> -->
-    <!-- <coking-box :info="info"></coking-box> -->
-    <!-- <pelletizing-box>  </pelletizing-box> -->
-    <!-- <sinma-box></sinma-box> -->
-    <blastfurnace-box></blastfurnace-box>
-    
+    <mix-box v-if="/MMS/.test(info.code) && info.type=='ordinary'" :info="info" ></mix-box>
+    <stockyard-box v-if="/PMF/.test(info.code)&&info.type=='ordinary'" :info="info" ></stockyard-box> -->
+    <process-box v-if="info.type=='belt'" :info="info"></process-box>
+    <liaodui-box v-if="info.type=='store'" :info="info"></liaodui-box>
+    <coking-box v-if="/GFPP/.test(info.code)&&info.type=='ordinary'" :info="info"></coking-box>
+    <pelletizing-box v-if="/PPP/.test(info.code)&&info.type=='ordinary'" :info="info"> </pelletizing-box>
+    <sinma-box v-if="/SIN/.test(info.code)&&info.type=='ordinary'" :info="info"></sinma-box>
+    <blastfurnace-box v-if="/BF/.test(info.code)&&info.type=='ordinary'" :info="info"></blastfurnace-box>
   </div>
 </template>
 
@@ -87,43 +86,83 @@ let testWarning = require("../../assets/image/test-warning.png");
 import zrender from "zrender";
 import { calcArrowCenter } from "../drawArtwork/flowClient/helpers";
 
+import {workArtdetail} from "../../api/home";
 
 export default {
   name: "ArtView",
   components: {
     HeaderLogo: () => import("../../components/HeaderLogo"),
-    // MixBox: () => import("./components/mixwell/MixBox"),
-    // StockyardBox: () => import("./components/stockyard/StockyardBox"),
-    // ProcessBox: () => import("./components/process/ProcessBox"),
-    // LiaoduiBox: () => import("./components/liaodui/LiaoduiBox"),
-    // CokingBox: () => import("./components/coking/CokingBox"),
-    // PelletizingBox: () => import("./components/pelletizing/PelletizingBox"),
-    //  sinmaBox: () => import("./components/sinteringmachine/sinmaBox"),
-     BlastfurnaceBox: () => import("./components/blastfurnace/BlastfurnaceBox"),
-
-
+    MixBox: () => import("./components/mixwell/MixBox"),
+    StockyardBox: () => import("./components/stockyard/StockyardBox"),
+    ProcessBox: () => import("./components/process/ProcessBox"),
+    LiaoduiBox: () => import("./components/liaodui/LiaoduiBox"),
+    CokingBox: () => import("./components/coking/CokingBox"),
+    PelletizingBox: () => import("./components/pelletizing/PelletizingBox"),
+    sinmaBox: () => import("./components/sinteringmachine/sinmaBox"),
+    BlastfurnaceBox: () => import("./components/blastfurnace/BlastfurnaceBox"),
   },
   data() {
     return {
       info: {
-        isShow: true,
-        objs: { name: "燃供码头" },
+        isShow:"true",
+        type:"ordinary",
         code: "",
+        name:""
+        
       },
       zr: null,
       liaotArr: [],
+      id2element:{},
+      id2elementLine:{},
+      id2elementCirle:{},
     };
   },
   mounted() {
     this.info.code = this.$route.query.code;
+    this.info.name = this.$route.query.name;
 
     this.zr = zrender.init(document.getElementById("canvas"));
-    this.getJSOnData();
-    // 用来保存配有code的设备
-    this.id2element = {};
 
-    this.id2elementLine = {};
-    this.id2elementCirle = {};
+
+    //读取json获取数据
+    // this.getJSOnData();
+   
+    
+    //拿后台数据进行绘图
+     workArtdetail({
+       code:"QT"
+    }).then((res) => {
+       if (res.data.code === "00000") {
+         let json = JSON.parse(res.data.data.body);
+          var canvasWrap = this.$refs.canvasWrap;
+          var canvasBox = this.$refs.canvas;
+          canvasBox.style.width = json.artData.width+"px"
+          canvasBox.style.height = json.artData.height+"px"
+          canvasWrap.style.width = json.artData.width+"px"
+          canvasWrap.style.height = json.artData.height+"px"
+          this.zr.resize(json.artData);
+          let rectData = json.rectData;
+          if (rectData) {
+            this.drawRect(rectData);
+          }
+          let lineData = json.lineData;
+          if (lineData) {
+            this.drawLine(lineData);
+          }
+
+          let textData = json.textData;
+          if (textData) {
+            this.drawText(textData);
+          }
+        }
+    });
+
+  
+
+
+
+    
+    
 
     //   secondAnalysis({ analysisCode: "1" }).then((res) => {
     //     console.log(res);
@@ -172,14 +211,19 @@ export default {
             _this.drawRect(rectData);
           }
           let lineData = json.lineData;
-          this.line = json.lineData;
           if (lineData) {
             _this.drawLine(lineData);
+          }
+
+          let textData = json.textData;
+          if (textData) {
+            _this.drawText(textData);
           }
         }
       };
     },
-    // 绘制图片
+
+    // 绘制rect
     drawRect(data) {
       this.liaotArr = [];
       for (let i in data) {
@@ -220,26 +264,8 @@ export default {
             zlevel: 2,
           });
           this.zr.add(circle);
-        } else if (data[i].type === "text") {
-          // 文字
-          let text = new zrender.Text({
-            style: {
-              text: data[i].text,
-              fontSize: 16,
-              textFill: data[i].color,
-              textWidth: data[i].width,
-              textHeight: data[i].height,
-              x: data[i].left,
-              y: data[i].top,
-              zlevel: 2,
-            },
-          });
-          this.zr.add(text);
         }
       }
-
-     
-
     },
     // 绘制线段
     drawLine(lineData) {
@@ -254,7 +280,6 @@ export default {
         this.zr.add(polyline);
 
         if (lineData[i].id) {
-
           this.id2elementLine[lineData[i].id] = polyline;
         }
 
@@ -297,166 +322,161 @@ export default {
         // }
       }
 
-       
-      //  改变状态
+      // 改变状态执行相关操作
       for (let i in this.id2element) {
         let state = this.id2element[i].data.state;
-         console.log("222"+state)
-         this.changeImage(state ,i);
-         this.changeAnimate(state,i);
-
-
+        this.changeImage(state, i);
+        this.changeAnimate(state, i);
       }
-
-     
-    
-     
-      
     },
     
 
-    //根据状态改变图片
-    changeImage(state,i) {
-      
-        let imageUrl = "";
-        if (this.id2element[i].data.equipmentType == "皮带秤") {
-          switch (state) {
-            case "stop":
-              imageUrl = beltStop;
-              break;
-            case "warning":
-              imageUrl = beltWarning;
-              break;
-            case "success":
-              imageUrl = beltSuccess;
-              break;
-          }
-        }
-
-       else if (this.id2element[i].data.equipmentType == "配料仓") {
-          switch (state) {
-            case "error":
-              imageUrl = mixError;
-              break;
-            case "warning":
-              imageUrl = mixWarning;
-              break;
-            case "success":
-              imageUrl = mixSuccess;
-              break;
-          }
-        }
-
-        else if (this.id2element[i].data.equipmentType == "成品仓") {
-          switch (state) {
-            case "error":
-              imageUrl = finishedError;
-              break;
-            case "warning":
-              imageUrl = finishedWarning;
-              break;
-            case "success":
-              imageUrl = finishedSuccess;
-              break;
-          }
-        }
-
-      else if (this.id2element[i].data.equipmentType == "大仓") {
-          switch (state) {
-            case "error":
-              imageUrl = wareError;
-              break;
-            case "warning":
-              imageUrl = wareWarning;
-              break;
-            case "success":
-              imageUrl = wareSuccess;
-              break;
-          }
-        }
-
-       else if (this.id2element[i].data.equipmentType == "露天堆场") {
-          switch (state) {
-            case "error":
-              imageUrl = exposedError;
-              break;
-            case "warning":
-              imageUrl = exposedWarning;
-              break;
-            case "success":
-              imageUrl = exposedSuccess;
-              break;
-          }
-        }
-
-       else if (this.id2element[i].data.equipmentType == "计量秤") {
-          switch (state) {
-            case "warning":
-              imageUrl = scaleWarning;
-              break;
-            case "success":
-              imageUrl = scaleSuccess;
-              break;
-          }
-        }
-
-       else if (this.id2element[i].data.equipmentType == "检化验") {
-          switch (state) {
-            case "warning":
-              imageUrl = testWarning;
-              break;
-            case "success":
-              imageUrl = testSuccess;
-              break;
-          }
-        }
-
-        this.id2element[i].attr({
+    //绘制文字
+    drawText(data) {
+      for (let i in data) {
+        let text = new zrender.Text({
           style: {
-            image: imageUrl,
+            text: data[i].style.text,
+            fontSize: data[i].style.fontSize,
+            textFill: data[i].style.textFill,
+            x: data[i].style.x,
+            y: data[i].style.y,
+            zlevel: 2,
           },
         });
-      
+        this.zr.add(text);
+      }
+    },
+
+    //根据状态改变图片
+    changeImage(state, i) {
+      let imageUrl = "";
+      if (this.id2element[i].data.equipmentType == "皮带") {
+        switch (state) {
+          case "stop":
+            imageUrl = beltStop;
+            break;
+          case "warning":
+            imageUrl = beltWarning;
+            break;
+          case "success":
+            imageUrl = beltSuccess;
+            break;
+        }
+      } else if (this.id2element[i].data.equipmentType == "配料仓") {
+        switch (state) {
+          case "error":
+            imageUrl = mixError;
+            break;
+          case "warning":
+            imageUrl = mixWarning;
+            break;
+          case "success":
+            imageUrl = mixSuccess;
+            break;
+        }
+      } else if (this.id2element[i].data.equipmentType == "成品仓") {
+        switch (state) {
+          case "error":
+            imageUrl = finishedError;
+            break;
+          case "warning":
+            imageUrl = finishedWarning;
+            break;
+          case "success":
+            imageUrl = finishedSuccess;
+            break;
+        }
+      } else if (this.id2element[i].data.equipmentType == "大仓") {
+        switch (state) {
+          case "error":
+            imageUrl = wareError;
+            break;
+          case "warning":
+            imageUrl = wareWarning;
+            break;
+          case "success":
+            imageUrl = wareSuccess;
+            break;
+        }
+      } else if (this.id2element[i].data.equipmentType == "露天堆场") {
+        switch (state) {
+          case "error":
+            imageUrl = exposedError;
+            break;
+          case "warning":
+            imageUrl = exposedWarning;
+            break;
+          case "success":
+            imageUrl = exposedSuccess;
+            break;
+        }
+      } else if (this.id2element[i].data.equipmentType == "计量秤") {
+        let relationState = this.id2element[
+          this.id2element[i].data.associatedCode
+        ].data.state;
+
+        switch (relationState) {
+          case "warning":
+            imageUrl = scaleWarning;
+            break;
+          case "success":
+            imageUrl = scaleSuccess;
+            break;
+        }
+      } else if (this.id2element[i].data.equipmentType == "检化验") {
+        let relationState = this.id2element[
+          this.id2element[i].data.associatedCode
+        ].data.state;
+
+        switch (relationState) {
+          case "warning":
+            imageUrl = testWarning;
+            break;
+          case "success":
+            imageUrl = testSuccess;
+            break;
+        }
+      }
+
+      this.id2element[i].attr({
+        style: {
+          image: imageUrl,
+        },
+      });
     },
 
     // 根据状态改变动画
-    changeAnimate(state,i) {
-    
-        console.log(this.id2element[i], state);
+    changeAnimate(state, i) {
+     
 
-        if (this.id2element[i].data.lineRelations) {
-          let lineArrs = this.id2element[i].data.lineRelations.filter(
-            (item) => {
-              return item.isStart == true;
+      if (this.id2element[i].data.lineRelations) {
+        let lineArrs = this.id2element[i].data.lineRelations.filter((item) => {
+          return item.isStart == true;
+        });
+
+        lineArrs.forEach((item) => {
+          let line = this.id2elementLine[item.id];
+
+          if (line.data.animate) {
+            if (state == "stop" || state == "error") {
+              let cir = this.id2elementCirle[line.data.id];
+              if (cir) {
+                this.zr.remove(cir);
+                delete this.id2elementCirle[line.data.id];
+              }
             }
-          );
 
-          lineArrs.forEach((item) => {
-            let line = this.id2elementLine[item.id];
-
-            if (line.data.animate) {
-              if (state == "stop" || state == "error") {
-                let cir = this.id2elementCirle[line.data.id];
-                if (cir) {
-                  this.zr.remove(cir);
-                  delete this.id2elementCirle[line.data.id];
-                  
-                }
-              }
-
-              if (state == "success" || state == "warning") {
-                this.circleAnimate(
-                  line.data.shape.points,
-                  line.data.style.stroke,
-                  line.data.id
-                );
-               
-              }
-            } 
-            
-          });
-        }
-      
+            if (state == "success" || state == "warning") {
+              this.circleAnimate(
+                line.data.shape.points,
+                line.data.style.stroke,
+                line.data.id
+              );
+            }
+          }
+        });
+      }
     },
 
     // 动画
@@ -491,6 +511,7 @@ export default {
       }
       animation.start();
     },
+
     // div绘制料条分层
     getLiaotiao(data) {
       let obj = {
@@ -515,6 +536,21 @@ export default {
 
     equipmentClick(e) {
       console.log(e.target);
+      let type = e.target.data.equipmentType
+      let state = e.target.data.state
+      if(type == "皮带" && (state == "success" || "warning")){
+       this.info.type="belt";
+       this.info.isShow =true
+        
+      }
+      else if(type == "皮带" && (state == "success" || "warning")){
+       this.info.type="store";
+       this.info.isShow =true
+
+      }
+     
+
+      
     },
 
     liaotiaoClick(info) {
@@ -544,14 +580,11 @@ export default {
 
 <style lang="scss" scoped>
 .canvas-wrap {
+  background: linear-gradient(180deg, #000000 0%, #001E4D 100%);
   position: relative;
-  width: 1920px;
-  height: 1080px;
 }
 #canvas {
-  width: 100%;
-  height: 1080px;
-  background: #000f26;
+background: linear-gradient(180deg, #000000 0%, #001E4D 100%);
 }
 .liaotiao {
   position: absolute;

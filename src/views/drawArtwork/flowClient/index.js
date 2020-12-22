@@ -2,7 +2,9 @@ import {
   makeLineModel,
   makeRectModel,
   makeImageModel,
-  makeCircleModel
+  makeCircleModel,
+  makeBorderRectModel,
+  makeTextModel
 } from "./models";
 import { add, initRender } from "./render/render";
 import { clearHandler } from "./handler/controller";
@@ -19,7 +21,14 @@ export function init(el, { addModel }) {
     let data;
     switch (obj.type) {
       case "rect":
-        data = makeRectModel(e.offsetX, e.offsetY, obj.width, obj.height,obj.label);
+
+        if(obj.label == "矩形"){
+          data = makeRectModel(e.offsetX, e.offsetY, obj.width, obj.height,obj.label);
+        }
+        else if(obj.label == "虚线框"){
+          data = makeBorderRectModel(e.offsetX, e.offsetY, obj.width, obj.height,obj.label);
+        }
+       
         break;
       case "image":
         data = makeImageModel(
@@ -37,7 +46,20 @@ export function init(el, { addModel }) {
       case "line":
         data = makeLineModel(e.offsetX, e.offsetY);
         break;
+
+      case "text":
+        data=  makeTextModel(
+          e.offsetX,
+          e.offsetY,
+          obj.width,
+          obj.height,
+          obj.label
+          );
+          break;
+
     }
+      
+
     add(data);
   }
 }

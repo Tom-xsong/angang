@@ -130,19 +130,18 @@
 
 <script>
 import { pieChart, barChart, ladderBarChart,radarChart } from "./charts";
-import { stripProportion} from "../../../../api/home";
+// import { stripProportion} from "../../../../api/home";
 export default {
+  props:["info"],
   data() {
     return {
       form: {
         region: "",
       },
 
-      info: {
-        isShow: true,
-      },
+      
 
-      dialogVisible: true,
+     
 
       drawer: false,
 
@@ -202,12 +201,12 @@ export default {
       
     });
 
-    stripProportion({
-      materialName: "1",
-      operationAreaCode: "SIN1",
-    }).then((res) => {
-      console.log(res);
-    });
+    // stripProportion({
+    //   materialName: "1",
+    //   operationAreaCode: "SIN1",
+    // }).then((res) => {
+    //   console.log(res);
+    // });
 
     // storageMaterielStock({
     //  storageCode:"1"

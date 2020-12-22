@@ -23,10 +23,10 @@ module.exports = {
     port: 5000,
     proxy: {
       '/api': {
-        target: 'http://3w60e29448.wicp.vip',
+        target: 'http://119.84.70.208:7506',
         changeOrigin: true, 
         pathRewrite: {   
-          '^/api': 'http://3w60e29448.wicp.vip'
+          '^/api': 'http://119.84.70.208:7506'
         }
       }
     }

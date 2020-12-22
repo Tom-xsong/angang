@@ -1,5 +1,5 @@
 import { calcArrowCenter, lastItem, resetTransform } from "../helpers";
-import { getId2element, getRectModelList } from "../render/render";
+import { getId2element, getRectModelList,getTextModelList} from "../render/render";
 // import { getCurVertexes } from "./resizeRect";
 import { clearHandler } from "./controller";
 
@@ -10,10 +10,18 @@ export function startRectMove() {
   clearHandler();
   isRunning = true;
   const rectModelList = getRectModelList();
+  const TextModelList = getTextModelList();
+
   const id2element = getId2element();
   rectModelList.forEach(rectModel => {
     rectMove(id2element[rectModel.id]);
   });
+
+  TextModelList.forEach(textModel => {
+    rectMove(id2element[textModel.id]);
+  });
+
+
 }
 
 // 结束移动状态
@@ -21,9 +29,14 @@ export function endRectMove() {
   if (!isRunning) return;
   isRunning = false;
   const rectModelList = getRectModelList();
+  const TextModelList = getTextModelList();
   const id2element = getId2element();
   rectModelList.forEach(rectModel => {
     id2element[rectModel.id].offMove();
+  });
+
+  TextModelList.forEach(textModel => {
+    id2element[textModel.id].offMove();
   });
 }
 
@@ -61,11 +74,13 @@ function rectMove(rect) {
       rect.setStyle(style);
       rect.data.style.x = style.x;
       rect.data.style.y = style.y;
-    } else {
-      let shape = rect.shape;
-      shape.cx += rect.position[0];
-      shape.cy += rect.position[1];
-      rect.setShape(shape);
+    } else if (rect.data.type === "text"){
+      let style = rect.style;
+      style.x += rect.position[0];
+      style.y += rect.position[1];
+      rect.setStyle(style);
+      rect.data.style.x = style.x;
+      rect.data.style.y = style.y;
     }
     resetTransform(rect);
   }

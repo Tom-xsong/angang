@@ -171,10 +171,6 @@ export default {
   props: ["info"],
   data() {
     return {
-      workAreaSave: [],
-
-      drawer: false,
-
       arr: [1],
 
       arr2: [
@@ -259,7 +255,7 @@ export default {
 
   methods: {
     enter() {
-      this.$router.push("/artView/?code="+this.info.objs.code);
+      this.$router.push("/artView/?code="+this.info.objs.code+"&name="+this.info.objs.name);
     },
   },
 

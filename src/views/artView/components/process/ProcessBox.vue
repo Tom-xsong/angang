@@ -99,11 +99,10 @@
 
 <script>
 export default {
+  props:["info"],
   data() {
     return {
-      info: {
-        isShow: true,
-      },
+     
     };
   },
 
