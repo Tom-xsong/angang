@@ -8,7 +8,7 @@
         <!-- 顶部 -->
         <div class="main-top">
           <div class="title-logo"></div>
-          <div class="title-text">混匀</div>
+          <div class="title-text">{{info.name}}</div>
         </div>
 
         <div class="title">
@@ -179,8 +179,6 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      console.log(this.$refs.pieChart);
-
       brokenLine(this.$refs.brokenLine);
       pieChart(this.$refs.pieChart);
       barChart(this.$refs.barChart);

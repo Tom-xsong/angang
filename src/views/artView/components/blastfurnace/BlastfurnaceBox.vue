@@ -8,7 +8,7 @@
         <!-- 顶部 -->
         <div class="main-top">
           <div class="title-logo"></div>
-          <div class="title-text">1#高炉</div>
+          <div class="title-text">{{info.name}}</div>
         </div>
 
         <div class="title">
@@ -222,6 +222,7 @@ export default {
   right: 0;
   top: 0;
   height: 1080px;
+  z-index: 1  ! important;
 }
 
 .blastfurnace >>> .el-drawer__wrapper .el-drawer.rtl {
@@ -233,6 +234,7 @@ export default {
     rgba(0, 0, 0, 0.8) 56%,
     rgba(0, 0, 0, 0) 100%
   );
+ 
 }
 
 .blastfurnace >>> .el-drawer__wrapper .el-drawer.rtl:focus {

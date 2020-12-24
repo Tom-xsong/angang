@@ -8,7 +8,7 @@
         <!-- 顶部 -->
         <div class="main-top">
           <div class="title-logo"></div>
-          <div class="title-text">作业区情况</div>
+          <div class="title-text">{{info.name}}</div>
           <!-- <el-button class="btn-enter" @click="enter" type="primary"
             >进入</el-button
           > -->
@@ -87,7 +87,7 @@
         </div>
 
         <!-- 搜索表单 -->
-        <div class="search">
+        
           <el-form
             label-width="68px"
             label-position="left"
@@ -95,54 +95,94 @@
             :model="operationAreaAnalysisDTO"
             class="demo-form-inline"
           >
-            <el-form-item label="物料编号">
-              <el-input
-                v-model="operationAreaAnalysisDTO.materielCode"
-              ></el-input>
+           <el-form-item label="物料名称:">
+              <el-select  v-model="value1" :popper-append-to-body="false" placeholder="请选择">
+                <el-option label="铁矿" value="shanghai"></el-option>
+                <el-option label="巴西矿" value="beijing"></el-option>
+              </el-select>
             </el-form-item>
 
-            <el-form-item label="物料名称">
-              <el-input
-                v-model="operationAreaAnalysisDTO.materielName"
-              ></el-input>
-            </el-form-item>
-
-            <el-form-item class="jhypc" label="检化验频次">
-              <el-input
-                v-model="operationAreaAnalysisDTO.analysisFrequency"
-              ></el-input>
+            <el-form-item  label="取样时间:">
+              <el-date-picker 
+                v-model="arr"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              >
+              </el-date-picker>
             </el-form-item>
           </el-form>
-        </div>
-
+        
         <!-- 表格 -->
-        <div class="table" v-for="i in arr" :key="i">
+        <div class="table" v-for="i in 1" :key="i">
           <table>
             <tr>
               <td colspan="2">物料名称</td>
-              <td colspan="3"></td>
-              <td colspan="2">物料编号</td>
-              <td colspan="5"></td>
+              <td colspan="2"></td>
+              <td colspan="2">报告编号</td>
+              <td colspan="2"></td>
+              <td colspan="2">物料批号</td>
+              <td colspan="2"></td>
             </tr>
             <tr>
-              <td colspan="2">物料重量</td>
+              <td colspan="2">取样地点</td>
               <td colspan="3"></td>
-              <td colspan="2">船运代码</td>
+              <td colspan="2">取样时间</td>
               <td colspan="5"></td>
             </tr>
           </table>
-          <ul class="table-list" v-for="n in 4" :key="n">
+
+          <div class="table-list-box">
+          <ul class="table-list">
             <li>
               <div style="width: 58px; height: 25px; padding: 0">化学成分</div>
               <div style="width: 58px; height: 25px; padding: 0">数值</div>
             </li>
-            <li v-for="item in 5" :key="item">
+            <li v-for="item in 8" :key="item">
               <div>CaO</div>
               <div>数值</div>
             </li>
           </ul>
-        </div>
 
+
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">物理性能</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
+
+
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">微量元素</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
+
+
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">治金性能</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
+
+          </div>
+        </div>
         <!-- 分页 -->
         <div class="pagination-box">
           <el-pagination
@@ -584,26 +624,14 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.stockyard .main .search {
-  width: 350px;
-  overflow: hidden;
-  margin: 10px 0;
+.stockyard .main  .el-form-item {
+  margin-bottom: 5px;
 }
 
-.stockyard .main .search .el-form-item {
-  margin-bottom: 10px;
-}
 
-.stockyard >>> .main .search .el-input__inner {
-  width: 96px;
-  height: 28px;
-  border-radius: 2px;
-  border: 1px solid #1183f8;
-  background: #000;
-  color: #fff;
-}
 
-.stockyard >>> .search .el-form-item__label {
+ .stockyard >>>  .el-form-item__label {
+  width: 69px !important;
   font-size: 16px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
@@ -611,15 +639,104 @@ export default {
   padding: 0 !important;
 }
 
-.stockyard >>> .search .jhypc .el-form-item__label {
-  width: 90px !important;
+ 
+
+
+
+
+
+
+
+.stockyard >>> .el-range-editor.el-input__inner{
+  width: 280px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 2px;
+  border: 1px solid #1183f8;
+  background: #000;
+  color: #fff;
+  
+
+}
+.stockyard >>> .el-range-editor .el-range-input{
+  background-color: #000;
+  color: #CCC ! important;
+  margin: 10px;
+
 }
 
-.stockyard >>> .search .jhypc .el-input__inner {
-  width: 250px;
+.stockyard >>> .el-date-editor .el-range-separator{
+  color: #fff;
+  padding:0;
+  line-height: 28px;
 }
+
+.stockyard >>> .el-date-editor .el-range__icon{
+   line-height: 30px;
+
+}
+
+.stockyard >>> .el-date-editor .el-range__close-icon{
+   line-height: 30px;
+
+}
+
+
+
+
+.stockyard >>> .el-input--suffix .el-input__inner {
+  color: #fff;
+  width: 280px;
+  height: 30px;
+  border: 1px solid #1a61d9;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+
+.stockyard >>> .el-select-dropdown {
+  background-color: rgb(0, 0, 0);
+  position: absolute !important;
+  left: 0 !important;
+  top: 40px !important;
+  border: 1px solid #1a61d9;
+  
+}
+
+
+.stockyard >>> .el-popper .popper__arrow::after{
+    content: " ";
+    border-width:0 !important;
+}
+
+.stockyard >>> .el-popper .popper__arrow{
+  border-width:0 !important;
+}
+
+
+.stockyard >>> .el-select .el-input .el-select__caret{
+  color: #1a61d9;
+}
+.stockyard >>> .el-select-dropdown__item {
+  color: #fff;
+}
+
+.stockyard >>> .el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
+  color: #fff;
+  background-color: #1a61d9;
+}
+
+.stockyard >>> .el-select-dropdown__item.selected {
+  color: #fff;
+} 
+
+
+
+
 
 .stockyard .main table {
+  overflow: hidden;
+  margin-top:10px;
   table-layout: fixed;
   width: 350px;
   border-collapse: collapse;
@@ -647,22 +764,20 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.stockyard .table-list {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow: auto;
+.stockyard .table-list-box{
   width: 350px;
-  height: 50px;
-  border-left: 1px solid #1183f8;
+  height: 210px ! important;
+  overflow: auto;
 }
 
-.stockyard .table-list::-webkit-scrollbar {
-  width: 10px;
 
+.stockyard .table-list-box::-webkit-scrollbar {
+  width: 10px;
   height: 10px;
 }
 
-.stockyard .table-list::-webkit-scrollbar-thumb {
+
+.stockyard .table-list-box::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
 
   border-radius: 10px;
@@ -670,13 +785,25 @@ export default {
   background: #1183f8;
 }
 
-.stockyard .table-list::-webkit-scrollbar-track {
+.stockyard .table-list-box::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
 
   border-radius: 10px;
 
   background: #ededed;
 }
+
+
+
+.stockyard .table-list {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 50px;
+  border-left: 1px solid #1183f8;
+}
+
+
+
 
 .stockyard .table-list li {
   justify-content: flex-start;
@@ -688,9 +815,11 @@ export default {
   font-size: 12px;
   text-align: center;
   line-height: 25px;
-  border-right: 1px solid #1183f8;
-  border-bottom: 1px solid #1183f8;
+  border: 1px solid #1183f8;
+  /* border-right: 1px solid #1183f8;
+  border-bottom: 1px solid #1183f8; */
 }
+
 
 .stockyard .pagination-box {
   width: 350px;

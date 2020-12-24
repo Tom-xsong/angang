@@ -1,7 +1,12 @@
 <template>
-  <div class="canvas-wrap" ref="canvasWrap" style="width:1980px;height:1080px">
+  <div
+    class="canvas-wrap"
+    ref="canvasWrap"
+    style="width: 1980px; height: 1080px"
+  >
     <header-logo></header-logo>
-    <div id="canvas" ref="canvas" style="width:1980px;height:1080px"></div>
+    <div class="workarea-detail" @click="detailShowClick">作业区详情</div>
+    <div id="canvas" ref="canvas" style="width: 1980px; height: 1080px"></div>
     <div
       class="liaotiao"
       v-for="li in liaotArr"
@@ -28,14 +33,35 @@
         ></div>
       </div>
     </div>
-    <mix-box v-if="/MMS/.test(info.code) && info.type=='ordinary'" :info="info" ></mix-box>
-    <stockyard-box v-if="/PMF/.test(info.code)&&info.type=='ordinary'" :info="info" ></stockyard-box> -->
-    <process-box v-if="info.type=='belt'" :info="info"></process-box>
-    <liaodui-box v-if="info.type=='store'" :info="info"></liaodui-box>
-    <coking-box v-if="/GFPP/.test(info.code)&&info.type=='ordinary'" :info="info"></coking-box>
-    <pelletizing-box v-if="/PPP/.test(info.code)&&info.type=='ordinary'" :info="info"> </pelletizing-box>
-    <sinma-box v-if="/SIN/.test(info.code)&&info.type=='ordinary'" :info="info"></sinma-box>
-    <blastfurnace-box v-if="/BF/.test(info.code)&&info.type=='ordinary'" :info="info"></blastfurnace-box>
+    <mix-box
+      v-if="/MMS/.test(info.code) && info.type == 'ordinary'"
+      :info="info"
+    ></mix-box>
+    <stockyard-box
+      v-if="/PMF/.test(info.code) && info.type == 'ordinary'"
+      :info="info"
+    ></stockyard-box>
+    <coking-box
+      v-if="/GFPP/.test(info.code) && info.type == 'ordinary'"
+      :info="info"
+    ></coking-box>
+    <pelletizing-box
+      v-if="/PPP/.test(info.code) && info.type == 'ordinary'"
+      :info="info"
+    >
+    </pelletizing-box>
+    <sinma-box
+      v-if="/SIN/.test(info.code) && info.type == 'ordinary'"
+      :info="info"
+    ></sinma-box>
+    <blastfurnace-box
+      v-if="/BF/.test(info.code) && info.type == 'ordinary'"
+      :info="info"
+    ></blastfurnace-box>
+    <process-box v-show="info.type == 'belt'" :info="info"></process-box>
+    <liaodui-box v-show="info.type == 'store'" :info="info"></liaodui-box>
+    <analysis-box v-show="info.type == 'analysis'" :info="info"></analysis-box>
+    <msm-scale v-show="info.type == 'scale'" :info="info"></msm-scale>
   </div>
 </template>
 
@@ -85,8 +111,7 @@ let testWarning = require("../../assets/image/test-warning.png");
 
 import zrender from "zrender";
 import { calcArrowCenter } from "../drawArtwork/flowClient/helpers";
-
-import {workArtdetail} from "../../api/home";
+import { workArtdetail } from "../../api/home";
 
 export default {
   name: "ArtView",
@@ -100,21 +125,22 @@ export default {
     PelletizingBox: () => import("./components/pelletizing/PelletizingBox"),
     sinmaBox: () => import("./components/sinteringmachine/sinmaBox"),
     BlastfurnaceBox: () => import("./components/blastfurnace/BlastfurnaceBox"),
+    AnalysisBox: () => import("./components/analysis/AnalysisBox"),
+    MsmScale: () => import("./components/msmscale/MsmScale"),
   },
   data() {
     return {
       info: {
-        isShow:"true",
-        type:"ordinary",
+        isShow: true,
+        type: "ordinary",
         code: "",
-        name:""
-        
+        name: "",
       },
       zr: null,
       liaotArr: [],
-      id2element:{},
-      id2elementLine:{},
-      id2elementCirle:{},
+      id2element: {},
+      id2elementLine: {},
+      id2elementCirle: {},
     };
   },
   mounted() {
@@ -123,46 +149,37 @@ export default {
 
     this.zr = zrender.init(document.getElementById("canvas"));
 
-
     //读取json获取数据
     // this.getJSOnData();
-   
-    
+
     //拿后台数据进行绘图
-     workArtdetail({
-       code:"QT"
+    workArtdetail({
+      code: "QT",
     }).then((res) => {
-       if (res.data.code === "00000") {
-         let json = JSON.parse(res.data.data.body);
-          var canvasWrap = this.$refs.canvasWrap;
-          var canvasBox = this.$refs.canvas;
-          canvasBox.style.width = json.artData.width+"px"
-          canvasBox.style.height = json.artData.height+"px"
-          canvasWrap.style.width = json.artData.width+"px"
-          canvasWrap.style.height = json.artData.height+"px"
-          this.zr.resize(json.artData);
-          let rectData = json.rectData;
-          if (rectData) {
-            this.drawRect(rectData);
-          }
-          let lineData = json.lineData;
-          if (lineData) {
-            this.drawLine(lineData);
-          }
-
-          let textData = json.textData;
-          if (textData) {
-            this.drawText(textData);
-          }
+      if (res.data.code === "00000") {
+        let json = JSON.parse(res.data.data.body);
+        var canvasWrap = this.$refs.canvasWrap;
+        var canvasBox = this.$refs.canvas;
+        canvasBox.style.width = json.artData.width + "px";
+        canvasBox.style.height = json.artData.height + "px";
+        canvasWrap.style.width = json.artData.width + "px";
+        canvasWrap.style.height = json.artData.height + "px";
+        this.zr.resize(json.artData);
+        let rectData = json.rectData;
+        if (rectData) {
+          this.drawRect(rectData);
         }
+        let lineData = json.lineData;
+        if (lineData) {
+          this.drawLine(lineData);
+        }
+
+        let textData = json.textData;
+        if (textData) {
+          this.drawText(textData);
+        }
+      }
     });
-
-  
-
-
-
-    
-    
 
     //   secondAnalysis({ analysisCode: "1" }).then((res) => {
     //     console.log(res);
@@ -329,7 +346,6 @@ export default {
         this.changeAnimate(state, i);
       }
     },
-    
 
     //绘制文字
     drawText(data) {
@@ -448,8 +464,6 @@ export default {
 
     // 根据状态改变动画
     changeAnimate(state, i) {
-     
-
       if (this.id2element[i].data.lineRelations) {
         let lineArrs = this.id2element[i].data.lineRelations.filter((item) => {
           return item.isStart == true;
@@ -536,21 +550,29 @@ export default {
 
     equipmentClick(e) {
       console.log(e.target);
-      let type = e.target.data.equipmentType
-      let state = e.target.data.state
-      if(type == "皮带" && (state == "success" || state == "warning")){
-       this.info.type="belt";
-       this.info.isShow =true
-        
+      let type = e.target.data.equipmentType;
+      let state = e.target.data.state;
+      if (type == "皮带" && (state == "success" || state == "warning")) {
+        this.info.type = "belt";
+        this.info.isShow = true;
+      } else if (
+        type == "配料仓" &&
+        (state == "success" || state == "warning")
+      ) {
+        this.info.type = "store";
+        this.info.isShow = true;
+      } else if (type == "计量秤") {
+        this.info.type = "scale";
+        this.info.isShow = true;
+      } else if (type == "检化验") {
+        this.info.type = "analysis";
+        this.info.isShow = true;
       }
-      else if(type == "配料仓" && (state == "success" || state == "warning")){
-       this.info.type="store";
-       this.info.isShow =true
+    },
 
-      }
-     
-
-      
+    detailShowClick() {
+      this.info.type = "ordinary";
+      this.info.isShow = true;
     },
 
     liaotiaoClick(info) {
@@ -580,12 +602,33 @@ export default {
 
 <style lang="scss" scoped>
 .canvas-wrap {
-  background: linear-gradient(180deg, #000000 0%, #001E4D 100%);
+  background: linear-gradient(180deg, #000000 0%, #001e4d 100%);
   position: relative;
 }
 #canvas {
-background: linear-gradient(180deg, #000000 0%, #001E4D 100%);
+  background: linear-gradient(180deg, #000000 0%, #001e4d 100%);
 }
+
+.workarea-detail {
+  position: absolute;
+  top: 14px;
+  left: 638px;
+  z-index: 10;
+  width: 250px;
+  height: 30px;
+  border-radius: 15px;
+  cursor: pointer;
+  background: linear-gradient(
+    270deg,
+    rgba(17, 135, 255, 0) 0%,
+    rgba(8, 88, 168, 0.5) 100%
+  );
+
+  padding-left: 10px;
+  line-height: 30px;
+  color: #fff;
+}
+
 .liaotiao {
   position: absolute;
   border-style: solid;

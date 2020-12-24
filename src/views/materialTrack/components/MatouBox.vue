@@ -50,73 +50,129 @@
           </div>
         </div>
 
-        <div class="title">
+         <div class="title">
           <span>检化验情况</span>
           <img src="../../../assets/title-bg.png" />
         </div>
 
         <!-- 搜索表单 -->
-        <div class="search">
+        
           <el-form
             label-width="68px"
             label-position="left"
             :inline="true"
-            :model="formInline"
+            :model="operationAreaAnalysisDTO"
             class="demo-form-inline"
           >
-            <el-form-item label="日期">
-              <el-input v-model="formInline.user"></el-input>
+
+           <el-form-item label="物料名称:">
+              <el-select v-model="value1" :popper-append-to-body="false" placeholder="请选择物料">
+                <el-option label="区域一" value="shanghai"></el-option>
+                <el-option label="区域二" value="beijing"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="车皮船号">
+              <el-input
+                v-model="operationAreaAnalysisDTO.materielCode"
+              ></el-input>
             </el-form-item>
 
-            <el-form-item label="物料编号">
-              <el-input v-model="formInline.user"></el-input>
+            <el-form-item label="报告编号:">
+              <el-input
+                v-model="operationAreaAnalysisDTO.materielCode"
+              ></el-input>
             </el-form-item>
 
-            <el-form-item label="物料名称">
-              <el-input v-model="formInline.user"></el-input>
+            <el-form-item  label="到达时间:">
+              <el-date-picker 
+                v-model="arr"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+              >
+              </el-date-picker>
             </el-form-item>
-
-            <el-form-item label="合同号">
-              <el-input v-model="formInline.user"></el-input>
-            </el-form-item>
+           
           </el-form>
-        </div>
-
+        
         <!-- 表格 -->
-        <div class="table" v-for="i in arr" :key="i">
+        <div class="table" v-for="i in 1" :key="i">
           <table>
             <tr>
-              <td colspan="2">物料名称</td>
+              <td colspan="3">报告编号</td>
               <td colspan="3"></td>
-              <td colspan="2">物料编号</td>
-              <td colspan="5"></td>
-            </tr>
-            <tr>
-              <td colspan="2">物料重量</td>
+              <td colspan="3">物料名称</td>
               <td colspan="3"></td>
-              <td colspan="2">船运代码</td>
-              <td colspan="5"></td>
             </tr>
             <tr>
-              <td colspan="6">预计到达时间</td>
-              <td colspan="6"></td>
+              <td colspan="3">物料批号</td>
+              <td colspan="3"></td>
+              <td colspan="3">运输量</td>
+              <td colspan="3"></td>
             </tr>
             <tr>
-              <td colspan="6">合同号</td>
+              <td colspan="3">ERP计划号</td>
+              <td colspan="3"></td>
+              <td colspan="3">船号</td>
+              <td colspan="3"></td>
+            </tr>
+             <tr>
+              <td colspan="6">到达时间</td>
               <td colspan="6"></td>
+             
             </tr>
           </table>
+
+          <div class="table-list-box">
           <ul class="table-list">
             <li>
-              <div style="width: 60px; height: 29px; padding: 0">化学成分</div>
-              <div style="width: 60px; height: 29px">数值</div>
+              <div style="width: 58px; height: 25px; padding: 0">化学成分</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
             </li>
-
-            <li v-for="n in 5" :key="n">
+            <li v-for="item in 8" :key="item">
               <div>CaO</div>
               <div>数值</div>
             </li>
           </ul>
+
+
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">物理性能</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
+
+
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">微量元素</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
+
+
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">治金性能</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
+
+          </div>
         </div>
 
         <!-- 分页 -->
@@ -145,6 +201,16 @@ export default {
       drawer: false,
 
       arr: [1, 2, 3],
+      operationAreaAnalysisDTO: {
+        analysisFrequency: "",
+        materielCode: "",
+        materielName: "",
+        operationAreaCode: "BF1",
+      },
+
+      value1: "",
+
+      
 
       arr2: [
         {
@@ -424,26 +490,21 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.wharf .main .search {
-  width: 350px;
-  overflow: hidden;
-  margin: 10px 0;
+.wharf .main  .el-form-item {
+  margin-bottom: 5px;
 }
 
-.wharf .main .search .el-form-item {
-  margin-bottom: 10px;
-}
-
-.wharf >>> .main .search .el-input__inner {
+.wharf >>> .main  .el-input__inner {
   width: 96px;
-  height: 32px;
+  height: 28px;
   border-radius: 2px;
   border: 1px solid #1183f8;
   background: #000;
   color: #fff;
 }
 
-.wharf >>> .search .el-form-item__label {
+ .wharf >>>  .el-form-item__label {
+  width: 69px !important;
   font-size: 16px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
@@ -451,17 +512,111 @@ export default {
   padding: 0 !important;
 }
 
+ 
+
+
+
+
+
+
+
+.wharf >>> .el-range-editor.el-input__inner{
+  width: 280px;
+  height: 30px;
+  padding: 0 10px;
+
+}
+.wharf >>> .el-range-editor .el-range-input{
+  background-color: #000;
+  color: #CCC ! important;
+  margin: 10px;
+
+}
+
+.wharf >>> .el-date-editor .el-range-separator{
+  color: #fff;
+  padding:0;
+  line-height: 28px;
+}
+
+.wharf >>> .el-date-editor .el-range__icon{
+   line-height: 30px;
+
+}
+
+.wharf >>> .el-date-editor .el-range__close-icon{
+   line-height: 30px;
+
+}
+
+
+
+
+.wharf >>> .el-input--suffix .el-input__inner {
+  color: #fff;
+  width: 280px;
+  height: 30px;
+  border: 1px solid #1a61d9;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+
+.wharf >>> .el-select-dropdown {
+  background-color: rgb(0, 0, 0);
+  position: absolute !important;
+  left: 0 !important;
+  top: 40px !important;
+  border: 1px solid #1a61d9;
+  
+}
+
+
+.wharf >>> .el-popper .popper__arrow::after{
+    content: " ";
+    border-width:0 !important;
+}
+
+.wharf >>> .el-popper .popper__arrow{
+  border-width:0 !important;
+}
+
+
+.wharf >>> .el-select .el-input .el-select__caret{
+  color: #1a61d9;
+}
+.wharf >>> .el-select-dropdown__item {
+  color: #fff;
+}
+
+.wharf >>> .el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
+  color: #fff;
+  background-color: #1a61d9;
+}
+
+.wharf >>> .el-select-dropdown__item.selected {
+  color: #fff;
+} 
+
+
+
+
+
 .wharf .main table {
+  overflow: hidden;
+  margin-top:10px;
   table-layout: fixed;
   width: 350px;
-  height: 113px;
   border-collapse: collapse;
   background-color: rgba(0, 0, 0, 0);
   border: 1px solid #1183f8;
 }
 
+.wharf .main table tr {
+  height: 25px;
+}
+
 .wharf .table {
-  margin-top: 10px;
   margin-bottom: 20px;
 }
 
@@ -477,22 +632,20 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.wharf .table-list {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow: auto;
+.wharf .table-list-box{
   width: 350px;
-  height: 58px;
-  border-left: 1px solid #1183f8;
+  height: 210px ! important;
+  overflow: auto;
 }
 
-.wharf .table-list::-webkit-scrollbar {
-  width: 10px;
 
+.wharf .table-list-box::-webkit-scrollbar {
+  width: 10px;
   height: 10px;
 }
 
-.wharf .table-list::-webkit-scrollbar-thumb {
+
+.wharf .table-list-box::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
 
   border-radius: 10px;
@@ -500,7 +653,7 @@ export default {
   background: #1183f8;
 }
 
-.wharf .table-list::-webkit-scrollbar-track {
+.wharf .table-list-box::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
 
   border-radius: 10px;
@@ -508,18 +661,31 @@ export default {
   background: #ededed;
 }
 
+
+
+.wharf .table-list {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 50px;
+  border-left: 1px solid #1183f8;
+}
+
+
+
+
 .wharf .table-list li {
   justify-content: flex-start;
 }
 .wharf .table-list li div {
   padding: 0 12px;
-
+  height: 25px;
   color: #fff;
   font-size: 12px;
   text-align: center;
-  line-height: 28px;
-  border-right: 1px solid #1183f8;
-  border-bottom: 1px solid #1183f8;
+  line-height: 25px;
+  border:0.5px solid #1183f8;
+  /* border-right: 1px solid #1183f8;
+  border-bottom: 1px solid #1183f8; */
 }
 
 .wharf .pagination-box {

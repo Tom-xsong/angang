@@ -1,61 +1,23 @@
 <template>
-  <div class="Liaodui">
-    <div class="btn-open" @click="info.isShow = true">
+  <div class="analysis">
+    <div class="btn-open" @click="info.isShow=true">
       <p>展开</p>
     </div>
-    <el-drawer :visible.sync="info.isShow" :with-header="false" :modal="false">
+    <el-drawer  :visible.sync="info.isShow" :with-header="false" :modal="false">
       <div class="main">
+      
         <div class="main-top">
           <div class="title-logo"></div>
-          <div class="title-text">料堆</div>
+          <div class="title-text">检化验</div>
         </div>
 
-        <div class="title">
-          <span>料堆详情</span>
-          <img src="../../../../assets/title-bg.png" />
-        </div>
-
-        <ul class="procss-detail">
-          <li>
-            <span class="key">仓库名称:</span>
-            <span class="value">
-              <span>1#烧结配料仓</span>
-            </span>
-          </li>
-
-          <li>
-            <span class="key">所属作业区:</span>
-            <span class="value">
-              <span>1#烧结</span>
-            </span>
-          </li>
-
-          <li>
-            <span class="key">仓库储量:</span>
-            <span class="value">
-              <span>213T</span>
-            </span>
-          </li>
-
-          <li>
-            <span class="key">批次数量:</span>
-            <span class="value"> 4 </span>
-          </li>
-        </ul>
-
-        <div class="title">
-          <span>修正库存量</span>
-          <img src="../../../../assets/title-bg.png" />
-        </div>
-
-        <div class="funnel-chart" ref="funnelChart"></div>
-
+       
         <div class="title">
           <span>检化验成分</span>
           <img src="../../../../assets/title-bg.png" />
         </div>
 
-        <div class="table" v-for="i in 1" :key="i">
+         <div class="table" v-for="i in 1" :key="i">
           <table>
             <tr>
               <td colspan="2">物料名称</td>
@@ -74,62 +36,59 @@
           </table>
 
           <div class="table-list-box">
-            <ul class="table-list">
-              <li>
-                <div style="width: 58px; height: 25px; padding: 0">
-                  化学成分
-                </div>
-                <div style="width: 58px; height: 25px; padding: 0">数值</div>
-              </li>
-              <li v-for="item in 8" :key="item">
-                <div>CaO</div>
-                <div>数值</div>
-              </li>
-            </ul>
+          <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">化学成分</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
 
-            <ul class="table-list">
-              <li>
-                <div style="width: 58px; height: 25px; padding: 0">
-                  物理性能
-                </div>
-                <div style="width: 58px; height: 25px; padding: 0">数值</div>
-              </li>
-              <li v-for="item in 8" :key="item">
-                <div>CaO</div>
-                <div>数值</div>
-              </li>
-            </ul>
 
-            <ul class="table-list">
-              <li>
-                <div style="width: 58px; height: 25px; padding: 0">
-                  微量元素
-                </div>
-                <div style="width: 58px; height: 25px; padding: 0">数值</div>
-              </li>
-              <li v-for="item in 8" :key="item">
-                <div>CaO</div>
-                <div>数值</div>
-              </li>
-            </ul>
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">物理性能</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
 
-            <ul class="table-list">
-              <li>
-                <div style="width: 58px; height: 25px; padding: 0">
-                  治金性能
-                </div>
-                <div style="width: 58px; height: 25px; padding: 0">数值</div>
-              </li>
-              <li v-for="item in 8" :key="item">
-                <div>CaO</div>
-                <div>数值</div>
-              </li>
-            </ul>
+
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">微量元素</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
+
+
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">治金性能</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
+
           </div>
         </div>
+        
       </div>
 
-      <div class="btn-close" @click="info.isShow = false">
+      <div class="btn-close" @click="info.isShow=false">
         <p>关闭</p>
       </div>
     </el-drawer>
@@ -137,32 +96,37 @@
 </template>
 
 <script>
-import { funnelChart } from "./charts";
 export default {
-  props: ["info"],
+  props:["info"],
   data() {
-    return {};
+    return {
+      
+         
+    };
   },
 
-  methods: {},
+  methods: {
+    
+    
+
+
+  },
 
   mounted() {
-    this.$nextTick(() => {
-      funnelChart(this.$refs.funnelChart);
-    });
+   
   },
 };
 </script>
 
 <style  scoped>
-.Liaodui >>> .el-drawer__wrapper {
+.analysis >>> .el-drawer__wrapper {
   position: absolute;
   right: 0;
   top: 0;
   height: 1080px;
 }
 
-.Liaodui >>> .el-drawer__wrapper .el-drawer.rtl {
+.analysis >>> .el-drawer__wrapper .el-drawer.rtl {
   width: 750px;
   border: 0;
   background: linear-gradient(
@@ -173,11 +137,11 @@ export default {
   );
 }
 
-.Liaodui >>> .el-drawer__wrapper .el-drawer.rtl:focus {
+.analysis >>> .el-drawer__wrapper .el-drawer.rtl:focus {
   outline: 0;
 }
 
-.Liaodui .btn-open {
+.analysis .btn-open {
   width: 53px;
   height: 120px;
   background: url("../../../../assets/tag.png") no-repeat center;
@@ -187,7 +151,7 @@ export default {
   top: 460px;
 }
 
-.Liaodui .btn-open p {
+.analysis .btn-open p {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -197,7 +161,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.Liaodui .btn-close {
+.analysis .btn-close {
   width: 53px;
   height: 120px;
   background: url("../../../../assets/tag.png") no-repeat center;
@@ -206,7 +170,7 @@ export default {
   top: 480px;
 }
 
-.Liaodui .btn-close p {
+.analysis .btn-close p {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -216,19 +180,19 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.Liaodui .main {
+.analysis .main {
   width: 370px;
   height: 100%;
   float: right;
 }
 
-.Liaodui .main .main-top {
+.analysis .main .main-top {
   overflow: hidden;
   width: 350px;
   margin-bottom: 20px;
 }
 
-.Liaodui .title-logo {
+.analysis .title-logo {
   float: left;
   margin-top: 28px;
   margin-right: 20px;
@@ -237,7 +201,7 @@ export default {
   background: linear-gradient(180deg, #042055 0%, #1a63de 100%);
 }
 
-.Liaodui .title-text {
+.analysis .title-text {
   margin-top: 22px;
   float: left;
   font-size: 24px;
@@ -246,7 +210,7 @@ export default {
   overflow: hidden;
 }
 
-.Liaodui .btn-enter {
+.analysis .btn-enter {
   float: right;
   margin-top: 24px;
   width: 72px;
@@ -257,7 +221,7 @@ export default {
   padding: 0;
 }
 
-.Liaodui .main .title {
+.analysis .main .title {
   width: 350px;
   height: 30px;
   padding-left: 16px;
@@ -276,42 +240,42 @@ export default {
   overflow: hidden;
 }
 
-.Liaodui .main .title span {
+.analysis .main .title span {
   float: left;
   color: #ffffff;
   line-height: 30px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.Liaodui .main .title img {
+.analysis .main .title img {
   float: right;
   margin-top: 10px;
 }
 
-.Liaodui .procss-detail {
+.analysis .procss-detail {
   width: 350px;
   overflow: hidden;
 }
 
-.Liaodui .procss-detail li {
+.analysis .procss-detail li {
   overflow: hidden;
   position: relative;
   padding: 10px 0 10px 20px;
 }
 
-.Liaodui .procss-detail li span {
+.analysis .procss-detail li span {
   font-size: 14px;
   font-family: PingFangSC-Medium, PingFang SC;
   color: #fff;
 }
 
-.Liaodui .procss-detail li .value {
+.analysis .procss-detail li .value {
   position: absolute;
   left: 120px;
   top: 11px;
 }
 
-.Liaodui .main table {
+.analysis .main table {
   overflow: hidden;
   margin-top:10px;
   table-layout: fixed;
@@ -321,40 +285,40 @@ export default {
   border: 1px solid #1183f8;
 }
 
-.Liaodui .main table tr {
+.analysis .main table tr {
   height: 25px;
 }
 
-.Liaodui .table {
+.analysis .table {
   margin-bottom: 20px;
 }
 
-.Liaodui .main table td {
+.analysis .main table td {
   font-size: 12px;
   color: #fff;
   border: 1px solid #1187ff;
   text-align: center;
 }
 
-.Liaodui .main table .query {
+.analysis .main table .query {
   color: #1187ff;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.Liaodui .table-list-box{
+.analysis .table-list-box{
   width: 350px;
   height: 210px ! important;
   overflow: auto;
 }
 
 
-.Liaodui .table-list-box::-webkit-scrollbar {
+.analysis .table-list-box::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
 
-.Liaodui .table-list-box::-webkit-scrollbar-thumb {
+.analysis .table-list-box::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
 
   border-radius: 10px;
@@ -362,7 +326,7 @@ export default {
   background: #1183f8;
 }
 
-.Liaodui .table-list-box::-webkit-scrollbar-track {
+.analysis .table-list-box::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
 
   border-radius: 10px;
@@ -372,7 +336,7 @@ export default {
 
 
 
-.Liaodui .table-list {
+.analysis .table-list {
   display: flex;
   flex-wrap: nowrap;
   height: 50px;
@@ -382,10 +346,10 @@ export default {
 
 
 
-.Liaodui .table-list li {
+.analysis .table-list li {
   justify-content: flex-start;
 }
-.Liaodui .table-list li div {
+.analysis .table-list li div {
   padding: 0 12px;
   height: 25px;
   color: #fff;
@@ -395,10 +359,5 @@ export default {
   border: 0.5px solid #1183f8 !important;
   /* border-right: 1px solid #1183f8;
   border-bottom: 1px solid #1183f8; */
-}
-
-.Liaodui .funnel-chart {
-  width: 350px;
-  height: 228px;
 }
 </style>

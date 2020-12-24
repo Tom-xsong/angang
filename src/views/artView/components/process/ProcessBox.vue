@@ -1,9 +1,9 @@
 <template>
   <div class="process">
-    <div class="btn-open" @click="info.isShow = true">
+    <div class="btn-open" @click="info.isShow=true">
       <p>展开</p>
     </div>
-    <el-drawer :visible.sync="info.isShow" :with-header="false" :modal="false">
+    <el-drawer  :visible.sync="info.isShow" :with-header="false" :modal="false">
       <div class="main">
       
         <div class="main-top">
@@ -60,38 +60,80 @@
           <img src="../../../../assets/title-bg.png" />
         </div>
 
-        <div class="table">
+        <div class="table" v-for="i in 1" :key="i">
           <table>
             <tr>
               <td colspan="2">物料名称</td>
-              <td colspan="3"></td>
-              <td colspan="2">物料编号</td>
-              <td colspan="5"></td>
+              <td colspan="2"></td>
+              <td colspan="2">报告编号</td>
+              <td colspan="2"></td>
+              <td colspan="2">物料批号</td>
+              <td colspan="2"></td>
             </tr>
             <tr>
-              <td colspan="2">物料重量</td>
+              <td colspan="2">取样地点</td>
               <td colspan="3"></td>
-              <td colspan="2">船运代码</td>
+              <td colspan="2">取样时间</td>
               <td colspan="5"></td>
             </tr>
           </table>
-          <ul class="table-list" v-for="n in 4" :key="n">
+
+          <div class="table-list-box">
+          <ul class="table-list">
             <li>
               <div style="width: 58px; height: 25px; padding: 0">化学成分</div>
               <div style="width: 58px; height: 25px; padding: 0">数值</div>
             </li>
-            <li v-for="item in 5" :key="item">
+            <li v-for="item in 8" :key="item">
               <div>CaO</div>
               <div>数值</div>
             </li>
           </ul>
+
+
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">物理性能</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
+
+
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">微量元素</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
+
+
+           <ul class="table-list">
+            <li>
+              <div style="width: 58px; height: 25px; padding: 0">治金性能</div>
+              <div style="width: 58px; height: 25px; padding: 0">数值</div>
+            </li>
+            <li v-for="item in 8" :key="item">
+              <div>CaO</div>
+              <div>数值</div>
+            </li>
+          </ul>
+
+          </div>
         </div>
 
         
       </div>
 
-      <div class="btn-close" @click="info.isShow = false">
-        <p>收起</p>
+      <div class="btn-close" @click="info.isShow=false">
+        <p>关闭</p>
       </div>
     </el-drawer>
   </div>
@@ -102,13 +144,21 @@ export default {
   props:["info"],
   data() {
     return {
-     
+      
+         
     };
   },
 
-  methods: {},
+  methods: {
+    
+    
 
-  mounted() {},
+
+  },
+
+  mounted() {
+   
+  },
 };
 </script>
 
@@ -269,7 +319,10 @@ export default {
   top: 11px;
 }
 
+
 .process .main table {
+  overflow: hidden;
+  margin-top:10px;
   table-layout: fixed;
   width: 350px;
   border-collapse: collapse;
@@ -282,7 +335,6 @@ export default {
 }
 
 .process .table {
-  margin-top:20px;
   margin-bottom: 20px;
 }
 
@@ -298,22 +350,20 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.process .table-list {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow: auto;
+.process .table-list-box{
   width: 350px;
-  height: 50px;
-  border-left: 1px solid #1183f8;
+  height: 210px ! important;
+  overflow: auto;
 }
 
-.process .table-list::-webkit-scrollbar {
-  width: 10px;
 
+.process .table-list-box::-webkit-scrollbar {
+  width: 10px;
   height: 10px;
 }
 
-.process .table-list::-webkit-scrollbar-thumb {
+
+.process .table-list-box::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
 
   border-radius: 10px;
@@ -321,13 +371,25 @@ export default {
   background: #1183f8;
 }
 
-.process .table-list::-webkit-scrollbar-track {
+.process .table-list-box::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
 
   border-radius: 10px;
 
   background: #ededed;
 }
+
+
+
+.process .table-list {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 50px;
+  border-left: 1px solid #1183f8;
+}
+
+
+
 
 .process .table-list li {
   justify-content: flex-start;
@@ -339,7 +401,8 @@ export default {
   font-size: 12px;
   text-align: center;
   line-height: 25px;
-  border-right: 1px solid #1183f8;
-  border-bottom: 1px solid #1183f8;
+  border: 0.5px solid #1183f8 !important;
+  /* border-right: 1px solid #1183f8;
+  border-bottom: 1px solid #1183f8; */
 }
 </style>

@@ -2,8 +2,14 @@
   <div class="track-wrap">
     <header-logo></header-logo>
     <div id="material-track"></div>
-    <div class="matou" @click="matouClick({name:'燃供码头'})">燃供码头</div>
-    <div class="matou" @click="matouClick({name:'原料码头'})" style="left: 1394px; top: 721px">原料码头</div>
+    <div class="matou" @click="matouClick({ name: '燃供码头' })">燃供码头</div>
+    <div
+      class="matou"
+      @click="matouClick({ name: '原料码头' })"
+      style="left: 1394px; top: 721px"
+    >
+      原料码头
+    </div>
     <div
       class="block"
       :style="{ left: item.left + 'px', top: item.top + 'px' }"
@@ -13,37 +19,34 @@
     >
       <div class="header">{{ item.name }}</div>
       <ol class="list">
-        <li class="li" v-for="li in 5" :key="li">原料1号：4000</li>
+        <li class="li" v-for="item1 in item.rawMaterialArr" :key="item1.code">{{item1.name}}：{{item1.value}}</li>
       </ol>
     </div>
-    <route-box v-if="info.isBox == 'line'"   :info="info"></route-box>
-    <matou-box v-if="info.isBox == 'matou'"   :info="info"></matou-box>
-    <job-box  v-if="info.isBox == 'workArea'" :info="info"></job-box>
-   
+    <route-box v-if="info.isBox == 'line'" :info="info"></route-box>
+    <matou-box v-if="info.isBox == 'matou'" :info="info"></matou-box>
+    <job-box v-if="info.isBox == 'workArea'" :info="info"></job-box>
   </div>
 </template>
 
 <script>
 import zrender from "zrender";
+
+// import { workAreaAll } from "../../api/home";
 export default {
   name: "MaterialTrack",
   components: {
     HeaderLogo: () => import("../../components/HeaderLogo"),
     RouteBox: () => import("./components/RouteBox"),
-    MatouBox: ()=>import("./components/MatouBox"),
-    JobBox: ()=>import("./components/WorkBox"),
-    
+    MatouBox: () => import("./components/MatouBox"),
+    JobBox: () => import("./components/WorkBox"),
   },
   data() {
     return {
-      info:{
-        isShow:false,
-        isBox:"matou",
-        objs:{name:"燃供码头"},
-
+      info: {
+        isShow: false,
+        isBox: "matou111",
+        objs: { name: "燃供码头" },
       },
-       
-       
 
       blockData: [
         {
@@ -169,9 +172,143 @@ export default {
       ],
     };
   },
+  created(){
+    let res = {
+      code: "00000",
+      data: [
+        {
+          operationAreaCode: "BF1",
+          operationAreaName: "一高炉",
+          storageMaterielCurrentList: [
+            {
+              code: "bxk",
+              name: "巴西矿",
+              value: 3434,
+            },
+
+
+            {
+              code: "tk",
+              name: "铁矿",
+              value: 10234,
+            },
+             {
+              code: "bxk",
+              name: "巴西矿",
+              value: 3434,
+            },
+
+
+            {
+              code: "tk",
+              name: "铁矿",
+              value: 10234,
+            },
+             {
+              code: "bxk",
+              name: "巴西矿",
+              value: 3434,
+            },
+
+
+            {
+              code: "tk",
+              name: "铁矿",
+              value: 10234,
+            },
+             {
+              code: "bxk",
+              name: "巴西矿",
+              value: 3434,
+            },
+
+
+            {
+              code: "tk",
+              name: "铁矿",
+              value: 10234,
+            },
+             {
+              code: "bxk",
+              name: "巴西矿",
+              value: 3434,
+            },
+
+
+            {
+              code: "tk",
+              name: "铁矿",
+              value: 10234,
+            },
+             {
+              code: "bxk",
+              name: "巴西矿",
+              value: 3434,
+            },
+
+
+            {
+              code: "tk",
+              name: "铁矿",
+              value: 10234,
+            },
+          ],
+        },
+
+        
+
+        {
+          operationAreaCode: "SIN1",
+          operationAreaName: "1#烧结",
+          storageMaterielCurrentList: [
+            {
+              code: "bxk",
+              name: "巴西矿",
+              value: 2200,
+            },
+
+
+            {
+              code: "tk",
+              name: "铁矿",
+              value: 4324,
+            },
+          ],
+        },
+      ],
+      message: "string",
+      status: true,
+    };
+
+    let data1 = res.data
+
+   this.blockData.forEach(item=>{
+       data1.forEach(item1=>{
+         if(item.code == item1.operationAreaCode){
+           console.log(item.code)
+            item.rawMaterialArr = item1.storageMaterielCurrentList
+            console.log(item.rawMaterialArr)
+         }
+
+      })
+    })
+
+    
+  },
   mounted() {
     this.zr = zrender.init(document.getElementById("material-track"));
     this.getCurveData();
+
+    // workAreaAll().then((res) => {
+    //   console.log(res);
+    // });
+
+    
+
+    
+
+
+
   },
   methods: {
     // 绘制曲线
@@ -306,11 +443,8 @@ export default {
               { name: "3#烧结机", code: "SIN3" },
             ],
           ],
-          
         },
 
-
-        
         {
           id: 7,
           type: "line",
@@ -465,27 +599,24 @@ export default {
     },
     // 箭头点击
     curveClick(e) {
-      console.log(e.target.arr)
+      console.log(e.target.arr);
       this.info.isBox = "line";
-      this.info.isShow = true ;
-      this.info.objs = e.target.arr
+      this.info.isShow = true;
+      this.info.objs = e.target.arr;
     },
     // 区域点击
     handleBlock(block) {
       console.log(block);
       this.info.isBox = "workArea";
-      this.info.isShow = true
-      this.info.objs = block
-        
-     
+      this.info.isShow = true;
+      this.info.objs = block;
     },
 
-    matouClick(obj){
+    matouClick(obj) {
       this.info.isBox = "matou";
-      this.info.isShow = true ;
-      this.info.objs = obj
-
-    }
+      this.info.isShow = true;
+      this.info.objs = obj;
+    },
   },
 };
 </script>
@@ -557,6 +688,8 @@ export default {
   }
   .list {
     padding-left: 14px;
+     height: 100px;
+     overflow: auto;
     .li {
       padding-bottom: 4px;
       font-size: 12px;
@@ -566,5 +699,12 @@ export default {
       line-height: 17px;
     }
   }
+  .list::-webkit-scrollbar {
+  width: 0;
+  }
 }
+
+
+
+
 </style>

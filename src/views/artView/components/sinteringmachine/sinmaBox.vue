@@ -8,7 +8,7 @@
         <!-- 顶部 -->
         <div class="main-top">
           <div class="title-logo"></div>
-          <div class="title-text">1#烧结机</div>
+          <div class="title-text">{{info.name}}#烧结机</div>
         </div>
 
         <div class="title">

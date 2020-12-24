@@ -8,7 +8,7 @@
         <!-- 顶部 -->
         <div class="main-top">
           <div class="title-logo"></div>
-          <div class="title-text">球团</div>
+          <div class="title-text">{{info.name}}</div>
         </div>
 
         <div class="title">

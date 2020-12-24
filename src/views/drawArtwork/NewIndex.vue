@@ -554,6 +554,8 @@ export default {
         if(res.data.code=="00000"){
            this.$message.success("编辑成功");
            this.dialogVisible=false;
+        }else{
+          this.$message.warning(res.data.message);
         }
       });
     },
