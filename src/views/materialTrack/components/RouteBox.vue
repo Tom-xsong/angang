@@ -8,7 +8,7 @@
         <div class="main-top" v-if="info.objs.length == 1">
           <div class="title-logo"></div>
           <div class="title-text">
-            {{ info.objs[0][0].name }}  --->  {{ info.objs[0][1].name }}
+            {{ info.objs[0][0].name }} ---> {{ info.objs[0][1].name }}
           </div>
           <!-- <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item>
@@ -20,24 +20,21 @@
         <div class="main-top2" v-else>
           <div class="title-logo"></div>
 
-          <el-form :inline="true" :model="formInline" class="demo-form-inline">
+          <el-form :inline="true"  class="demo-form-inline">
             <el-form-item class="input-select" label="">
               <el-select
                 :popper-append-to-body="false"
-                v-model="formInline.region"
+                v-model="selectValue"
                 placeholder="路径选择"
               >
                 <el-option
                   v-for="(item, index) in info.objs"
                   :key="index"
                   :label="item[0].name + '  --->  ' + item[1].name"
-                  :value="index"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
-            <!-- <el-form-item>
-            <el-button class="btn-enter" type="primary">进入</el-button>
-          </el-form-item> -->
           </el-form>
         </div>
 
@@ -47,7 +44,7 @@
           <img src="../../../assets/title-bg.png" />
         </div>
 
-         <div class="bar-chart">
+        <div class="bar-chart">
           <ul class="list1">
             <li v-for="item in arr2" class="item" :key="item.name">
               <div class="box">
@@ -55,7 +52,6 @@
                   class="item-gong"
                   :style="{ width: item.num / 100 + 'px' }"
                 ></div>
-               
               </div>
               <span class="item-text">{{ item.name }}</span>
             </li>
@@ -74,17 +70,18 @@
           <span>检化验情况</span>
           <img src="../../../assets/title-bg.png" />
         </div>
+       
 
-        <table v-for="i in arr" :key="i">
+        <table v-for="i in transportHistory.records" :key="i">
           <tr>
             <td colspan="4">起点工序</td>
             <td colspan="4">终点工序</td>
             <td colspan="4">原料料号</td>
           </tr>
           <tr>
-            <td colspan="4">{{ i }}</td>
-            <td colspan="4"></td>
-            <td colspan="4"></td>
+            <td colspan="4">{{i.startOperationAreaName}}</td>
+            <td colspan="4">{{i.endOperationAreaName}}</td>
+            <td colspan="4">{{i.materielCode}}</td>
           </tr>
           <tr>
             <td colspan="3">原料料名</td>
@@ -93,20 +90,22 @@
             <td colspan="3">检化验成分</td>
           </tr>
           <tr>
-            <td colspan="3"></td>
-            <td colspan="3"></td>
-            <td colspan="3"></td>
+            <td colspan="3">{{i.materielName}}></td>
+            <td colspan="3">{{i.beltFlowPath}}</td>
+            <td colspan="3">{{i.trafficVolume}}</td>
             <td colspan="3" class="query">查看</td>
           </tr>
         </table>
 
         <!-- 分页器 -->
-       <div class="pagination-box">
+        <div class="pagination-box">
           <el-pagination
             background
             layout="prev, pager, next"
-            :total="50"
-            :pager-count="5"
+            @current-change="handleCurrentChange"
+            :current-page="2"
+            :total="transportHistory.total"
+            :page-size="4"
           ></el-pagination>
         </div>
       </div>
@@ -118,97 +117,96 @@
 </template>
 
 <script>
-import { routeHistory, route } from "../../../api/home";
+// import { routeHistory, route } from "../../../api/home";
 export default {
   props: ["info"],
   data() {
     return {
-      
-
       arr: [1, 2, 3, 4],
-
-     
-          arr2: [
-            {
-              name: "澳矿",
-              num: 4000,
-            },
-
-            {
-              name: "巴西碳",
-              num: 12000,
-            },
-
-            {
-              name: "铁粉",
-              num: 17000,
-            },
-
-
-            {
-              name: "澳矿",
-              num: 4000,
-            },
-
-            {
-              name: "巴西碳",
-              num: 12000,
-            },
-
-            {
-              name: "铁粉",
-              num: 17000,
-            },
-
-
-
-             {
-              name: "澳矿",
-              num: 4000,
-            },
-
-            {
-              name: "巴西碳",
-              num: 12000,
-            },
-
-            {
-              name: "铁粉",
-              num: 17000,
-            },
-
-
-            {
-              name: "澳矿",
-              num: 4000,
-            },
-
-            {
-              name: "巴西碳",
-              num: 12000,
-            },
-
-            {
-              name: "铁粉",
-              num: 17000,
-            },
-
-             {
-              name: "澳矿",
-              num: 4000,
-            },
-
-            {
-              name: "巴西碳",
-              num: 12000,
-            },
-
-            {
-              name: "铁粉",
-              num: 17000,
-            },
-          ],
       
+      transportHistory:[],
+
+      transportStatistics:[],
+
+      selectValue:[],
+    
+
+      arr2: [
+        {
+          name: "澳矿",
+          num: 4000,
+        },
+
+        {
+          name: "巴西碳",
+          num: 12000,
+        },
+
+        {
+          name: "铁粉",
+          num: 17000,
+        },
+
+        {
+          name: "澳矿",
+          num: 4000,
+        },
+
+        {
+          name: "巴西碳",
+          num: 12000,
+        },
+
+        {
+          name: "铁粉",
+          num: 17000,
+        },
+
+        {
+          name: "澳矿",
+          num: 4000,
+        },
+
+        {
+          name: "巴西碳",
+          num: 12000,
+        },
+
+        {
+          name: "铁粉",
+          num: 17000,
+        },
+
+        {
+          name: "澳矿",
+          num: 4000,
+        },
+
+        {
+          name: "巴西碳",
+          num: 12000,
+        },
+
+        {
+          name: "铁粉",
+          num: 17000,
+        },
+
+        {
+          name: "澳矿",
+          num: 4000,
+        },
+
+        {
+          name: "巴西碳",
+          num: 12000,
+        },
+
+        {
+          name: "铁粉",
+          num: 17000,
+        },
+      ],
 
       formInline: {
         user: "",
@@ -216,23 +214,79 @@ export default {
       },
     };
   },
+  methods:{
+     handleCurrentChange(e){
+       console.log(e,this.selectValue[0].code,this.selectValue[1].code)
+    // routeHistory({
+    //   currentPage: 1,
+    //   endOperationAreaCode: "BF1",
+    //   pageSize: 2,
+    //   startOperationAreaCode: "SIN1",
+    // }).then((res) => {
+    //   console.log(res);
+    // });
+
+
+     }
+
+  },
 
   mounted() {
-    routeHistory({
-      currentPage: 1,
-      endOperationAreaCode: "BF1",
-      pageSize: 2,
-      startOperationAreaCode: "SIN1",
-    }).then((res) => {
-      console.log(res);
-    });
 
-    route({
-      endOperationAreaCode: "BF1",
-      startOperationAreaCode: "SIN1",
-    }).then((res) => {
-      console.log(res);
-    });
+    // routeHistory({
+    //   currentPage: 1,
+    //   endOperationAreaCode: "BF1",
+    //   pageSize: 2,
+    //   startOperationAreaCode: "SIN1",
+    // }).then((res) => {
+    //   console.log(res);
+    // });
+    
+
+    // route({
+    //   endOperationAreaCode: "BF1",
+    //   startOperationAreaCode: "SIN1",
+    // }).then((res) => {
+    //   console.log(res);
+    // });
+
+    let res = {
+      code: "string",
+      data: {
+        current: 2,
+        pages: 0,
+        records: [
+          {
+            analysisText: "www",
+            beltFlowPath: "00000",
+            endOperationAreaName: "BF1",
+            materielCode: "sss",
+            materielName: "巴西矿",
+            startOperationAreaName: "SIN1",
+            trafficVolume: 1000,
+          },
+        ],
+        searchCount: true,
+        size: 4,
+        total: 5,
+      },
+      message: "string",
+      status: true,
+    };
+
+    this.transportHistory  = res.data
+
+
+    
+
+    // let res2 = {
+
+    // }
+
+    //  this.transportStatistics = 
+   
+
+
   },
 };
 </script>
@@ -357,16 +411,16 @@ export default {
   border: 1px solid #1a61d9;
 }
 
-.route >>> .el-popper .popper__arrow::after{
-    content: " ";
-    border-width:0 !important;
+.route >>> .el-popper .popper__arrow::after {
+  content: " ";
+  border-width: 0 !important;
 }
 
-.route >>> .el-popper .popper__arrow{
-  border-width:0 !important;
+.route >>> .el-popper .popper__arrow {
+  border-width: 0 !important;
 }
 
-.route >>> .el-select .el-input .el-select__caret{
+.route >>> .el-select .el-input .el-select__caret {
   color: #1a61d9;
 }
 
@@ -459,20 +513,16 @@ export default {
   margin-right: 20px;
 }
 
-
-
-
 .route .bar-chart .list1 {
   width: 350px;
-  overflow:auto;
+  overflow: auto;
   height: 250px;
 }
 
-.route .bar-chart .list1::-webkit-scrollbar{
+.route .bar-chart .list1::-webkit-scrollbar {
   width: 0;
 }
 
-	      
 .route .bar-chart .item {
   width: 350px;
   height: 10px;
@@ -521,7 +571,6 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-
 .route .main table {
   table-layout: fixed;
   margin-top: 10px;
@@ -556,8 +605,8 @@ export default {
   position: absolute;
   top: 0;
   left: 50%;
-  transform: translate(-50%,0);
-} 
+  transform: translate(-50%, 0);
+}
 
 .route >>> .el-pagination.is-background .el-pager li {
   min-width: 16px;

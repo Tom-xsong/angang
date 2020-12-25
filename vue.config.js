@@ -23,12 +23,21 @@ module.exports = {
     port: 5000,
     proxy: {
       '/api': {
-        target: 'http://119.84.70.208:7506',
+        target: 'http://363594p97a.zicp.vip',
         changeOrigin: true, 
         pathRewrite: {   
-          '^/api': 'http://119.84.70.208:7506'
+          '^/api': 'http://363594p97a.zicp.vip'
         }
-      }
+      },
+
+       '/ws/': {
+                target: 'ws://3w60e29448.wicp.vip',
+                ws: true,
+                changeOrigin: true, 
+                pathRewrite: {   
+                  '^/ws/': '/ws/'
+                }
+         }
     }
   },
   // 修改webpack config, 使其不打包externals下的资源
