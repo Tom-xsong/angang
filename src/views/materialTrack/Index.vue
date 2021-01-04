@@ -2,10 +2,12 @@
   <div class="track-wrap">
     <header-logo></header-logo>
     <div id="material-track"></div>
-    <div class="matou" @click="matouClick({ name: '燃供码头' })">燃供码头</div>
+    <div class="matou" @click="matouClick({ name: '燃供码头', code: 'RGMT' })">
+      燃供码头
+    </div>
     <div
       class="matou"
-      @click="matouClick({ name: '原料码头' })"
+      @click="matouClick({ name: '原料码头', code: 'YLMT' })"
       style="left: 1394px; top: 721px"
     >
       原料码头
@@ -19,33 +21,51 @@
     >
       <div class="header">{{ item.name }}</div>
       <ol class="list">
-        <li class="li" v-for="item1 in item.rawMaterialArr" :key="item1.code">{{item1.name}}：{{item1.value}}</li>
+        <li
+          class="li"
+          v-for="(item1, index) in item.rawMaterialArr"
+          :key="index"
+        >
+          {{ item1.name }}：{{ item1.value }}
+        </li>
       </ol>
     </div>
-    <route-box v-if="info.isBox == 'line'" :info="info"></route-box>
-    <matou-box v-if="info.isBox == 'matou'" :info="info"></matou-box>
-    <job-box v-if="info.isBox == 'workArea'" :info="info"></job-box>
+    <div class="btn-open" @click="info.isShow = true">
+      <p>展开</p>
+    </div>
+
+     <el-drawer :visible.sync="info.isShow" :with-header="false" :modal="false">
+       <route-box v-if="info.isBox == 'line'" :info="info"></route-box>
+       <matou-box v-if="info.isBox == 'matou'" :info="info"></matou-box>
+       <work-box v-if="info.isBox == 'workArea'" :info="info"></work-box> 
+       <div class="btn-close" @click="info.isShow = false">
+        <p>收起</p>
+      </div>
+     </el-drawer>
+   
+    
+    
   </div>
 </template>
 
 <script>
 import zrender from "zrender";
 
-// import { workAreaAll } from "../../api/home";
+import { workAreaAll } from "../../api/home";
 export default {
   name: "MaterialTrack",
   components: {
     HeaderLogo: () => import("../../components/HeaderLogo"),
-    RouteBox: () => import("./components/RouteBox"),
-    MatouBox: () => import("./components/MatouBox"),
-    JobBox: () => import("./components/WorkBox"),
+    RouteBox: () => import("./components/route/RouteBox"),
+    MatouBox: () => import("./components/matou/MatouBox"),
+    WorkBox: () => import("./components/work/WorkBox"),
   },
   data() {
     return {
       info: {
         isShow: false,
-        isBox: "matou111",
-        objs: { name: "燃供码头" },
+        isBox: "matou",
+        objs: { name: '燃供码头', code: 'RGMT' },
       },
 
       blockData: [
@@ -56,6 +76,7 @@ export default {
           code: "GFPP",
           left: 389,
           top: 647,
+          rawMaterialArr: [],
         },
         {
           id: 2,
@@ -64,6 +85,7 @@ export default {
           code: "BF1",
           left: 956,
           top: 584,
+          rawMaterialArr: [],
         },
         {
           id: 3,
@@ -72,6 +94,7 @@ export default {
           code: "BF2",
           left: 831,
           top: 625,
+          rawMaterialArr: [],
         },
         {
           id: 4,
@@ -80,6 +103,7 @@ export default {
           code: "BF3",
           left: 664,
           top: 657,
+          rawMaterialArr: [],
         },
         {
           id: 5,
@@ -88,6 +112,7 @@ export default {
           code: "SIN1",
           left: 901,
           top: 380,
+          rawMaterialArr: [],
         },
         {
           id: 6,
@@ -96,6 +121,7 @@ export default {
           code: "SIN2",
           left: 653,
           top: 306,
+          rawMaterialArr: [],
         },
         {
           id: 7,
@@ -104,6 +130,7 @@ export default {
           code: "SIN3",
           left: 778,
           top: 342,
+          rawMaterialArr: [],
         },
         {
           id: 8,
@@ -112,6 +139,7 @@ export default {
           code: "BF4",
           left: 1290,
           top: 106,
+          rawMaterialArr: [],
         },
         {
           id: 9,
@@ -120,6 +148,7 @@ export default {
           code: "BF5",
           left: 1165,
           top: 188,
+          rawMaterialArr: [],
         },
         {
           id: 10,
@@ -128,6 +157,7 @@ export default {
           code: "SIN4",
           left: 1510,
           top: 322,
+          rawMaterialArr: [],
         },
         {
           id: 11,
@@ -136,6 +166,7 @@ export default {
           code: "SIN5",
           left: 1633,
           top: 373,
+          rawMaterialArr: [],
         },
         {
           id: 12,
@@ -144,6 +175,7 @@ export default {
           code: "PMF",
           left: 1220,
           top: 443,
+          rawMaterialArr: [],
         },
         {
           id: 13,
@@ -152,6 +184,7 @@ export default {
           code: "MMS1",
           left: 1097,
           top: 490,
+          rawMaterialArr: [],
         },
         {
           id: 14,
@@ -160,6 +193,7 @@ export default {
           code: "MMS2",
           left: 1344,
           top: 342,
+          rawMaterialArr: [],
         },
         {
           id: 15,
@@ -168,147 +202,28 @@ export default {
           code: "PPP",
           left: 1026,
           top: 194,
+          rawMaterialArr: [],
         },
       ],
     };
   },
-  created(){
-    let res = {
-      code: "00000",
-      data: [
-        {
-          operationAreaCode: "BF1",
-          operationAreaName: "一高炉",
-          storageMaterielCurrentList: [
-            {
-              code: "bxk",
-              name: "巴西矿",
-              value: 3434,
-            },
 
-
-            {
-              code: "tk",
-              name: "铁矿",
-              value: 10234,
-            },
-             {
-              code: "bxk",
-              name: "巴西矿",
-              value: 3434,
-            },
-
-
-            {
-              code: "tk",
-              name: "铁矿",
-              value: 10234,
-            },
-             {
-              code: "bxk",
-              name: "巴西矿",
-              value: 3434,
-            },
-
-
-            {
-              code: "tk",
-              name: "铁矿",
-              value: 10234,
-            },
-             {
-              code: "bxk",
-              name: "巴西矿",
-              value: 3434,
-            },
-
-
-            {
-              code: "tk",
-              name: "铁矿",
-              value: 10234,
-            },
-             {
-              code: "bxk",
-              name: "巴西矿",
-              value: 3434,
-            },
-
-
-            {
-              code: "tk",
-              name: "铁矿",
-              value: 10234,
-            },
-             {
-              code: "bxk",
-              name: "巴西矿",
-              value: 3434,
-            },
-
-
-            {
-              code: "tk",
-              name: "铁矿",
-              value: 10234,
-            },
-          ],
-        },
-
-        
-
-        {
-          operationAreaCode: "SIN1",
-          operationAreaName: "1#烧结",
-          storageMaterielCurrentList: [
-            {
-              code: "bxk",
-              name: "巴西矿",
-              value: 2200,
-            },
-
-
-            {
-              code: "tk",
-              name: "铁矿",
-              value: 4324,
-            },
-          ],
-        },
-      ],
-      message: "string",
-      status: true,
-    };
-
-    let data1 = res.data
-
-   this.blockData.forEach(item=>{
-       data1.forEach(item1=>{
-         if(item.code == item1.operationAreaCode){
-           console.log(item.code)
-            item.rawMaterialArr = item1.storageMaterielCurrentList
-            console.log(item.rawMaterialArr)
-         }
-
-      })
-    })
-
-    
-  },
+  created() {},
   mounted() {
     this.zr = zrender.init(document.getElementById("material-track"));
     this.getCurveData();
 
-    // workAreaAll().then((res) => {
-    //   console.log(res);
-    // });
-
-    
-
-    
-
-
-
+    workAreaAll().then((res) => {
+      console.log(res);
+      let data1 = res.data.data;
+      this.blockData.forEach((item) => {
+        data1.forEach((item1) => {
+          if (item.code == item1.operationAreaCode) {
+            item.rawMaterialArr = item1.storageMaterielCurrentList;
+          }
+        });
+      });
+    });
   },
   methods: {
     // 绘制曲线
@@ -321,7 +236,7 @@ export default {
           points: [[207, 792], [382, 719], [207, 719], [381, 721], -0.6], //码 厂
           arr: [
             [
-              { name: "燃供码头", code: "" },
+              { name: "燃供码头", code: "RGMT" },
               { name: "燃供厂", code: "GFPP" },
             ],
           ],
@@ -370,40 +285,46 @@ export default {
           points: [[801, 528], [802, 657], [828, 657], [806, 656], 0.9], //烧 高
           arr: [
             [
-              { name: "1#高炉", code: "BF1" },
+              
               { name: "1#烧结机", code: "SIN1" },
-            ],
-            [
               { name: "1#高炉", code: "BF1" },
-              { name: "2#烧结机", code: "SIN2" },
             ],
             [
+              
+              { name: "2#烧结机", code: "SIN2" },
               { name: "1#高炉", code: "BF1" },
-              { name: "3#烧结机", code: "SIN3" },
             ],
             [
-              { name: "2#高炉", code: "BF1" },
+             
+              { name: "3#烧结机", code: "SIN3" },
+              { name: "1#高炉", code: "BF1" },
+            ],
+            [
+              
               { name: "1#烧结机", code: "SIN1" },
+              { name: "2#高炉", code: "BF1" },
             ],
             [
-              { name: "2#高炉", code: "BF1" },
               { name: "2#烧结机", code: "SIN2" },
-            ],
-            [
               { name: "2#高炉", code: "BF1" },
-              { name: "3#烧结机", code: "SIN3" },
             ],
             [
-              { name: "3#高炉", code: "BF1" },
+              { name: "3#烧结机", code: "SIN3" },
+              { name: "2#高炉", code: "BF1" },
+            ],
+            [
+              
               { name: "1#烧结机", code: "SIN1" },
+              { name: "3#高炉", code: "BF1" },
             ],
             [
-              { name: "3#高炉", code: "BF1" },
+              
               { name: "2#烧结机", code: "SIN2" },
+              { name: "3#高炉", code: "BF1" },
             ],
             [
-              { name: "3#高炉", code: "BF1" },
               { name: "3#烧结机", code: "SIN3" },
+              { name: "3#高炉", code: "BF1" },
             ],
           ],
         },
@@ -476,7 +397,7 @@ export default {
           type: "line",
           points: [[1307, 434], [1300, 389], [1307, 389], [1299, 388], 0.3], //一料 五高
           arr: [
-            [
+            [ 
               { name: "一次料场", code: "PMF" },
               { name: "4#高炉", code: "BF4" },
             ],
@@ -537,7 +458,7 @@ export default {
           points: [[1303, 609], [1394, 748], [1303, 748], [1303, 605], 0], //原码 一料
           arr: [
             [
-              { name: "原料码头", code: "" },
+              { name: "原料码头", code: "YLMT" },
               { name: "一次料场", code: "PMF" },
             ],
           ],
@@ -599,14 +520,12 @@ export default {
     },
     // 箭头点击
     curveClick(e) {
-      console.log(e.target.arr);
       this.info.isBox = "line";
       this.info.isShow = true;
       this.info.objs = e.target.arr;
     },
     // 区域点击
     handleBlock(block) {
-      console.log(block);
       this.info.isBox = "workArea";
       this.info.isShow = true;
       this.info.objs = block;
@@ -688,8 +607,8 @@ export default {
   }
   .list {
     padding-left: 14px;
-     height: 100px;
-     overflow: auto;
+    height: 100px;
+    overflow: auto;
     .li {
       padding-bottom: 4px;
       font-size: 12px;
@@ -700,11 +619,69 @@ export default {
     }
   }
   .list::-webkit-scrollbar {
-  width: 0;
+    width: 0;
   }
 }
 
 
+.track-wrap ::v-deep .el-drawer__wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 1080px;
+}
 
+.track-wrap ::v-deep .el-drawer__wrapper .el-drawer.rtl {
+  width: 750px;
+  border: 0;
+  background: linear-gradient(
+    270deg,
+    #000000 0%,
+    rgba(0, 0, 0, 0.8) 56%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
 
+.track-wrap ::v-deep .el-drawer__wrapper .el-drawer.rtl:focus {
+  outline: 0;
+}
+
+.track-wrap .btn-open {
+  width: 53px;
+  height: 120px;
+  background: url("../../assets/tag.png") no-repeat center;
+  background-size: 100% 100%;
+  position: absolute;
+  right: 0;
+  top: 460px;
+}
+
+.track-wrap .btn-open p {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  color: #fff;
+  font-family: PingFangSC-Medium, PingFang SC;
+}
+
+.track-wrap .btn-close {
+  width: 53px;
+  height: 120px;
+  background: url("../../assets/tag.png") no-repeat center;
+  position: absolute;
+  right: 394px;
+  top: 480px;
+}
+
+.track-wrap .btn-close p {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  color: #fff;
+  font-family: PingFangSC-Medium, PingFang SC;
+}
 </style>

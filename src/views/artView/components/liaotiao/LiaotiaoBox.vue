@@ -44,7 +44,21 @@
         <img src="../../../../assets/title-bg.png" />
       </div>
 
-      <div class="funnel-chart" ref="funnelChart" @click="funnelClick()"></div>
+      <div class="liaotiao-box">
+        <div class="liaotiao">
+          <div class="liaotiao-title">{{ liaoInfo.name }}</div>
+          <div class="liaotiao-content">
+            <div
+              class="col"
+              :class="['col' + (index + 1)]"
+              :style="{ width: (item.value / liaoInfo.total) * 100 + '%' }"
+              v-for="(item, index) in liaoInfo.liaoArr"
+              :key="index"
+              @click="liaotiaoClick(item.id)"
+            ></div>
+          </div>
+        </div>
+      </div>
 
       <div class="title">
         <span>检化验成分</span>
@@ -90,27 +104,16 @@ import {
   pileInformation,
   pileInfopileDetailrmation,
 } from "../../../../api/home";
-import { funnelChart,ldcId} from "./charts";
 export default {
   props: ["info"],
   data() {
     return {
-      data: {
-        batchNum: "",
-        data: [
-          {
-            code: {},
-            id: {},
-            name: {},
-            value: {},
-          },
-        ],
-        operationAreaName: "",
-        storageCode: "",
-        storageName: "",
-        storageReserves: "",
+      data: {},
+      liaoInfo: {
+        total: 0,
+        liaoArr: [],
+        name: "",
       },
-
       analysis: {
         analysisHead: [
           {
@@ -123,38 +126,32 @@ export default {
         ],
         data: [],
       },
-      
     };
   },
 
   methods: {
+    //料条点击
+    liaotiaoClick(id) {
+      pileInfopileDetailrmation({
+        materialLayerId: id,
+        storageCode: this.info.code,
+      }).then((res) => {
+        console.log(res);
+        this.analysis = res.data.data;
+      });
+    },
+
     //数据初始化
     requestData(code) {
       pileInformation({ storageCode: code }).then((res) => {
         console.log(res);
-        if(res.data.code == "00000"){
-           funnelChart(this.$refs.funnelChart, res.data.data.data);
-           this.data = res.data.data
-        }else{
-          funnelChart(this.$refs.funnelChart,[]);
-
+        if(res.data.code=="00000"){
+        this.data = res.data.data;
+        this.liaoInfo.total = res.data.data.storageReserves;
+        this.liaoInfo.liaoArr = res.data.data.data;
+        this.liaoInfo.name = res.data.data.storageName;
         }
-       
       });
-    },
-
-    //图表点击
-    funnelClick() {
-      console.log(ldcId)
-      if (ldcId) {
-        pileInfopileDetailrmation({
-          materialLayerId: ldcId,
-          storageCode: this.info.code,
-        }).then((res) => {
-          console.log(res);
-          this.analysis = res.data.data;
-        });
-      }
     },
   },
 
@@ -167,34 +164,20 @@ export default {
     "info.code": {
       handler(newValue, oldValue) {
         console.log("变了" + newValue, oldValue);
-        this.data= {
-        batchNum: "",
-        data: [
-          {
-            code: {},
-            id: {},
-            name: {},
-            value: {},
-          },
-        ],
-        operationAreaName: "",
-        storageCode: "",
-        storageName: "",
-        storageReserves: "",
-      },
-
-      this.analysis={
-        analysisHead: [
-          {
-            batchCode: "",
-            code: "",
-            materielName: "",
-            placeName: "",
-            time: "",
-          },
-        ],
-        data: [],
-      };
+        this.analysis = {
+          analysisHead: [
+            {
+              batchCode: "",
+              code: "",
+              materielName: "",
+              placeName: "",
+              time: "",
+            },
+          ],
+          data: []
+        };
+        this.data = {};
+        this.liaoInfo = {};
 
         let code = newValue;
         this.requestData(code);
@@ -358,8 +341,56 @@ export default {
   background: #ededed;
 }
 
-.Liaodui .funnel-chart {
+.Liaodui .liaotiao-box {
   width: 350px;
-  height: 228px;
+  overflow: hidden;
+}
+
+.Liaodui .liaotiao {
+  margin: 50px auto;
+
+  width: 300px;
+  height: 70px;
+  padding: 0 10px;
+  padding-bottom: 5px;
+  border: 1px solid #1187ff;
+}
+
+.Liaodui .liaotiao .liaotiao-title {
+  width: 100%;
+  height: 50%;
+
+  line-height: 35px;
+  color: #fff;
+}
+
+.Liaodui .liaotiao .liaotiao-content {
+  display: flex;
+  width: 100%;
+  height: 50%;
+}
+
+.col {
+  height: 100%;
+  margin-right: 1px;
+  background: #ff862c;
+}
+.col1 {
+  background: #1187ff;
+}
+.col2 {
+  background: #344bff;
+}
+.col3 {
+  background: #b053ba;
+}
+.col4 {
+  background: #ea508b;
+}
+.col5 {
+  background: #fa4949;
+}
+.col6 {
+  background: #ff862c;
 }
 </style>

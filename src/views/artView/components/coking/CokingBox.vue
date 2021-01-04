@@ -1,211 +1,159 @@
 <template>
   <div class="coking">
-    <div class="btn-open" @click="info.isShow = true">
-      <p>展开</p>
+    <div class="main">
+      <!-- 顶部 -->
+      <div class="main-top">
+        <div class="title-logo"></div>
+        <div class="title-text">{{ info.name }}</div>
+      </div>
+
+      <div class="title">
+        <span>产量信息</span>
+        <img src="../../../../assets/title-bg.png" />
+      </div>
+
+      <div class="bar-one" ref="barChart1"></div>
+
+      <div class="broken-line" ref="brokenLine"></div>
+
+      <div class="title">
+        <span>原料库存</span>
+        <img src="../../../../assets/title-bg.png" />
+      </div>
+
+      <div class="Pie-chart-box" ref="pieChart"></div>
+
+      <div class="title">
+        <span>受料/消耗情况</span>
+        <img src="../../../../assets/title-bg.png" />
+      </div>
+
+      <div class="bar-chart">
+        <div class="sign-title">原料材质</div>
+
+        <div class="new-Bar-Chart" ref="newBarChart"></div>
+      </div>
+
+      <div class="title">
+        <span>产品数据库</span>
+        <img src="../../../../assets/title-bg.png" />
+      </div>
+
+      <div class="product-data">
+        <div class="product-data-top">
+          <el-form :inline="true" class="demo-form-inline">
+            <el-form-item class="input-select" label="产品矿">
+              <el-select
+                :popper-append-to-body="false"
+                v-model="selectValue"
+                @change="changeSelect"
+                filterable
+                placeholder="路径选择"
+              >
+                <el-option
+                  v-for="item in selectArr"
+                  :key="item.label"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+        </div>
+
+        <div class="product-data-content" ref="barChart"></div>
+      </div>
     </div>
-    <el-drawer :visible.sync="info.isShow" :with-header="false" :modal="false">
-      <div class="main">
-        <!-- 顶部 -->
-        <div class="main-top">
-          <div class="title-logo"></div>
-          <div class="title-text">{{info.name}}</div>
-        </div>
-
-        <div class="title">
-          <span>焦化产量信息</span>
-          <img src="../../../../assets/title-bg.png" />
-        </div>
-
-
-
-        <div class="bar-one" ref="barChart1"></div>
-
-        <div class="broken-line" ref="brokenLine"></div>
-
-        <div class="title">
-          <span>原料库存</span>
-          <img src="../../../../assets/title-bg.png" />
-        </div>
-
-        <div class="Pie-chart-box">
-          <div class="Pie-chart" ref="pieChart"></div>
-          <div class="Pie-legend">
-            <ul>
-              <li>
-                <span class="legend"></span><span class="name">肥煤</span
-                ><span class="num">314T</span>
-              </li>
-              <li>
-                <span class="legend" style="background: #0bcdff"></span
-                ><span class="name">肥煤</span><span class="num">314T</span>
-              </li>
-              <li>
-                <span class="legend" style="background: #00ff84"></span
-                ><span class="name">肥煤</span><span class="num">314T</span>
-              </li>
-              <li>
-                <span class="legend" style="background: #ff862c"></span
-                ><span class="name">肥煤</span><span class="num">314T</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="title">
-          <span>1#烧结机受料/消耗情况</span>
-          <img src="../../../../assets/title-bg.png" />
-        </div>
-
-        <div class="bar-chart">
-          <div class="sign">
-            <div class="sign-title">原料材质</div>
-            <div class="shou-text">受料</div>
-            <div class="shou"></div>
-            <div class="gong-text">供料</div>
-            <div class="gong"></div>
-          </div>
-
-          <ul class="list1">
-            <li v-for="(item, index) in arr2" class="item" :key="index">
-              <div class="box">
-                <div
-                  class="item-gong"
-                  :style="{ width: item.gong / 100 + 'px' }"
-                ></div>
-                <div
-                  class="item-shou"
-                  :style="{ width: item.shou / 100 + 'px' }"
-                ></div>
-              </div>
-              <span class="item-text">{{ item.name }}</span>
-            </li>
-          </ul>
-          <div class="x-num">
-            <span style="position: absolute; top: 0; left: 0">0</span>
-            <span style="position: absolute; top: 0; left: 50px">5000</span>
-            <span style="position: absolute; top: 0; left: 100px">10000</span>
-            <span style="position: absolute; top: 0; left: 150px">15000</span>
-            <span style="position: absolute; top: 0; left: 200px">20000</span>
-          </div>
-        </div>
-
-        <div class="title">
-          <span>产品数据库</span>
-          <img src="../../../../assets/title-bg.png" />
-        </div>
-
-        <div class="product-data">
-          <div class="product-data-top">
-            <el-form :inline="true" :model="form" class="demo-form-inline">
-              <el-form-item class="input-select" label="产品矿">
-                <el-select
-                  :popper-append-to-body="false"
-                  v-model="form.region"
-                  placeholder="路径选择"
-                >
-                  <el-option label="混匀矿" value="shanghai"></el-option>
-                  <el-option label="巴西矿" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
-          </div>
-
-          <div class="product-data-content" ref="barChart"></div>
-        </div>
-      </div>
-
-      <div class="btn-close" @click="info.isShow = false">
-        <p>收起</p>
-      </div>
-    </el-drawer>
   </div>
 </template>
 
 <script>
-import { brokenLine, pieChart, barChart,barChart1} from "./charts";
-// import { storageProduct,storageMaterielStock} from "../../../../api/home";
+import {
+  brokenLine,
+  pieChart,
+  barChart,
+  barChart1,
+  newBarChart,
+} from "./charts";
+import {
+  storageMaterielStock,
+  feedAndReceiving,
+  comboBox,
+  storageProduct,
+} from "../../../../api/home";
 export default {
-  props:["info"],
+  props: ["info"],
   data() {
     return {
       form: {
         region: "",
       },
 
-
-      workAreaSave: [],
-
-      drawer: false,
-
-      arr: [1],
-
-      arr2: [
-        {
-          name: "巴西矿",
-          gong: 5000,
-          shou: 8000,
-        },
-
-        {
-          name: "石灰石",
-          gong: 4000,
-          shou: 10000,
-        },
-
-        {
-          name: "铁矿",
-          gong: 10000,
-          shou: 8000,
-        },
-        {
-          name: "铁矿",
-          gong: 10000,
-          shou: 8000,
-        },
-        {
-          name: "石灰石",
-          gong: 4000,
-          shou: 10000,
-        },
-
-        {
-          name: "铁矿",
-          gong: 10000,
-          shou: 8000,
-        },
-        {
-          name: "铁矿",
-          gong: 10000,
-          shou: 8000,
-        },
-      ],
+      selectArr: [],
+      selectValue: "",
     };
   },
 
-  methods: {},
+  methods: {
+    changeSelect(){
+      storageProduct({
+          materialCode: this.selectValue,
+          operationAreaCode: this.info.code,
+        }).then((res) => {
+          console.log(res);
+          barChart(this.$refs.barChart,res.data.data);
+        });
+    },
+  },
 
   mounted() {
+
+
+
     this.$nextTick(() => {
       console.log(this.$refs.pieChart);
-
       brokenLine(this.$refs.brokenLine);
-      pieChart(this.$refs.pieChart);
       barChart1(this.$refs.barChart1);
       barChart(this.$refs.barChart);
     });
 
-    // storageProduct({
-    //   materialName: "1",
-    //   operationAreaCode: "SIN1",
-    // }).then((res) => {
-    //   console.log(res);
-    // });
+    let code = this.info.code;
 
-    // storageMaterielStock({
-    //  storageCode:"1"
-    // }).then((res) => {
-    //   console.log(res);
-    // });
+    storageMaterielStock({
+      operationAreaCode: code,
+    }).then((res) => {
+      console.log(res);
+      pieChart(this.$refs.pieChart, res.data.data);
+    });
+
+    feedAndReceiving({
+      operationAreaCode: code,
+    }).then((res) => {
+      console.log(res);
+      newBarChart(this.$refs.newBarChart, res.data.data);
+      //  pieChart(this.$refs.pieChart,res.data.data);
+    });
+
+    comboBox().then((res) => {
+      console.log(res);
+      newBarChart(this.$refs.newBarChart, res.data.data);
+      //  pieChart(this.$refs.pieChart,res.data.data);
+      console.log(res.data.data);
+      this.selectArr = res.data.data;
+      if (res.data.data.length > 0) {
+        this.selectValue = res.data.data[0].value;
+        storageProduct({
+          materialCode: this.selectValue,
+          operationAreaCode: code,
+        }).then((res) => {
+          console.log(res);
+          barChart(this.$refs.barChart,res.data.data);
+        });
+      }
+    });
+
+
+
   },
 };
 </script>
@@ -346,21 +294,16 @@ export default {
 
 .coking .bar-chart {
   width: 350px;
+  height: 180px;
   overflow: hidden;
-  margin: 10px 0;
+  position: relative;
 }
 
-.coking .sign {
-  width: 350px;
-  overflow: hidden;
-}
-
-.coking .sign div {
-  float: right;
-}
-
-.coking .sign .sign-title {
-  float: left;
+.coking .sign-title {
+  position: absolute;
+  left: 10px;
+  top: 5px;
+  z-index: 1000;
   width: 72px;
   height: 24px;
   color: #fff;
@@ -372,95 +315,14 @@ export default {
   border: 1px solid rgba(17, 135, 255, 0.5);
 }
 
-.coking .sign .gong {
-  width: 10px;
-  height: 10px;
-  background: #0f7ae9;
-  margin-top: 5px;
-}
-
-.coking .sign .gong-text {
-  height: 10px;
-  line-height: 10px;
-  color: #fff;
-  font-size: 10px;
-  margin-right: 20px;
-  margin-top: 5px;
-}
-
-.coking .sign .shou {
-  width: 10px;
-  height: 10px;
-  background: #0bcdff;
-  margin-top: 5px;
-}
-
-.coking .sign .shou-text {
-  height: 10px;
-  line-height: 10px;
-  color: #fff;
-  font-size: 10px;
-  margin-right: 20px;
-  margin-top: 5px;
-}
-
-.coking .bar-chart .list1 {
+.coking .bar-chart .new-Bar-Chart {
   width: 350px;
-  height: 80px;
+  height: 100%;
   overflow: auto;
-  margin-top: 20px;
 }
 
-.coking .bar-chart .list1::-webkit-scrollbar {
+.coking .bar-chart .new-Bar-Chart::-webkit-scrollbar {
   width: 0;
-}
-
-.coking .bar-chart .item {
-  width: 350px;
-  height: 10px;
-  margin-top: 10px;
-}
-
-.coking .bar-chart .item .box {
-  float: left;
-  width: 300px;
-  height: 100%;
-  overflow: hidden;
-}
-
-.coking .bar-chart .item .box .item-gong {
-  float: left;
-  width: 100px;
-  height: 100%;
-  background: #0f7ae9;
-}
-
-.coking .bar-chart .item .box .item-shou {
-  float: left;
-  width: 100px;
-  height: 100%;
-
-  background: #0bcdff;
-}
-
-.coking .bar-chart .item .item-text {
-  float: right;
-  color: #fff;
-  font-size: 10px;
-  font-family: PingFangSC-Medium, PingFang SC;
-}
-
-.coking .bar-chart .x-num {
-  width: 350px;
-  height: 30px;
-  position: relative;
-}
-
-.coking .bar-chart .x-num span {
-  margin-top: 5px;
-  color: #fff;
-  font-size: 12px;
-  font-family: PingFangSC-Medium, PingFang SC;
 }
 
 .coking .broken-line {
@@ -469,8 +331,7 @@ export default {
   background-color: #000;
 }
 
-
-.coking .bar-one{
+.coking .bar-one {
   width: 350px;
   height: 180px;
   background-color: #000;
@@ -495,7 +356,6 @@ export default {
   height: 100%;
   background-color: #000;
   color: #fff;
- 
 }
 
 .coking .Pie-chart-box .Pie-legend ul {
@@ -537,7 +397,7 @@ export default {
   width: 100%;
 }
 
-.coking >>> .input-select{
+.coking >>> .input-select {
   margin-top: 10px;
   margin-bottom: 10px !important;
 }

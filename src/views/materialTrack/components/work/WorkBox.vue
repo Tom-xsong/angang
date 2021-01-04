@@ -4,7 +4,10 @@
       <!-- 顶部 -->
       <div class="main-top">
         <div class="title-logo"></div>
-        <div class="title-text">{{info.name}}</div>
+        <div class="title-text">{{ info.objs.name }}</div>
+        <el-button class="btn-enter" @click="enter" type="primary"
+          >进入</el-button
+        >
       </div>
 
       <!-- 作业区情况 -->
@@ -169,8 +172,8 @@
 <script>
 import {
   workArea,
-  feedAndReceiving,
-  secondAnalysis,
+  workAreaShou,
+  workAreaJian,
   comboBox,
   samplingPlace,
 } from "../../../../api/home";
@@ -205,7 +208,7 @@ export default {
         this.situation = res.data.data || {};
       });
 
-      feedAndReceiving({ operationAreaCode: code }).then((res) => {
+      workAreaShou({ operationAreaCode: code }).then((res) => {
         console.log(res.data.data);
 
         barChart(this.$refs.barChart, res.data.data);
@@ -221,7 +224,7 @@ export default {
         this.selectPlace = res.data.data;
       });
 
-      secondAnalysis({
+      workAreaJian({
         analysisCode: "",
         currentPage: 1,
         materielCode: "",
@@ -240,7 +243,7 @@ export default {
     handleCurrentChange1(e) {
       workArea({
         currentPage: e,
-        operationAreaCode: this.info.code,
+        operationAreaCode: this.info.objs.code,
         pageSize: 3,
       }).then((res) => {
         console.log(res);
@@ -252,14 +255,14 @@ export default {
     handleCurrentChange(e) {
       let OperationAreaAnalysisDTO = {
         currentPage: e,
-        operationAreaCode: this.info.code,
+        operationAreaCode: this.info.objs.code,
         pageSize: 1,
       };
       OperationAreaAnalysisDTO.analysisCode = this.form.analysisCode;
       OperationAreaAnalysisDTO.materielCode = this.form.materielCode;
       OperationAreaAnalysisDTO.samplingPalceCode = this.form.samplingPalceCode;
 
-      if (this.form.arriveTime) {
+      if (this.form.samplingTime) {
         OperationAreaAnalysisDTO.samplingStartTime = this.form.samplingTime[0].getTime();
         OperationAreaAnalysisDTO.samplingEndtTime = this.form.samplingTime[1].getTime();
       } else {
@@ -268,7 +271,7 @@ export default {
       }
       console.log(OperationAreaAnalysisDTO);
 
-      secondAnalysis(OperationAreaAnalysisDTO).then((res) => {
+      workAreaJian(OperationAreaAnalysisDTO).then((res) => {
         console.log(res);
         this.workAnalysis = res.data.data;
       });
@@ -278,14 +281,14 @@ export default {
     formChange() {
       let OperationAreaAnalysisDTO = {
         currentPage: 1,
-        operationAreaCode: this.info.code,
+        operationAreaCode: this.info.objs.code,
         pageSize: 1,
       };
       OperationAreaAnalysisDTO.analysisCode = this.form.analysisCode;
       OperationAreaAnalysisDTO.materielCode = this.form.materielCode;
       OperationAreaAnalysisDTO.samplingPalceCode = this.form.samplingPalceCode;
 
-      if (this.form.arriveTime) {
+      if (this.form.samplingTime) {
         OperationAreaAnalysisDTO.samplingStartTime = this.form.samplingTime[0].getTime();
         OperationAreaAnalysisDTO.samplingEndtTime = this.form.samplingTime[1].getTime();
       } else {
@@ -293,7 +296,7 @@ export default {
         OperationAreaAnalysisDTO.samplingEndtTime = "";
       }
 
-      secondAnalysis(OperationAreaAnalysisDTO).then((res) => {
+      workAreaJian(OperationAreaAnalysisDTO).then((res) => {
         console.log(res);
         this.workAnalysis = res.data.data;
       });
@@ -304,19 +307,19 @@ export default {
     //进入二级页面
     enter() {
       this.$router.push(
-        "/artView/?code=" + this.info.code + "&name=" + this.info.name
+        "/artView/?code=" + this.info.objs.code + "&name=" + this.info.objs.name
       );
     },
   },
 
   mounted() {
-    let code = this.info.code;
+    let code = this.info.objs.code;
     console.log(code);
     this.requestData(code);
   },
 
   watch: {
-    "info.code": {
+    "info.objs.code": {
       handler(newValue, oldValue) {
         console.log("变了" + newValue, oldValue);
         this.currentPage = 1;

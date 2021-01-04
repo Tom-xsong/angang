@@ -1,9 +1,12 @@
+
 let echarts = require('echarts');
-
-
 //漏斗图
-export function funnelChart(el) {
 
+
+
+let ldcId;
+
+export function funnelChart(el, data) {
     console.log(el)
     var myChart = echarts.init(el);
 
@@ -12,7 +15,7 @@ export function funnelChart(el) {
 
     let option = {
 
-        color: ["#87CEFA", "#87CEEB", "#00BFFF", "#1E90FF", "#0000FF"],
+        color: [ "#00BFFF", "#1E90FF", "#0000FF","#87CEFA","#87CEEB"],
         series: [{
             name: '漏斗图',
             type: 'funnel',
@@ -24,7 +27,7 @@ export function funnelChart(el) {
             min: 0, //
             max: 100,
             minSize: '10%',
-            maxSize: '50%',
+            maxSize: '80%',
             sort: 'descending',
             gap: 0,
             label: {
@@ -47,33 +50,22 @@ export function funnelChart(el) {
                     fontSize: 20
                 }
             },
-            data: [{
-                value: 10,
-                name: '20.4T'
-            },
-            {
-                value: 20,
-                name: '34.5T'
-            },
-            {
-                value: 40,
-                name: '45.3T'
-            },
-            {
-                value: 70,
-                name: '65.2T'
-            },
-            {
-                value: 100,
-                name: '81.4T'
-            }
-            ]
+            data: data
         }]
     };
 
 
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);
+    myChart.on('click', function (params) {
+       ldcId = params.data.id
+    });
 
-
+    
 }
+
+export {ldcId}
+
+
+
+

@@ -54,7 +54,7 @@
             ></el-input>
           </el-form-item>
 
-          <el-form-item label="当前作业区图:">
+          <el-form-item label="当前工序图:">
             <el-select
               @change="changeArtCode"
               v-model="artCode"
@@ -71,7 +71,10 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button @click="dialogVisible = true" class="submit-btn" type="primary"
+            <el-button
+              @click="dialogVisible = true"
+              class="submit-btn"
+              type="primary"
               >提交</el-button
             >
           </el-form-item>
@@ -109,14 +112,13 @@
     </div>
 
     <!-- 数据提交弹框 -->
-    <el-dialog :title="artObj.code==''?'添加':'修改'" :visible.sync="dialogVisible" width="20%">
-     
-      <el-form  label-width="80px">
+    <el-dialog title="当前工序图信息" :visible.sync="dialogVisible" width="20%">
+      <el-form label-width="80px">
         <el-form-item label="name:">
           <el-input v-model="artObj.name"></el-input>
         </el-form-item>
         <el-form-item label="code:">
-          <el-input  v-model="artObj.code"></el-input>
+          <el-input v-model="artObj.code"></el-input>
         </el-form-item>
         <el-form-item label="id:">
           <el-input v-model="artObj.id"></el-input>
@@ -124,9 +126,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dataSubmit"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="dataSubmit">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -144,7 +144,7 @@
         >
           <el-input v-model="form.code" :maxlength="100" clearable></el-input>
         </el-form-item>
-        <el-form-item label="名称：">
+        <el-form-item label="文本：">
           <el-input
             type="textarea"
             :rows="2"
@@ -167,7 +167,20 @@
 
         <el-form-item
           label="设备类型： "
-          v-if="curType == 'rect' || curType == 'image'"
+          v-if="curType == 'image'"
+        >
+          <el-input
+            v-model="form.equipmentType"
+            :maxlength="100"
+            clearable
+            :disabled="true"
+          >
+          </el-input>
+        </el-form-item>
+
+         <el-form-item
+          label="设备类型： "
+          v-if="curType == 'rect'"
         >
           <el-input
             v-model="form.equipmentType"
@@ -183,9 +196,9 @@
           v-if="curType == 'image' && curLabel !== '皮带'"
         >
           <el-select v-model="form.state" placeholder="选择状态" clearable>
-            <el-option label="报错" value="error"></el-option>
-            <el-option label="正常" value="success"></el-option>
-            <el-option label="警告" value="warning"></el-option>
+            <el-option label="报错" value="ERROR"></el-option>
+            <el-option label="正常" value="NORMAL"></el-option>
+            <el-option label="警告" value="WARN"></el-option>
           </el-select>
         </el-form-item>
 
@@ -194,9 +207,9 @@
           v-if="curType == 'image' && curLabel == '皮带'"
         >
           <el-select v-model="form.state" placeholder="选择状态" clearable>
-            <el-option label="停止" value="stop"></el-option>
-            <el-option label="正常" value="success"></el-option>
-            <el-option label="警告" value="warning"></el-option>
+            <el-option label="停止" value="STOP"></el-option>
+            <el-option label="正常" value="RUN"></el-option>
+            <el-option label="警告" value="WARN"></el-option>
           </el-select>
         </el-form-item>
 
@@ -414,10 +427,10 @@ export default {
       },
       artArr: [],
       artCode: "",
-      artObj:{
-        name:"",
-        code:"",
-        id:"",
+      artObj: {
+        name: "",
+        code: "",
+        id: "",
       },
 
       form: {
@@ -473,7 +486,6 @@ export default {
       }
     },
 
-
     // 打开修改样式弹窗
     handleOpenStyle(param) {
       this.curType = param.type;
@@ -487,7 +499,6 @@ export default {
       this.colorDialog = true;
     },
 
-    
     // 修改样式确定
     handleModifyStyle() {
       submitStyle(this.form, () => {
@@ -508,20 +519,18 @@ export default {
     // 清除画布
     handleClear(bool) {
       clearAll();
-      this.artObj={
-        name:"",
-        code:"",
-        id:"",
+      this.artObj = {
+        name: "",
+        code: "",
+        id: "",
+      };
+
+      if (bool) {
+        this.artCode = "";
+        console.log(bool);
       }
 
-      if(bool){
-        this.artCode="";
-        console.log(bool)
-      }
-      
-     
       // localStorage.clear();
-     
     },
 
     //添加或修改图
@@ -551,10 +560,10 @@ export default {
       };
 
       addOrUpdate(parmas).then((res) => {
-        if(res.data.code=="00000"){
-           this.$message.success("编辑成功");
-           this.dialogVisible=false;
-        }else{
+        if (res.data.code == "00000") {
+          this.$message.success("编辑成功");
+          this.dialogVisible = false;
+        } else {
           this.$message.warning(res.data.message);
         }
       });
@@ -565,7 +574,7 @@ export default {
       workArtdetail({ code: this.artCode }).then((res) => {
         this.handleClear(false);
         let data = JSON.parse(res.data.data.body);
-        
+
         let rectData = data.rectData;
         if (rectData) {
           for (let i in rectData) {
@@ -585,11 +594,13 @@ export default {
             add(textData[i]);
           }
         }
-        console.log(data.artData)
+        console.log(data.artData);
 
         this.canvasSize = data.artData;
         this.changeArt();
-        this.artObj = res.data.data
+        this.artObj = res.data.data;
+        this.handleStatus=-1
+        endDrawLine(), endResize(), endRectMove(), endEdit();
       });
     },
 

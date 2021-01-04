@@ -3,12 +3,10 @@ import {
 } from './index'
 
 
-
-
 //主页
 
 //作业区情况
-export const workArea = p => get("/api/materiel/interactive/two-dimensional/index/operationArea/situation",p);
+export const workArea = p => post("/api/materiel/interactive/two-dimensional/index/operationArea/situation",p);
 
 
 //作业区受料
@@ -28,6 +26,8 @@ export const route = p => post("/api/materiel/interactive/two-dimensional/index/
 
 
 
+
+
 //查看所有物料情况
 export const workAreaAll = p => get("/api/materiel/interactive/two-dimensional/index/selectAllStorageMateriel",p);
 
@@ -37,7 +37,11 @@ export const matou = p => get("/api/materiel/interactive/two-dimensional/index/w
 //码头检化验
 export const matouJian = p => post("/api/materiel/interactive/two-dimensional/index/wharf/analysis",p);
 
+//物料下拉框
+export const comboBox = p => get("/api/materiel/interactive/two-dimensional/index/materiel/comboBox",p);
 
+//取样地点下拉框
+export const samplingPlace= p => get("/api/materiel/interactive/two-dimensional/index/samplingPlace/comboBox",p);
 
 
 
@@ -48,24 +52,19 @@ export const matouJian = p => post("/api/materiel/interactive/two-dimensional/in
 //料条物料比例
 export const  stripProportion = p => get("/api/materiel/interactive/two-dimensional/second/stripProportion",p); 
 
-//所有皮带状态
-export const facilityStatus = p => get("/api/materiel/interactive/two-dimensional/second/facilityStatus",p);
+//皮带和仓库状态
+export const  facilityStatus = p => get("/api/materiel/interactive/two-dimensional/second/facilityStatus",p); 
 
-//仓库状态
-export const storageStatus = p => get("/api/materiel/interactive/two-dimensional/second/storageStatus",p);
-
-
-
-//皮带承载流程
-export const beltInFlow = p => get("/api/materiel/interactive/two-dimensional/second/beltInFlow",p); 
 
 //皮带计量
-export const beltMetering = p => get("/api/materiel/interactive/two-dimensional/second/beltMetering",p); 
+export const beltMetering = p => get("/api/materiel/interactive/two-dimensional/second/beltMeteringButton",p); 
 
 //作业区情况-流程详情
-export const processDetails = p => post("/api/materiel/interactive/two-dimensional/second/processDetails",p);
+export const processDetails = p => get("/api/materiel/interactive/two-dimensional/second/processDetails",p);
 
-
+//检化验按钮
+//export 
+export const analysisButton = p => post("/api/materiel/interactive/two-dimensional/second/analysisButton",p);
 
 
 
@@ -77,19 +76,9 @@ export const pileInfopileDetailrmation = p => post("/api/materiel/interactive/tw
 
 
 
-// //二级 供受料
-// export const  operationAreaFeedAndReceiving = p => get("/api/materiel/interactive/two-dimensional/second/operationAreaFeedAndReceiving",p); 
-
-
-// //二级 原料库存
-// export const  operationAreaMaterielStock = p => get("/api/materiel/interactive/two-dimensional/second/operationAreaMaterielStock",p); 
-
-
 //二级 供料受料
 export const feedAndReceiving = p => get("/api/materiel/interactive/two-dimensional/second/feedAndReceiving",p);  
 
-//二级 出铁信息
-export const  castingInformation = p => get("/api/materiel/interactive/two-dimensional/second/castingInformation",p); 
 
 //二级 原料库存
 export const  storageMaterielStock = p => get("/api/materiel/interactive/two-dimensional/second/storageMaterielStock",p);
@@ -97,14 +86,14 @@ export const  storageMaterielStock = p => get("/api/materiel/interactive/two-dim
 //二级 检化验
 export const secondAnalysis = p => get("/api/materiel/interactive/two-dimensional/second/analysis",p);  
 
-//二级 检化验曲线 
-export const analysisCurve = p => get("/api/materiel/interactive/two-dimensional/second/analysisCurve",p);  
 
 // 二级 产品数据库
 export const storageProduct = p => post("/api/materiel/interactive/two-dimensional/second/storageProduct",p);
 
 
 
+
+//工作台调整
 //工作台添加或修改
 export const addOrUpdate = p => post("/api/material/graph/addOrUpdate",p);
 

@@ -1,132 +1,81 @@
 <template>
   <div class="msmscale">
-    <div class="btn-open" @click="info.isShow=true">
-      <p>展开</p>
+    <div class="main">
+      <div class="main-top">
+        <div class="title-logo"></div>
+        <div class="title-text">计量秤</div>
+      </div>
+
+      <div class="title">
+        <span>详情</span>
+        <img src="../../../../assets/title-bg.png" />
+      </div>
+
+      <ul class="procss-detail">
+        <li>
+          <span class="key">读数:</span>
+          <span class="value">
+            <span>{{ data.scale }}</span>
+          </span>
+        </li>
+
+        <li>
+          <span class="key">速度:</span>
+          <span class="value">
+            <span>{{ data.speed }}</span>
+          </span>
+        </li>
+      </ul>
     </div>
-    <el-drawer  :visible.sync="info.isShow" :with-header="false" :modal="false">
-      <div class="main">
-      
-        <div class="main-top">
-          <div class="title-logo"></div>
-          <div class="title-text">计量秤</div>
-        </div>
-
-        <div class="title">
-          <span>详情</span>
-          <img src="../../../../assets/title-bg.png" />
-        </div>
-
-        <ul class="procss-detail">
-          <li>
-            <span class="key">读数:</span>
-            <span class="value">
-              <span>1213</span>
-            </span>
-          </li>
-
-          <li>
-            <span class="key">速度:</span>
-            <span class="value">
-              <span>23432</span>
-            </span>
-          </li>
-        </ul>
-
-        
-      </div>
-
-      <div class="btn-close" @click="info.isShow=false">
-        <p>关闭</p>
-      </div>
-    </el-drawer>
   </div>
 </template>
 
 <script>
+import { beltMetering } from "../../../../api/home";
 export default {
-  props:["info"],
+  props: ["info"],
   data() {
     return {
-      
-         
+      data: {
+        scale: 0,
+        speed: 0,
+      },
     };
   },
 
   methods: {
-    
-    
-
-
+    //初始化数据
+    requestData(code) {
+      beltMetering({ beltCode: code }).then((res) => {
+        console.log(res);
+        this.data = res.data.data;
+      });
+    },
   },
 
   mounted() {
-   
+    let code = this.info.code;
+    this.requestData(code);
+  },
+  watch: {
+    "info.code": {
+      handler(newValue, oldValue) {
+        console.log("arr2变了", newValue, oldValue);
+        this.data = {
+          scale: 0,
+          speed: 0,
+
+        }
+        let code = newValue;
+        this.requestData(code);
+      },
+      deep: true,
+    },
   },
 };
 </script>
 
 <style  scoped>
-.msmscale >>> .el-drawer__wrapper {
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 1080px;
-}
-
-.msmscale >>> .el-drawer__wrapper .el-drawer.rtl {
-  width: 750px;
-  border: 0;
-  background: linear-gradient(
-    270deg,
-    #000000 0%,
-    rgba(0, 0, 0, 0.8) 56%,
-    rgba(0, 0, 0, 0) 100%
-  );
-}
-
-.msmscale >>> .el-drawer__wrapper .el-drawer.rtl:focus {
-  outline: 0;
-}
-
-.msmscale .btn-open {
-  width: 53px;
-  height: 120px;
-  background: url("../../../../assets/tag.png") no-repeat center;
-  background-size: 100% 100%;
-  position: absolute;
-  right: 0;
-  top: 460px;
-}
-
-.msmscale .btn-open p {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 16px;
-  color: #fff;
-  font-family: PingFangSC-Medium, PingFang SC;
-}
-
-.msmscale .btn-close {
-  width: 53px;
-  height: 120px;
-  background: url("../../../../assets/tag.png") no-repeat center;
-  position: absolute;
-  right: 394px;
-  top: 480px;
-}
-
-.msmscale .btn-close p {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 16px;
-  color: #fff;
-  font-family: PingFangSC-Medium, PingFang SC;
-}
-
 .msmscale .main {
   width: 370px;
   height: 100%;
@@ -235,7 +184,7 @@ export default {
 }
 
 .msmscale .table {
-  margin-top:20px;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 

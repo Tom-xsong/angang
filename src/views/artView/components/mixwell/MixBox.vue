@@ -1,9 +1,5 @@
 <template>
   <div class="mix">
-    <div class="btn-open" @click="info.isShow = true">
-      <p>展开</p>
-    </div>
-    <el-drawer :visible.sync="info.isShow" :with-header="false" :modal="false">
       <div class="main">
         <!-- 顶部 -->
         <div class="main-top">
@@ -18,37 +14,12 @@
 
         <!-- 柱状图 -->
         <div class="bar-chart">
-          <div class="sign">
-            <div class="sign-title">原料材质</div>
-            <div class="shou-text">受料</div>
-            <div class="shou"></div>
-            <div class="gong-text">供料</div>
-            <div class="gong"></div>
-          </div>
+        <div class="sign-title">原料材质</div>
 
-          <ul class="list1">
-            <li v-for="(item,index) in arr2" class="item" :key="index">
-              <div class="box">
-                <div
-                  class="item-gong"
-                  :style="{ width: item.gong / 100 + 'px' }"
-                ></div>
-                <div
-                  class="item-shou"
-                  :style="{ width: item.shou / 100 + 'px' }"
-                ></div>
-              </div>
-              <span class="item-text">{{ item.name }}</span>
-            </li>
-          </ul>
-          <div class="x-num">
-            <span style="position: absolute; top: 0; left: 0">0</span>
-            <span style="position: absolute; top: 0; left: 50px">5000</span>
-            <span style="position: absolute; top: 0; left: 100px">10000</span>
-            <span style="position: absolute; top: 0; left: 150px">15000</span>
-            <span style="position: absolute; top: 0; left: 200px">20000</span>
-          </div>
-        </div>
+        <div class="new-Bar-Chart" ref="newBarChart"></div>
+       </div>
+
+
 
         <div class="broken-line" ref="brokenLine"></div>
 
@@ -57,29 +28,7 @@
           <img src="../../../../assets/title-bg.png" />
         </div>
 
-        <div class="Pie-chart-box">
-          <div class="Pie-chart" ref="pieChart"></div>
-          <div class="Pie-legend">
-            <ul>
-              <li>
-                <span class="legend"></span><span class="name">肥煤</span
-                ><span class="num">314T</span>
-              </li>
-              <li>
-                <span class="legend" style="background: #0bcdff"></span
-                ><span class="name">肥煤</span><span class="num">314T</span>
-              </li>
-              <li>
-                <span class="legend" style="background: #00ff84"></span
-                ><span class="name">肥煤</span><span class="num">314T</span>
-              </li>
-              <li>
-                <span class="legend" style="background: #ff862c"></span
-                ><span class="name">肥煤</span><span class="num">314T</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+       <div class="Pie-chart-box" ref="pieChart"></div>
 
         <div class="title">
           <span>产品数据库</span>
@@ -91,13 +40,19 @@
             <el-form :inline="true" :model="form" class="demo-form-inline">
               <el-form-item class="input-select" label="产品矿">
                 <el-select
-                  :popper-append-to-body="false"
-                  v-model="form.region"
-                  placeholder="路径选择"
-                >
-                  <el-option label="混匀矿" value="shanghai"></el-option>
-                  <el-option label="巴西矿" value="beijing"></el-option>
-                </el-select>
+                :popper-append-to-body="false"
+                v-model="selectValue"
+                @change="changeSelect"
+                filterable
+                placeholder="路径选择"
+              >
+                <el-option
+                  v-for="item in selectArr"
+                  :key="item.label"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
               </el-form-item>
             </el-form>
           </div>
@@ -106,16 +61,16 @@
         </div>
       </div>
 
-      <div class="btn-close" @click="info.isShow = false">
-        <p>收起</p>
-      </div>
-    </el-drawer>
   </div>
 </template>
-
 <script>
-import { brokenLine, pieChart, barChart } from "./charts";
-// import { storageProduct,storageMaterielStock} from "../../../../api/home";
+import { brokenLine,pieChart,barChart,newBarChart} from "./charts";
+import {
+  storageMaterielStock,
+  feedAndReceiving,
+  comboBox,
+  storageProduct,
+} from "../../../../api/home";
 export default {
   props:["info"],
   data() {
@@ -124,143 +79,76 @@ export default {
         region: "",
       },
 
+      selectArr: [],
+      selectValue: "",
+
       
 
-      workAreaSave: [],
-
-      drawer: false,
-
-      arr: [1],
-
-      arr2: [
-        {
-          name: "巴西矿",
-          gong: 5000,
-          shou: 8000,
-        },
-
-        {
-          name: "石灰石",
-          gong: 4000,
-          shou: 10000,
-        },
-
-        {
-          name: "铁矿",
-          gong: 10000,
-          shou: 8000,
-        },
-        {
-          name: "铁矿",
-          gong: 10000,
-          shou: 8000,
-        },
-         {
-          name: "石灰石",
-          gong: 4000,
-          shou: 10000,
-        },
-
-        {
-          name: "铁矿",
-          gong: 10000,
-          shou: 8000,
-        },
-        {
-          name: "铁矿",
-          gong: 10000,
-          shou: 8000,
-        },
-      ],
+    
     };
   },
 
-  methods: {},
+  methods: {
+
+
+     changeSelect(){
+      storageProduct({
+          materialCode: this.selectValue,
+          operationAreaCode: this.info.code,
+        }).then((res) => {
+          console.log(res);
+          barChart(this.$refs.barChart,res.data.data);
+        });
+    },
+
+    
+  },
 
   mounted() {
     this.$nextTick(() => {
       brokenLine(this.$refs.brokenLine);
-      pieChart(this.$refs.pieChart);
       barChart(this.$refs.barChart);
     });
+    let code = this.info.code;
 
-    // storageProduct({
-    //   materialName: "1",
-    //   operationAreaCode: "SIN1",
-    // }).then((res) => {
-    //   console.log(res);
-    // });
+    storageMaterielStock({
+      operationAreaCode: code,
+    }).then((res) => {
+      console.log(res);
+      pieChart(this.$refs.pieChart, res.data.data);
+    });
 
-    // storageMaterielStock({
-    //  storageCode:"1"
-    // }).then((res) => {
-    //   console.log(res);
-    // });
+    feedAndReceiving({
+      operationAreaCode: code,
+    }).then((res) => {
+      console.log(res);
+      newBarChart(this.$refs.newBarChart, res.data.data);
+      //  pieChart(this.$refs.pieChart,res.data.data);
+    });
+
+    comboBox().then((res) => {
+      console.log(res);
+      newBarChart(this.$refs.newBarChart, res.data.data);
+      //  pieChart(this.$refs.pieChart,res.data.data);
+      console.log(res.data.data);
+      this.selectArr = res.data.data;
+      if (res.data.data.length > 0) {
+        this.selectValue = res.data.data[0].value;
+        storageProduct({
+          materialCode: this.selectValue,
+          operationAreaCode: code,
+        }).then((res) => {
+          console.log(res);
+          barChart(this.$refs.barChart,res.data.data);
+        });
+      }
+    });
+
   },
 };
 </script>
 
 <style  scoped>
-.mix >>> .el-drawer__wrapper {
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 1080px;
-}
-
-.mix >>> .el-drawer__wrapper .el-drawer.rtl {
-  width: 750px;
-  border: 0;
-  background: linear-gradient(
-    270deg,
-    #000000 0%,
-    rgba(0, 0, 0, 0.8) 56%,
-    rgba(0, 0, 0, 0) 100%
-  );
-}
-
-.mix >>> .el-drawer__wrapper .el-drawer.rtl:focus {
-  outline: 0;
-}
-
-.mix .btn-open {
-  width: 53px;
-  height: 120px;
-  background: url("../../../../assets/tag.png") no-repeat center;
-  background-size: 100% 100%;
-  position: absolute;
-  right: 0;
-  top: 460px;
-}
-
-.mix .btn-open p {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 16px;
-  color: #fff;
-  font-family: PingFangSC-Medium, PingFang SC;
-}
-
-.mix .btn-close {
-  width: 53px;
-  height: 120px;
-  background: url("../../../../assets/tag.png") no-repeat center;
-  position: absolute;
-  right: 394px;
-  top: 480px;
-}
-
-.mix .btn-close p {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 16px;
-  color: #fff;
-  font-family: PingFangSC-Medium, PingFang SC;
-}
 
 .mix .main {
   width: 370px;
@@ -337,21 +225,16 @@ export default {
 .mix .bar-chart {
   width: 350px;
   overflow: hidden;
-  margin: 10px 0;
+  position: relative;
 }
 
-.mix .sign {
-  width: 350px;
-  overflow: hidden;
- 
-}
 
-.mix .sign div {
-  float: right;
-}
 
-.mix .sign .sign-title {
-  float: left;
+.mix  .sign-title {
+  position:absolute;
+  left: 5px;
+  top:5px;
+  z-index: 1000;
   width: 72px;
   height: 24px;
   color: #fff;
@@ -364,45 +247,12 @@ export default {
   
 }
 
-.mix .sign .gong {
-  width: 10px;
-  height: 10px;
-  background: #0f7ae9;
-  margin-top: 5px;
-}
 
-.mix .sign .gong-text {
-  height: 10px;
-  line-height: 10px;
-  color: #fff;
-  font-size: 10px;
-  margin-right: 20px;
-  margin-top: 5px;
-}
 
-.mix .sign .shou {
-  width: 10px;
-  height: 10px;
-  background: #0bcdff;
-  margin-top: 5px;
-}
-
-.mix .sign .shou-text {
-  height: 10px;
-  line-height: 10px;
-  color: #fff;
-  font-size: 10px;
-  margin-right: 20px;
-  margin-top: 5px;
-}
-
-.mix .bar-chart .list1 {
+.mix .bar-chart .new-Bar-Chart {
   width: 350px;
-  height: 80px;
+  height: 150px;
   overflow: auto;
-  margin-top: 20px;
-
-  
 }
 
 
@@ -410,57 +260,11 @@ export default {
   width: 0;
 }
 
-.mix .bar-chart .item {
-  width: 350px;
-  height: 10px;
-  margin-top: 10px;
-}
 
-.mix .bar-chart .item .box {
-  float: left;
-  width: 300px;
-  height: 100%;
-  overflow: hidden;
-}
-
-.mix .bar-chart .item .box .item-gong {
-  float: left;
-  width: 100px;
-  height: 100%;
-  background: #0f7ae9;
-}
-
-.mix .bar-chart .item .box .item-shou {
-  float: left;
-  width: 100px;
-  height: 100%;
-
-  background: #0bcdff;
-}
-
-.mix .bar-chart .item .item-text {
-  float: right;
-  color: #fff;
-  font-size: 10px;
-  font-family: PingFangSC-Medium, PingFang SC;
-}
-
-.mix .bar-chart .x-num {
-  width: 350px;
-  height: 30px;
-  position: relative;
-}
-
-.mix .bar-chart .x-num span {
-  margin-top: 5px;
-  color: #fff;
-  font-size: 12px;
-  font-family: PingFangSC-Medium, PingFang SC;
-}
 
 .mix .broken-line {
   width: 350px;
-  height: 250px;
+  height: 200px;
   background-color: #000;
 }
 

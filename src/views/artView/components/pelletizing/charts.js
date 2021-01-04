@@ -5,6 +5,9 @@ let echarts = require('echarts');
 //折线图
 export function brokenLine(el) {
 
+
+    
+
     console.log(el)
     var myChart = echarts.init(el);
     let option = {
@@ -167,9 +170,18 @@ export function brokenLine(el) {
 
 
 //饼状图
-export function pieChart(el) {
+export function pieChart(el,data) {
 
     console.log(el)
+    let chartData;
+
+    if(data){
+        chartData = data
+    }
+    else{
+        chartData = []
+    }
+
     var myChart = echarts.init(el);
 
 
@@ -181,9 +193,46 @@ export function pieChart(el) {
 
 
         legend: {
+            // orient 设置布局方式，默认水平布局，可选值：'horizontal'（水平） ¦ 'vertical'（垂直）
             orient: 'vertical',
-            left: 10,
-            data: ['直接访问', '邮件营销', '联盟广告', '视频广告']
+            // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+            x: '60%',
+            // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+            y: 'center',
+            borderRadius:9,
+            itemWidth: 10, // 设置图例图形的宽
+            itemHeight: 10, // 设置图例图形的高
+            textStyle: {
+                color: '#FFF' // 图例文字颜色
+            },
+            // itemGap设置各个item之间的间隔，单位px，默认为10，横向布局时为水平间隔，纵向布局时为纵向间隔
+            itemGap: 5,
+            formatter: function (name) {
+
+                //百分比数据的计算
+
+                var data = chartData;
+
+                
+
+                var target;
+
+                for (var i = 0, l = data.length; i < l; i++) {
+
+                   
+                    if (data[i].name == name) {
+
+                        target = data[i].value;
+
+                    }
+
+                }
+
+                return name + ':'+" "+" "+ target + 'T';
+
+            }
+
+
         },
         series: [
             // {       
@@ -205,8 +254,8 @@ export function pieChart(el) {
 
 
             {
-                name: '访问来源',
                 type: 'pie',
+                center:["20%","50%"],
                 radius: ['55%', '70%'],
                 // avoidLabelOverlap: false,
                 // selectedMode: 'single',
@@ -216,12 +265,14 @@ export function pieChart(el) {
 
                 label: {
                     show: false,
-                    position: 'center'
+                    position: 'center',
+                    formatter: "{d}%",
+                   
                 },
                 emphasis: {
                     label: {
                         show: true,
-                        fontSize: '20',
+                        fontSize: '10',
                         color: "#fff",
                         fontWeight: 'bold'
                     }
@@ -229,13 +280,7 @@ export function pieChart(el) {
                 labelLine: {
                     show: false
                 },
-                data: [
-                    { value: 14, name: '14%', selected: true },
-                    { value: 34, name: '34%', selected: true },
-                    { value: 23, name: '23%', selected: true },
-                    { value: 33, name: '33%', selected: true },
-
-                ]
+                data: chartData
             }
         ]
 
@@ -258,7 +303,23 @@ export function pieChart(el) {
 
 
 //柱状图
-export function barChart(el) {
+export function barChart(el,data) {
+
+
+    let xData,num1,num2,num3;
+   if(data.x){
+    xData = data.x
+    num1 = data.data.supply ;
+    num2 = data.data.receive;
+    num3 =  data.data.current
+
+   }else{
+    xData = [];
+    num1 = [];
+    num2 = [];
+    num3 = [];
+
+   }
 
     console.log(el)
     var myChart = echarts.init(el);
@@ -276,7 +337,6 @@ export function barChart(el) {
             itemWidth: 10,
             itemHeight: 10,
             itemGap: 30,
-            data: ["库存量", "入库量", "出库量"],
             textStyle: {
                 color: '#CCC', // 图例文字颜色
 
@@ -321,7 +381,7 @@ export function barChart(el) {
             },
 
 
-            data: ["12/05", "12/06", "12/07", "12/08", "12/09", "12/10", "12/11"],
+            data: xData,
 
 
         },
@@ -370,7 +430,7 @@ export function barChart(el) {
             type: 'bar',
             barWidth: 10,
             stack: '总量',
-            data: [5, 20, 36, 10, 10, 20, 15]
+            data: num3
         },
 
 
@@ -379,14 +439,14 @@ export function barChart(el) {
             name: '入库量',
             type: 'bar',
             stack: '总量',
-            data: [5, 20, 36, 10, 10, 16, 12]
+            data: num2
         },
 
         {
             name: '出库量',
             type: 'bar',
             stack: '总量',
-            data: [5, 20, 36, 10, 10, 20, 12]
+            data: num1
         },
         ]
 
@@ -553,6 +613,194 @@ export function barChart1(el) {
     myChart.setOption(option);
 
 }
+
+
+
+export  function newBarChart(el,data) {
+    let xData,num1,num2;
+   if(data.x){
+    xData = data.x
+    num1 = data.data.supply ;
+    num2 = data.data.receive;
+
+   }else{
+    xData = [];
+    num1 = [];
+    num2 = [];
+
+   }
+
+    
+    var myChart = echarts.init(el);
+
+
+
+
+    let option = {
+      
+        color: ["#0F7AE9","#0BCDFF"],
+
+        legend: {
+            x:220,
+            y:0,
+            itemWidth: 10,
+            itemHeight: 10,
+            // orient: 'horizontal',
+            itemGap: 30,
+            textStyle: {
+                color: '#CCC', // 图例文字颜色
+
+            }
+        },
+
+
+
+        grid: {
+            top:25,
+            left: 5,
+            right: '0%',
+            bottom: 10,
+            show: true,
+            containLabel: true,
+            backgroundColor: 'rgba(0,0,0)',
+            borderWidth: 0,
+
+
+
+        },
+
+        dataZoom:{
+            show:true, 
+            type: 'inside',
+            yAxisIndex:0     
+
+        },
+
+
+
+        xAxis: {
+
+            type: "value",
+
+            axisTick: {
+                show: false
+            },
+
+            axisLine: {
+                show: false,
+                lineStyle: {
+                    color: "#1183F8",
+
+                }
+
+            },
+
+
+
+            axisLabel: {
+
+                color: "#ccc"
+
+            },
+
+
+            splitLine: {
+                show: false,
+                lineStyle: {
+
+                    color: "#1183F8",
+                    width: "0.5",
+                }
+            },
+
+
+
+        },
+
+
+
+
+
+        yAxis: {
+            type: 'category',
+            position: "right",
+            nameTextStyle: {
+                color: "#CCC"
+            },
+
+            axisTick: {
+                show: false
+            },
+
+            axisLine: {
+                show: false,
+                lineStyle: {
+                    color: "#1183F8"
+                }
+
+            },
+
+
+            axisLabel: {
+                color: "#ccc"
+
+            },
+
+            splitLine: {
+                show: false,
+                lineStyle: {
+                    color: "#1183F8",
+                    width: "0.5",
+                }
+            },
+
+
+            data:xData,
+
+
+
+        },
+
+
+
+
+
+
+        series: [{
+                name: '供料',
+                type: 'bar',
+                barWidth: "10px",
+                yAxisIndex: "0",
+                stack: '总量',
+                data: num1
+            },
+
+            {
+                name: '受料',
+                type: 'bar',
+                barCap:10,
+                barWidth: "10px",
+                yAxisIndex: "0",
+                stack: '总量',
+                data: num2
+            }
+
+
+
+
+
+
+        ]
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+
+}
+
+
 
 
 

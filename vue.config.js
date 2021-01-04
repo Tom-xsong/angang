@@ -23,25 +23,25 @@ module.exports = {
     port: 5000,
     proxy: {
       '/api': {
-        target: 'http://363594p97a.zicp.vip',
-        changeOrigin: true, 
-        pathRewrite: {   
-          '^/api': 'http://363594p97a.zicp.vip'
+        target: "http://119.84.70.208:7507",
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': 'http://119.84.70.208:7507'
         }
       },
 
-       '/ws/': {
-                target: 'ws://3w60e29448.wicp.vip',
-                ws: true,
-                changeOrigin: true, 
-                pathRewrite: {   
-                  '^/ws/': '/ws/'
-                }
-         }
+      '/ws/': {
+        target: 'http://119.84.70.208:7507',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/ws/': '/ws/'
+        }
+      }
     }
   },
   // 修改webpack config, 使其不打包externals下的资源
-  configureWebpack: function() {
+  configureWebpack: function () {
     const myConfig = {};
     if (process.env.NODE_ENV === "production") {
       // 1. 生产环境npm包转CDN
@@ -69,7 +69,7 @@ module.exports = {
     }
     return myConfig;
   },
-  chainWebpack: function(config) {
+  chainWebpack: function (config) {
     config.plugin("html").tap(args => {
       const cdn = {
         // 开发环境
