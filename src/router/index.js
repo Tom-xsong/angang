@@ -22,6 +22,12 @@ const routes = [
     path: "/artView",
     name: "工艺图展示",
     component: () => import("@/views/artView/ArtView.vue")
+  },
+
+  {
+    path: "/artLine",
+    name: "画直线算夹角",
+    component: () => import("@/views/artLine/ArtLine")
   }
 ];
 

@@ -522,7 +522,6 @@ export default {
 
       //获取状态
       this.changeState(facilityStatus);
-
       this.renderLiao();
     },
 

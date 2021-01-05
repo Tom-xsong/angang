@@ -172,7 +172,7 @@ export function brokenLine(el) {
 //饼状图
 export function pieChart(el,data) {
 
-    console.log(el)
+   
     let chartData;
 
     if(data){
@@ -182,23 +182,26 @@ export function pieChart(el,data) {
         chartData = []
     }
 
+
     var myChart = echarts.init(el);
 
 
 
 
     let option = {
-
         color: ["#0F7AE9", "#0BCDFF", "#00FF84", "#FF862C"],
-
-
         legend: {
-            // orient 设置布局方式，默认水平布局，可选值：'horizontal'（水平） ¦ 'vertical'（垂直）
-            orient: 'vertical',
-            // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+            type:"scroll",
+            pageIconColor:"#0F7AE9",
+            pageIconInactiveColor:"#ccc",
+            pageIconSize:10,
+            pageTextStyle:{
+                color:"#fff",
+            },
+            top:"10%",
+            bottom:"10%",
             x: '60%',
-            // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
-            y: 'center',
+            orient: 'vertical',
             borderRadius:9,
             itemWidth: 10, // 设置图例图形的宽
             itemHeight: 10, // 设置图例图形的高
@@ -235,30 +238,14 @@ export function pieChart(el,data) {
 
         },
         series: [
-            // {       
-            //         name: '访问来源',
-            //         type: 'pie',
-            //         selectedMode: 'single',
-            //         radius: [0, '30%'],
-
-            //         label: {
-            //             show:false
-            //         },
-            //         labelLine: {
-            //             show: false
-            //         },
-            //         data: [
-            //             {value: 335, name: '直达'},
-            //         ]
-            //     },
+            
 
 
             {
                 type: 'pie',
                 center:["20%","50%"],
                 radius: ['55%', '70%'],
-                // avoidLabelOverlap: false,
-                // selectedMode: 'single',
+                selectedMode: 'single',
                 selectedOffset: 3,
 
 
@@ -304,8 +291,6 @@ export function pieChart(el,data) {
 
 //柱状图
 export function barChart(el,data) {
-
-
     let xData,num1,num2,num3;
    if(data.x){
     xData = data.x
@@ -629,6 +614,7 @@ export  function newBarChart(el,data) {
     num2 = [];
 
    }
+   
 
     
     var myChart = echarts.init(el);

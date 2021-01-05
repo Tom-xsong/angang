@@ -13,8 +13,7 @@ let rectModelList = [];
 let lineModelList = [];
 let textModelList = [];
 let id2element = {};
-// let animationElement={};
-// let circleElement = {};
+
 
 export function getZR() {
   return zr;

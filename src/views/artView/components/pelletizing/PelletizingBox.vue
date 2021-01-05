@@ -1,5 +1,5 @@
 <template>
-  <div class="sinteringmachine">
+  <div class="pelletizing">
     <div class="main">
       <!-- 顶部 -->
       <div class="main-top">
@@ -42,12 +42,14 @@
       <div class="product-data">
         <div class="product-data-top">
           <el-form :inline="true" class="demo-form-inline">
+            <input class="help-input" type="text">
             <el-form-item class="input-select" label="产品矿">
               <el-select
                 :popper-append-to-body="false"
                 v-model="selectValue"
                 @change="changeSelect"
                 filterable
+                clearable
                 placeholder="路径选择"
               >
                 <el-option
@@ -159,14 +161,14 @@ export default {
 </script>
 
 <style  scoped>
-.sinteringmachine >>> .el-drawer__wrapper {
+.pelletizing >>> .el-drawer__wrapper {
   position: absolute;
   right: 0;
   top: 0;
   height: 1080px;
 }
 
-.sinteringmachine >>> .el-drawer__wrapper .el-drawer.rtl {
+.pelletizing >>> .el-drawer__wrapper .el-drawer.rtl {
   width: 750px;
   border: 0;
   background: linear-gradient(
@@ -177,11 +179,11 @@ export default {
   );
 }
 
-.sinteringmachine >>> .el-drawer__wrapper .el-drawer.rtl:focus {
+.pelletizing >>> .el-drawer__wrapper .el-drawer.rtl:focus {
   outline: 0;
 }
 
-.sinteringmachine .btn-open {
+.pelletizing .btn-open {
   width: 53px;
   height: 120px;
   background: url("../../../../assets/tag.png") no-repeat center;
@@ -191,7 +193,7 @@ export default {
   top: 460px;
 }
 
-.sinteringmachine .btn-open p {
+.pelletizing .btn-open p {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -201,7 +203,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.sinteringmachine .btn-close {
+.pelletizing .btn-close {
   width: 53px;
   height: 120px;
   background: url("../../../../assets/tag.png") no-repeat center;
@@ -210,7 +212,7 @@ export default {
   top: 480px;
 }
 
-.sinteringmachine .btn-close p {
+.pelletizing .btn-close p {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -220,19 +222,19 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.sinteringmachine .main {
+.pelletizing .main {
   width: 370px;
   height: 100%;
   float: right;
 }
 
-.sinteringmachine .main .main-top {
+.pelletizing .main .main-top {
   overflow: hidden;
   width: 350px;
   margin-bottom: 10px;
 }
 
-.sinteringmachine .title-logo {
+.pelletizing .title-logo {
   float: left;
   margin-top: 28px;
   margin-right: 20px;
@@ -241,7 +243,7 @@ export default {
   background: linear-gradient(180deg, #042055 0%, #1a63de 100%);
 }
 
-.sinteringmachine .title-text {
+.pelletizing .title-text {
   margin-top: 22px;
   float: left;
   font-size: 24px;
@@ -250,7 +252,7 @@ export default {
   overflow: hidden;
 }
 
-.sinteringmachine .btn-enter {
+.pelletizing .btn-enter {
   float: right;
   margin-top: 24px;
   width: 72px;
@@ -261,7 +263,7 @@ export default {
   padding: 0;
 }
 
-.sinteringmachine .main .title {
+.pelletizing .main .title {
   width: 350px;
   height: 30px;
   padding-left: 16px;
@@ -280,26 +282,26 @@ export default {
   overflow: hidden;
 }
 
-.sinteringmachine .main .title span {
+.pelletizing .main .title span {
   float: left;
   color: #ffffff;
   line-height: 30px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.sinteringmachine .main .title img {
+.pelletizing .main .title img {
   float: right;
   margin-top: 10px;
 }
 
-.sinteringmachine .bar-chart {
+.pelletizing .bar-chart {
   width: 350px;
   height: 180px;
   overflow: hidden;
   position: relative;
 }
 
-.sinteringmachine .sign-title {
+.pelletizing .sign-title {
   position: absolute;
   left: 10px;
   top: 5px;
@@ -315,42 +317,42 @@ export default {
   border: 1px solid rgba(17, 135, 255, 0.5);
 }
 
-.sinteringmachine .bar-chart .new-Bar-Chart {
+.pelletizing .bar-chart .new-Bar-Chart {
   width: 350px;
   height: 100%;
   overflow: auto;
 }
 
-.sinteringmachine .bar-chart .new-Bar-Chart::-webkit-scrollbar {
+.pelletizing .bar-chart .new-Bar-Chart::-webkit-scrollbar {
   width: 0;
 }
 
-.sinteringmachine .broken-line {
+.pelletizing .broken-line {
   width: 350px;
   height: 180px;
   background-color: #000;
 }
 
-.sinteringmachine .bar-one {
+.pelletizing .bar-one {
   width: 350px;
   height: 180px;
   background-color: #000;
 }
 
-.sinteringmachine .Pie-chart-box {
+.pelletizing .Pie-chart-box {
   width: 350px;
   height: 120px;
   background-color: #000;
 }
 
-.sinteringmachine .Pie-chart-box .Pie-chart {
+.pelletizing .Pie-chart-box .Pie-chart {
   float: left;
   width: 50%;
   height: 120px;
   background-color: #000;
 }
 
-.sinteringmachine .Pie-chart-box .Pie-legend {
+.pelletizing .Pie-chart-box .Pie-legend {
   float: left;
   width: 40%;
   height: 100%;
@@ -358,17 +360,19 @@ export default {
   color: #fff;
 }
 
-.sinteringmachine .Pie-chart-box .Pie-legend ul {
+
+
+.pelletizing .Pie-chart-box .Pie-legend ul {
   overflow: hidden;
   margin-top: 20px;
 }
 
-.sinteringmachine .Pie-chart-box .Pie-legend ul li {
+.pelletizing .Pie-chart-box .Pie-legend ul li {
   overflow: hidden;
   width: 100px;
   margin-bottom: 10px;
 }
-.sinteringmachine .Pie-chart-box .Pie-legend .legend {
+.pelletizing .Pie-chart-box .Pie-legend .legend {
   float: left;
   display: block;
   width: 10px;
@@ -379,46 +383,53 @@ export default {
   margin-right: 10px;
 }
 
-.sinteringmachine .Pie-chart-box .Pie-legend .name {
+.pelletizing .Pie-chart-box .Pie-legend .name {
   float: left;
   font-size: 12px;
 }
 
-.sinteringmachine .Pie-chart-box .Pie-legend .num {
+.pelletizing .Pie-chart-box .Pie-legend .num {
   float: right;
   font-size: 12px;
 }
 
-.sinteringmachine .main .product-data {
+.pelletizing .main .product-data {
   width: 350px;
 }
 
-.sinteringmachine .main .product-data .product-data-top {
+.pelletizing .main .product-data .product-data-top {
   width: 100%;
 }
 
-.sinteringmachine >>> .input-select {
+.pelletizing >>> .help-input{
+  width: 0 ;
+  height: 0;
+  border:0;
+
+}
+
+.pelletizing >>> .input-select {
   margin-top: 10px;
   margin-bottom: 10px !important;
 }
 
-.sinteringmachine >>> .el-input--suffix .el-input__inner {
+.pelletizing >>> .el-input--suffix .el-input__inner {
   width: 280px;
   height: 33px;
   border: 1px solid #1a61d9;
   background-color: rgba(0, 0, 0, 0);
 }
 
-.sinteringmachine >>> .el-form-item__label {
+.pelletizing >>> .el-form-item__label {
   color: #fff;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.sinteringmachine >>> .el-select .el-input__inner {
+.pelletizing >>> .el-select .el-input__inner {
   color: #fff;
 }
 
-.sinteringmachine >>> .el-select-dropdown {
+.pelletizing >>> .el-select-dropdown {
   background-color: rgb(0, 0, 0);
   position: absolute !important;
   left: 0 !important;
@@ -426,33 +437,33 @@ export default {
   border: 1px solid #1a61d9;
 }
 
-.sinteringmachine >>> .el-popper .popper__arrow::after {
+.pelletizing >>> .el-popper .popper__arrow::after {
   content: " ";
   border-width: 0 !important;
 }
 
-.sinteringmachine >>> .el-popper .popper__arrow {
+.pelletizing >>> .el-popper .popper__arrow {
   border-width: 0 !important;
 }
 
-.sinteringmachine >>> .el-select .el-input .el-select__caret {
+.pelletizing >>> .el-select .el-input .el-select__caret {
   color: #1a61d9;
 }
-.sinteringmachine >>> .el-select-dropdown__item {
+.pelletizing >>> .el-select-dropdown__item {
   color: #fff;
 }
 
-.sinteringmachine >>> .el-select-dropdown__item.hover,
+.pelletizing >>> .el-select-dropdown__item.hover,
 .el-select-dropdown__item:hover {
   color: #fff;
   background-color: #1a61d9;
 }
 
-.sinteringmachine >>> .el-select-dropdown__item.selected {
+.pelletizing >>> .el-select-dropdown__item.selected {
   color: #fff;
 }
 
-.sinteringmachine .product-data .product-data-content {
+.pelletizing .product-data .product-data-content {
   width: 350px;
   height: 180px;
 }

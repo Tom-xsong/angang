@@ -61,7 +61,10 @@
         label-position="left"
         :inline="true"
         class="demo-form-inline"
-      >
+      > 
+
+        <input type="text" class="help-input">
+
         <el-form-item label="物料名称:">
           <el-select
             class="wl-name"
@@ -468,6 +471,13 @@ export default {
 .work .bar-chart {
   width: 350px;
   height: 200px;
+}
+
+.work >>> .help-input{
+  width: 0 ;
+  height: 0;
+  border:0;
+
 }
 
 .work .main .el-form-item {

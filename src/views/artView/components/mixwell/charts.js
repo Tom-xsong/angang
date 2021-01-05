@@ -169,7 +169,6 @@ export function brokenLine(el) {
 //饼状图
 export function pieChart(el,data) {
 
-    console.log(el)
     let chartData;
 
     if(data){
@@ -178,6 +177,8 @@ export function pieChart(el,data) {
     else{
         chartData = []
     }
+    
+   
 
     var myChart = echarts.init(el);
 
@@ -190,12 +191,17 @@ export function pieChart(el,data) {
 
 
         legend: {
-            // orient 设置布局方式，默认水平布局，可选值：'horizontal'（水平） ¦ 'vertical'（垂直）
-            orient: 'vertical',
-            // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+            type:"scroll",
+            pageIconColor:"#0F7AE9",
+            pageIconInactiveColor:"#ccc",
+            pageIconSize:10,
+            pageTextStyle:{
+                color:"#fff",
+            },
+            top:"15%",
+            bottom:"15%",
             x: '60%',
-            // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
-            y: 'center',
+            orient: 'vertical',
             borderRadius:9,
             itemWidth: 15, // 设置图例图形的宽
             itemHeight: 15, // 设置图例图形的高
@@ -208,7 +214,7 @@ export function pieChart(el,data) {
 
                 //百分比数据的计算
 
-                var data = chartData ;
+                var data = chartData;;
 
                 
 
@@ -232,30 +238,12 @@ export function pieChart(el,data) {
 
         },
         series: [
-            // {       
-            //         name: '访问来源',
-            //         type: 'pie',
-            //         selectedMode: 'single',
-            //         radius: [0, '30%'],
-
-            //         label: {
-            //             show:false
-            //         },
-            //         labelLine: {
-            //             show: false
-            //         },
-            //         data: [
-            //             {value: 335, name: '直达'},
-            //         ]
-            //     },
-
-
+          
             {
                 type: 'pie',
                 center:["25%","50%"],
                 radius: ['55%', '70%'],
-                // avoidLabelOverlap: false,
-                // selectedMode: 'single',
+                selectedMode: 'single',
                 selectedOffset: 3,
 
 

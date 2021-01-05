@@ -16,6 +16,8 @@
         :inline="true"
         class="demo-form-inline"
       >
+
+        <input class="help-input" type="text">
         <el-form-item label="物料名称:">
           <el-select
             v-model="form.materielCode"
@@ -47,31 +49,7 @@
         </el-form-item>
       </el-form>
 
-      <!-- 表格 -->
-      <!-- <div class="table" v-for="">
-        <table>
-          <tr>
-            <td colspan="3">报告编号</td>
-            <td colspan="3"></td>
-            <td colspan="3">物料名称</td>
-            <td colspan="3"></td>
-          </tr>
-          <tr>
-            <td colspan="3">物料批号</td>
-            <td colspan="3"></td>
-            <td colspan="3">取样地点</td>
-            <td colspan="3"></td>
-          </tr>
-          <tr>
-            <td colspan="6">取样时间</td>
-            <td colspan="6"></td>
-          </tr>
-        </table>
-
-        <div class="table-list-box">
-          <table></table>
-        </div>
-      </div> -->
+    
 
       <div class="table" v-for="(item, index) in data" :key="index">
         <table>
@@ -335,6 +313,15 @@ export default {
   position: absolute;
   left: 120px;
   top: 11px;
+}
+
+
+
+.analysis >>> .help-input{
+  width: 0 ;
+  height: 0;
+  border:0;
+
 }
 
 .analysis .main .el-form-item {

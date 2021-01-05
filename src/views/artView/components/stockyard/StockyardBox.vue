@@ -1,5 +1,5 @@
 <template>
-  <div class="work">
+  <div class="stockyard">
     <div class="main">
       <!-- 顶部 -->
       <div class="main-top">
@@ -59,6 +59,7 @@
         :inline="true"
         class="demo-form-inline"
       >
+      <input class="help-input" type="text">
         <el-form-item label="物料名称:">
           <el-select
             class="wl-name"
@@ -329,19 +330,19 @@ export default {
 </script>
 
 <style  scoped>
-.work .main {
+.stockyard .main {
   width: 370px;
   height: 100%;
   float: right;
 }
 
-.work .main .main-top {
+.stockyard .main .main-top {
   overflow: hidden;
   width: 350px;
   margin-bottom: 20px;
 }
 
-.work .title-logo {
+.stockyard .title-logo {
   float: left;
   margin-top: 20px;
   margin-right: 20px;
@@ -350,7 +351,7 @@ export default {
   background: linear-gradient(180deg, #042055 0%, #1a63de 100%);
 }
 
-.work .title-text {
+.stockyard .title-text {
   margin-top: 15px;
   float: left;
   font-size: 24px;
@@ -359,7 +360,7 @@ export default {
   overflow: hidden;
 }
 
-.work .btn-enter {
+.stockyard .btn-enter {
   float: right;
   margin-top: 15px;
   width: 72px;
@@ -370,7 +371,7 @@ export default {
   padding: 0;
 }
 
-.work .main .title {
+.stockyard .main .title {
   width: 350px;
   height: 30px;
   padding-left: 16px;
@@ -389,29 +390,29 @@ export default {
   overflow: hidden;
 }
 
-.work .main .title span {
+.stockyard .main .title span {
   float: left;
   color: #ffffff;
   line-height: 30px;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work .main .title img {
+.stockyard .main .title img {
   float: right;
   margin-top: 10px;
 }
 
-.work .main .yuanliao {
+.stockyard .main .yuanliao {
   width: 350px;
   overflow: hidden;
 }
 
-.work .main .yuanliao .yuanliao-top {
+.stockyard .main .yuanliao .yuanliao-top {
   width: 350px;
   overflow: hidden;
 }
 
-.work .main .yuanliao .yuanliao-top .title1 {
+.stockyard .main .yuanliao .yuanliao-top .title1 {
   float: left;
   margin: 15px 0 10px 20px;
   font-size: 14px;
@@ -420,7 +421,7 @@ export default {
   color: #ffffff;
 }
 
-.work .main .yuanliao .yuanliao-top .title2 {
+.stockyard .main .yuanliao .yuanliao-top .title2 {
   float: right;
   margin: 15px 20px 10px 0;
   font-size: 14px;
@@ -429,12 +430,12 @@ export default {
   color: #ffffff;
 }
 
-.work .main .yuanliao .content {
+.stockyard .main .yuanliao .content {
   width: 350px;
   overflow: hidden;
 }
 
-.work .main .yuanliao .content li {
+.stockyard .main .yuanliao .content li {
   width: 350px;
   height: 25px;
   background: url("../../../../assets/rectbg.png") no-repeat center;
@@ -442,7 +443,7 @@ export default {
   margin-top: 10px;
 }
 
-.work .main .yuanliao .content li .name {
+.stockyard .main .yuanliao .content li .name {
   float: left;
   margin-left: 20px;
   font-size: 12px;
@@ -452,7 +453,7 @@ export default {
   line-height: 25px;
 }
 
-.work .main .yuanliao .content li .num {
+.stockyard .main .yuanliao .content li .num {
   float: right;
   margin-right: 20px;
   font-size: 12px;
@@ -462,16 +463,25 @@ export default {
   line-height: 25px;
 }
 
-.work .bar-chart {
+.stockyard .bar-chart {
   width: 350px;
   height: 200px;
 }
 
-.work .main .el-form-item {
+
+.stockyard >>> .help-input{
+  width: 0 ;
+  height: 0;
+  border:0;
+
+}
+
+
+.stockyard .main .el-form-item {
   margin-bottom: 5px;
 }
 
-.work >>> .main .el-input__inner {
+.stockyard >>> .main .el-input__inner {
   width: 96px;
   height: 28px;
   border-radius: 2px;
@@ -480,7 +490,7 @@ export default {
   color: #fff;
 }
 
-.work >>> .el-form-item__label {
+.stockyard >>> .el-form-item__label {
   width: 69px !important;
   font-size: 16px;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -489,36 +499,36 @@ export default {
   padding: 0 !important;
 }
 
-.work >>> .el-range-editor.el-input__inner {
+.stockyard >>> .el-range-editor.el-input__inner {
   width: 280px;
   height: 30px;
   padding: 0 10px;
 }
-.work >>> .el-range-editor .el-range-input {
+.stockyard >>> .el-range-editor .el-range-input {
   background-color: #000;
   color: #ccc !important;
   margin: 10px;
 }
 
-.work >>> .el-date-editor .el-range-separator {
+.stockyard >>> .el-date-editor .el-range-separator {
   color: #fff;
   padding: 0;
   line-height: 28px;
 }
 
-.work >>> .el-date-editor .el-range__icon {
+.stockyard >>> .el-date-editor .el-range__icon {
   line-height: 30px;
 }
 
-.work >>> .el-date-editor .el-range__close-icon {
+.stockyard >>> .el-date-editor .el-range__close-icon {
   line-height: 30px;
 }
 
-.work >>> .wl-name .el-input__inner {
+.stockyard >>> .wl-name .el-input__inner {
   width: 96px !important;
 }
 
-.work >>> .el-input--suffix .el-input__inner {
+.stockyard >>> .el-input--suffix .el-input__inner {
   color: #fff;
   width: 280px;
   height: 30px;
@@ -526,7 +536,7 @@ export default {
   background-color: rgba(0, 0, 0, 0);
 }
 
-.work >>> .el-select-dropdown {
+.stockyard >>> .el-select-dropdown {
   background-color: rgb(0, 0, 0);
   position: absolute !important;
   left: 0 !important;
@@ -534,33 +544,33 @@ export default {
   border: 1px solid #1a61d9;
 }
 
-.work >>> .el-popper .popper__arrow::after {
+.stockyard >>> .el-popper .popper__arrow::after {
   content: " ";
   border-width: 0 !important;
 }
 
-.work >>> .el-popper .popper__arrow {
+.stockyard >>> .el-popper .popper__arrow {
   border-width: 0 !important;
 }
 
-.work >>> .el-select .el-input .el-select__caret {
+.stockyard >>> .el-select .el-input .el-select__caret {
   color: #1a61d9;
 }
-.work >>> .el-select-dropdown__item {
+.stockyard >>> .el-select-dropdown__item {
   color: #fff;
 }
 
-.work >>> .el-select-dropdown__item.hover,
+.stockyard >>> .el-select-dropdown__item.hover,
 .el-select-dropdown__item:hover {
   color: #fff;
   background-color: #1a61d9;
 }
 
-.work >>> .el-select-dropdown__item.selected {
+.stockyard >>> .el-select-dropdown__item.selected {
   color: #fff;
 }
 
-.work .main table {
+.stockyard .main table {
   overflow: hidden;
   margin-top: 10px;
   table-layout: fixed;
@@ -570,15 +580,15 @@ export default {
   border: 1px solid #1183f8;
 }
 
-/* .work .main table tr {
+/* .stockyard .main table tr {
   height: 25px;
 } */
 
-.work .table {
+.stockyard .table {
   margin-bottom: 20px;
 }
 
-.work .main table td {
+.stockyard .main table td {
   padding: 5px 0;
   font-size: 12px;
   color: #fff;
@@ -586,27 +596,27 @@ export default {
   text-align: center;
 }
 
-.work .main table .query {
+.stockyard .main table .query {
   color: #1187ff;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work .table-list-box {
+.stockyard .table-list-box {
   width: 350px;
   height: 220px !important;
   overflow: auto;
 }
 
-/* .work .table-list-box table{
+/* .stockyard .table-list-box table{
   margin-top:0 !important;
 } */
 
-.work .table-list-box::-webkit-scrollbar {
+.stockyard .table-list-box::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
-.work .table-list-box::-webkit-scrollbar-thumb {
+.stockyard .table-list-box::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
 
   border-radius: 10px;
@@ -614,7 +624,7 @@ export default {
   background: #1183f8;
 }
 
-.work .table-list-box::-webkit-scrollbar-track {
+.stockyard .table-list-box::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
 
   border-radius: 10px;
@@ -622,21 +632,21 @@ export default {
   background: #ededed;
 }
 
-.work .pagination-box {
+.stockyard .pagination-box {
   width: 350px;
   height: 20px;
   overflow: hidden;
   position: relative;
   margin: 20px 0 20px 0;
 }
-.work >>> .el-pagination {
+.stockyard >>> .el-pagination {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translate(-50%, 0);
 }
 
-.work >>> .el-pagination.is-background .el-pager li {
+.stockyard >>> .el-pagination.is-background .el-pager li {
   min-width: 16px;
   width: 20px;
   height: 20px;
@@ -647,7 +657,7 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work >>> .el-pagination.is-background .btn-prev {
+.stockyard >>> .el-pagination.is-background .btn-prev {
   min-width: 16px;
   width: 20px;
   height: 20px;
@@ -656,13 +666,13 @@ export default {
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
+.stockyard >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
   background: #1187ff;
   color: #fff;
   font-family: PingFangSC-Medium, PingFang SC;
 }
 
-.work >>> .el-pagination.is-background .btn-next {
+.stockyard >>> .el-pagination.is-background .btn-next {
   min-width: 16px;
   width: 20px;
   height: 20px;

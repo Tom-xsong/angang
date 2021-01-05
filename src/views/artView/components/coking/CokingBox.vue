@@ -42,12 +42,15 @@
       <div class="product-data">
         <div class="product-data-top">
           <el-form :inline="true" class="demo-form-inline">
+            <input class="help-input" type="text">
+
             <el-form-item class="input-select" label="产品矿">
               <el-select
                 :popper-append-to-body="false"
                 v-model="selectValue"
                 @change="changeSelect"
                 filterable
+                clearable
                 placeholder="路径选择"
               >
                 <el-option
@@ -397,6 +400,14 @@ export default {
   width: 100%;
 }
 
+
+.coking >>> .help-input{
+  width: 0 ;
+  height: 0;
+  border:0;
+
+}
+
 .coking >>> .input-select {
   margin-top: 10px;
   margin-bottom: 10px !important;
@@ -430,6 +441,8 @@ export default {
   content: " ";
   border-width: 0 !important;
 }
+
+
 
 .coking >>> .el-popper .popper__arrow {
   border-width: 0 !important;

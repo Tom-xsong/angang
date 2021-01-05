@@ -59,6 +59,8 @@
         :inline="true"
         class="demo-form-inline"
       >
+       <input type="text" class="help-input">
+
         <el-form-item label="物料名称:">
           <el-select
             ref="ss"
@@ -173,7 +175,7 @@ export default {
       currentPage: 1,
       selectObjs: {},
       form: {
-        arriveTime:null,
+        arriveTime: null,
         erpCode: "",
         materielCode: "",
         transportCode: "",
@@ -203,8 +205,8 @@ export default {
         pageSize: 1,
         areaCode: code,
         transportCode: "",
-        arriveEndTime:"",
-        arriveStartTime:""
+        arriveEndTime: "",
+        arriveStartTime: "",
       }).then((res) => {
         console.log(res);
         this.wharfAnalysis = res.data.data;
@@ -363,13 +365,13 @@ export default {
   margin-top: 20px;
 }
 
-.clearfix::after{
+.clearfix::after {
   content: ".";
- 
+
   line-height: 0;
   height: 0;
   font-size: 0;
- 
+
   display: block;
   clear: both;
 }
@@ -438,6 +440,7 @@ export default {
   color: #fff;
 }
 
+
 .wharf >>> .el-form-item__label {
   width: 69px !important;
   font-size: 16px;
@@ -446,6 +449,17 @@ export default {
   color: #ffffff;
   padding: 0 !important;
 }
+
+
+
+.wharf >>> .help-input{
+  width: 0 ;
+  height: 0;
+  border:0;
+
+}
+
+
 
 .wharf >>> .el-range-editor.el-input__inner {
   width: 280px;

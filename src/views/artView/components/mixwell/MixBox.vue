@@ -38,12 +38,14 @@
         <div class="product-data">
           <div class="product-data-top">
             <el-form :inline="true" :model="form" class="demo-form-inline">
+              <input class="help-input" type="text">
               <el-form-item class="input-select" label="产品矿">
                 <el-select
                 :popper-append-to-body="false"
                 v-model="selectValue"
                 @change="changeSelect"
                 filterable
+                clearable
                 placeholder="路径选择"
               >
                 <el-option
@@ -326,6 +328,14 @@ export default {
 
 .mix .main .product-data .product-data-top {
   width: 100%;
+}
+
+
+.mix >>> .help-input{
+  width: 0 ;
+  height: 0;
+  border:0;
+
 }
 
 .mix .input-select {

@@ -42,12 +42,14 @@
       <div class="product-data">
         <div class="product-data-top">
           <el-form :inline="true" class="demo-form-inline">
+            <input class="help-input" type="text">
             <el-form-item class="input-select" label="产品矿">
               <el-select
                 :popper-append-to-body="false"
                 v-model="selectValue"
                 @change="changeSelect"
                 filterable
+                clearable
                 placeholder="路径选择"
               >
                 <el-option
@@ -85,10 +87,6 @@ export default {
   props: ["info"],
   data() {
     return {
-      form: {
-        region: "",
-      },
-
       selectArr: [],
       selectValue: "",
     };
@@ -114,7 +112,6 @@ export default {
       console.log(this.$refs.pieChart);
       brokenLine(this.$refs.brokenLine);
       barChart1(this.$refs.barChart1);
-      barChart(this.$refs.barChart);
     });
 
     let code = this.info.code;
@@ -130,8 +127,10 @@ export default {
       operationAreaCode: code,
     }).then((res) => {
       console.log(res);
-      newBarChart(this.$refs.newBarChart, res.data.data);
-      //  pieChart(this.$refs.pieChart,res.data.data);
+      if(res.data.code=="00000"){
+        newBarChart(this.$refs.newBarChart, res.data.data);
+      }
+      
     });
 
     comboBox().then((res) => {
@@ -395,6 +394,14 @@ export default {
 
 .sinteringmachine .main .product-data .product-data-top {
   width: 100%;
+}
+
+
+.sinteringmachine >>> .help-input{
+  width: 0 ;
+  height: 0;
+  border:0;
+
 }
 
 .sinteringmachine >>> .input-select {
